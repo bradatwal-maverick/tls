@@ -1,57 +1,5 @@
 export const pages = {
 
-  // ===== STATE SPLASH (entry page) =====
-  '/': {
-    title: 'Choose your state — Trade Licence Solutions',
-    description: 'Pick your state to see the builder, company and trade licence steps, fees and regulator for where you work. Dan Pleaner handles the paperwork across all 8 states and territories.',
-    content: `
-      <section class="section">
-        <div class="container text-center">
-          <p class="section-label">Trade Licence Solutions</p>
-          <h1>Which state are you licensing in?</h1>
-          <p style="max-width:580px;margin:0.75rem auto 0;color:var(--dark-grey);">Each state has its own regulator, forms and fees. Tap your state to see exactly what applies to you.</p>
-
-          <div class="state-grid" style="margin-top:2rem;">
-            <a href="/nsw" class="state-tile">
-              <span class="state-tile__name">New South Wales</span>
-              <span class="state-tile__detail">NSW Fair Trading</span>
-            </a>
-            <a href="/qld" class="state-tile">
-              <span class="state-tile__name">Queensland</span>
-              <span class="state-tile__detail">QBCC</span>
-            </a>
-            <a href="/vic" class="state-tile">
-              <span class="state-tile__name">Victoria</span>
-              <span class="state-tile__detail">Building Commission VIC</span>
-            </a>
-            <a href="/act" class="state-tile">
-              <span class="state-tile__name">ACT</span>
-              <span class="state-tile__detail">Access Canberra</span>
-            </a>
-            <a href="/sa" class="state-tile">
-              <span class="state-tile__name">South Australia</span>
-              <span class="state-tile__detail">CBS</span>
-            </a>
-            <a href="/wa" class="state-tile">
-              <span class="state-tile__name">Western Australia</span>
-              <span class="state-tile__detail">Building and Energy</span>
-            </a>
-            <a href="/tas" class="state-tile">
-              <span class="state-tile__name">Tasmania</span>
-              <span class="state-tile__detail">CBOS</span>
-            </a>
-            <a href="/nt" class="state-tile">
-              <span class="state-tile__name">Northern Territory</span>
-              <span class="state-tile__detail">NT Building Practitioners Board</span>
-            </a>
-          </div>
-
-          <p style="margin-top:2rem;"><a href="/home">Not sure which state? See the full site →</a></p>
-        </div>
-      </section>
-    `,
-  },
-
   // ===== HOME (full site) =====
   '/home': {
     title: 'Trade Licence Solutions — Builder & Trade Licences Across Australia',
