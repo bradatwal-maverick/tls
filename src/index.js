@@ -153,6 +153,7 @@ async function handleContact(request, env) {
   const phone = field('phone');
   const email = field('email');
   const state = field('state');
+  const licence = field('licence');
   const message = field('message');
 
   if (!name || !phone) {
@@ -194,21 +195,17 @@ async function handleContact(request, env) {
     );
   }
 
-  const text = [
-    `Name: ${name}`,
-    `Phone: ${phone}`,
-    `Email: ${email || 'not given'}`,
-    `State: ${state || 'not given'}`,
-    '',
-    message || '(no message)',
-  ].join('\n');
+  // Enquiry goes to Dan's Google Apps Script, which adds a row to his sheet and emails him
+  const referer = request.headers.get('Referer') || '';
+  let source = '/contact';
+  try { source = new URL(referer).pathname || '/contact'; } catch (err) { /* no referer */ }
 
   let sent = false;
   try {
     const relay = await fetch(env.GMAIL_RELAY_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-      body: JSON.stringify({ key: env.GMAIL_RELAY_KEY, name, email: email || 'dpleaner@gmail.com', text }),
+      body: JSON.stringify({ key: env.GMAIL_RELAY_KEY, name, phone, email, state, licence, message, source }),
     });
     const data = await relay.json();
     sent = data && data.ok === true;

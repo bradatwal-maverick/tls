@@ -840,6 +840,17 @@ export const pages = {
                 </select>
               </div>
               <div class="form-group">
+                <label for="c_licence">Licence you need</label>
+                <select id="c_licence" name="licence">
+                  <option value="">— Select one —</option>
+                  <option value="builder">Builder licence</option>
+                  <option value="company">Company licence</option>
+                  <option value="mutual">Mutual recognition</option>
+                  <option value="trade">Trade licence</option>
+                  <option value="not sure">Not sure yet</option>
+                </select>
+              </div>
+              <div class="form-group">
                 <label for="c_message">What do you need help with?</label>
                 <textarea id="c_message" name="message" placeholder="e.g. I need a company licence in NSW…"></textarea>
               </div>
