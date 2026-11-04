@@ -33,6 +33,18 @@ const LLMS_LINKS = [
   ['/contact', 'Book a free 15-minute call'],
 ];
 
+const STATE_PAGES = [
+  ['new-south-wales', 'New South Wales'],
+  ['queensland', 'Queensland'],
+  ['victoria', 'Victoria'],
+  ['australian-capital-territory', 'Australian Capital Territory'],
+  ['south-australia', 'South Australia'],
+  ['western-australia', 'Western Australia'],
+  ['tasmania', 'Tasmania'],
+  ['northern-territory', 'Northern Territory'],
+];
+const OLD_STATE_URLS = { '/nsw': 'new-south-wales', '/qld': 'queensland', '/vic': 'victoria', '/act': 'australian-capital-territory', '/sa': 'south-australia', '/wa': 'western-australia', '/tas': 'tasmania', '/nt': 'northern-territory' };
+
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export default {
@@ -50,6 +62,16 @@ export default {
     if (isGet && path === '/robots.txt') return textResponse(robotsTxt(), 'text/plain; charset=UTF-8');
     if (isGet && path === '/sitemap.xml') return textResponse(sitemapXml(), 'application/xml; charset=UTF-8');
     if (isGet && path === '/llms.txt') return textResponse(llmsTxt(), 'text/plain; charset=UTF-8');
+
+    // Old state URLs permanently redirect to the new state pages
+    if (OLD_STATE_URLS[path]) {
+      return Response.redirect(`${url.origin}/${OLD_STATE_URLS[path]}`, 301);
+    }
+
+    // State pages: clean URLs such as /new-south-wales served from /states/<slug>.html
+    if (isGet && STATE_PAGES.some(([slug]) => slug === path.slice(1))) {
+      return env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}.html`, request.url), request));
+    }
 
     // Entry page: state selector and eligibility check (approved design)
     if (isGet && path === '/') {
@@ -284,11 +306,11 @@ Sitemap: ${SITE}/sitemap.xml
 }
 
 function sitemapXml() {
-  const skip = new Set(['/404', '/readiness-check', '/contact-submitted']);
+  const skip = new Set(['/404', '/readiness-check', '/contact-submitted', ...Object.keys(OLD_STATE_URLS)]);
   const paths = ['/', ...Object.entries(pages)
     .filter(([p, page]) => !page.noindex && !skip.has(p))
     .map(([p]) => p)];
-  const urls = paths.map((p) => `  <url><loc>${SITE}${p === '/' ? '/' : p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
+  const urls = [...paths, ...STATE_PAGES.map(([slug]) => `/${slug}`)].map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
@@ -304,5 +326,8 @@ function llmsTxt() {
 
 ## Key pages
 ${LLMS_LINKS.map(([p, label]) => `- [${label}](${SITE}${p})`).join('\n')}
+
+## State pages
+${STATE_PAGES.map(([slug, name]) => `- [${name} Licence Solutions](${SITE}/${slug})`).join('\n')}
 `;
 }
