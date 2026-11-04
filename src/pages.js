@@ -928,7 +928,7 @@ export const pages = {
   // ===== ABOUT =====
   '/about': {
     title: 'About Dan Pleaner — Trade Licence Solutions',
-    description: 'Dan Pleaner is Australia\'s most accessible trade licence specialist. 500+ licences, 98% first-time approval, 5+ years experience. He answers his own phone.',
+    description: 'Dan Pleaner founded Trade Licence Solutions to help tradies and builders get licensed first time. Expert guidance, personal support and honest advice across Australia.',
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -940,19 +940,46 @@ export const pages = {
         <div class="container">
           <div class="bio-block">
             <div class="bio-block__photo">
-              <img src="/images/dan.jpg" alt="Dan Pleaner — Trade Licence Solutions specialist" loading="lazy">
+              <img src="/images/dan-headshot.jpg" alt="Dan Pleaner, founder of Trade Licence Solutions" loading="lazy" style="max-width:100%;border-radius:12px;">
             </div>
             <div>
-              <h2>The licence specialist who answers his own phone</h2>
-              <p>Dan Pleaner founded Trade Licence Solutions after seeing how many good tradies and builders were being knocked back — or stuck for months — not because they weren't qualified, but because their applications were poorly prepared.</p>
-              <p>Over 5+ years, Dan has helped more than 500 tradies, builders and building companies get their licences approved across Australia. His 98% first-time approval rate comes from one thing: getting the documentation right before it's lodged.</p>
-              <p>When you work with Trade Licence Solutions, you deal directly with Dan from your first call to your licence approval. No call centres, no junior staff, no outsourcing. Dan handles every application himself.</p>
-              <p>Dan is a member of the Housing Industry Association (HIA) and stays current with every regulator's requirements across all 8 states and territories.</p>
+              <p class="section-label" style="color:var(--orange,#f5a623);">My story</p>
+              <h2>Dedicated to help you get licensed.</h2>
+              <p>As a dedicated professional with extensive experience in the residential construction sector, I have had the privilege of supporting countless tradespeople across New South Wales in obtaining their builder licences.</p>
+              <p>During my tenure with the Housing Industry Association (HIA), I provided tailored guidance on licensing pathways, regulatory compliance, and qualification requirements, helping tradies navigate the often-complex application process with confidence and clarity.</p>
+              <p>My commitment lies in empowering skilled professionals to advance their careers and contribute to the growth and integrity of the building industry.</p>
+              <p style="margin-top:1.5rem;"><img src="/images/dan-signature.png" alt="Daniel Pleaner signature" width="150" height="75" style="height:auto;max-width:150px;"></p>
+              <p><strong>Daniel Pleaner</strong><br>Founder, Trade Licence Solutions Australia</p>
               <div class="cta-block">
                 <a href="/contact" class="btn btn--primary">Book a free call with Dan</a>
                 <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      <section class="section section--grey">
+        <div class="container container--narrow">
+          <p class="section-label text-center">Why choose us</p>
+          <h2 class="text-center">Expert advice. Personal support. First-time approval.</h2>
+          <ul style="max-width:640px;margin:1.5rem auto 0;line-height:1.9;">
+            <li>Honest, professional advice based on real experience in licensing and building</li>
+            <li>A tailored plan for your business, licence type and goals</li>
+            <li>Strong, accurate applications, prepared so you get approved first time</li>
+            <li>Referee statement and documentation help</li>
+            <li>One-on-one support from Dan, from first call to approval</li>
+            <li>Up to date with the latest licensing requirements</li>
+          </ul>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container container--narrow">
+          <p class="section-label text-center">Real results, real people <span style="color:var(--mid-grey);font-weight:400;">(to verify)</span></p>
+          <div style="display:grid;gap:1rem;margin-top:1.5rem;">
+            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Daniel made the whole licensing process so easy. Got my builder licence first time.&rdquo;</blockquote>
+            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Highly professional and knowledgeable. Couldn't recommend TLS highly enough.&rdquo;</blockquote>
+            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Daniel's guidance was invaluable. Everything was handled perfectly.&rdquo;</blockquote>
+            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Fast, efficient and reliable. Got my licence approved without any issues.&rdquo;</blockquote>
           </div>
         </div>
       </section>
@@ -968,14 +995,11 @@ export const pages = {
               <div style="color:var(--mid-grey);">First-time approval rate</div>
             </div>
             <div>
-              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">5+</div>
-              <div style="color:var(--mid-grey);">Years specialist experience</div>
-            </div>
-            <div>
               <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">8</div>
               <div style="color:var(--mid-grey);">States and territories</div>
             </div>
           </div>
+          <p style="margin-top:1rem;color:var(--mid-grey);font-size:0.9rem;">Stats to verify with Dan before launch.</p>
         </div>
       </section>
     `,
