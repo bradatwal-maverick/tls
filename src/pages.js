@@ -53,7 +53,7 @@ export const pages = {
               <div class="card__label">Tradespeople</div>
               <h3>Trade contractor licence</h3>
               <p>Electrical, plumbing, carpentry and more. Dan helps trade contractors get the right licence for their trade and their state — without the guesswork.</p>
-              <div class="card__price">From $550</div>
+              <div class="card__price">From $495</div>
               <a href="/trade-contractor" class="btn btn--navy">Find out more</a>
             </div>
           </div>
@@ -373,7 +373,7 @@ export const pages = {
   // ===== TRADE CONTRACTOR =====
   '/trade-contractor': {
     title: 'Trade Contractor Licence Help — All Trades, All States | Trade Licence Solutions',
-    description: 'Electrical, plumbing, carpentry and more. Dan Pleaner helps trade contractors get the right licence for their trade and their state from $550.',
+    description: 'Electrical, plumbing, carpentry and more. Dan Pleaner helps trade contractors get the right licence for their trade and their state from $495.',
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -763,7 +763,7 @@ export const pages = {
               <div class="card__label">Tradespeople</div>
               <h3>Trade contractor licence</h3>
               <p>Electrical, plumbing, carpentry and more. The right licence for your trade and your state.</p>
-              <div class="card__price">From $550</div>
+              <div class="card__price">From $495</div>
               <a href="/trade-contractor" class="btn btn--navy">Learn more</a>
             </div>
           </div>
