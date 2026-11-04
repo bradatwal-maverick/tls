@@ -14,7 +14,7 @@ export default {
     let path = url.pathname.replace(/\/$/, '') || '/';
 
     // Serve images and other static files from /public
-    if (path.startsWith('/images/')) {
+    if (path.startsWith('/images/') || /^\/(favicon[^/]*\.(ico|png)|apple-touch-icon\.png|icon-(192|512)\.png|site\.webmanifest)$/.test(path)) {
       return env.ASSETS.fetch(request);
     }
 
