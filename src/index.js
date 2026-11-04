@@ -18,6 +18,23 @@ export default {
       return env.ASSETS.fetch(request);
     }
 
+    // Crawler and styling files from /public
+    if (/^\/(sitemap\.xml|robots\.txt|llms\.txt|states\.css)$/.test(path)) {
+      return env.ASSETS.fetch(request);
+    }
+
+    // Old state URLs permanently redirect to the new state pages
+    const OLD_STATE = { '/nsw': 'new-south-wales', '/qld': 'queensland', '/vic': 'victoria', '/act': 'australian-capital-territory', '/sa': 'south-australia', '/wa': 'western-australia', '/tas': 'tasmania', '/nt': 'northern-territory' };
+    if (OLD_STATE[path]) {
+      return Response.redirect(`${url.origin}/${OLD_STATE[path]}`, 301);
+    }
+
+    // State pages: clean URLs such as /new-south-wales served from /states/<slug>.html
+    const STATE_SLUGS = ['new-south-wales', 'queensland', 'victoria', 'australian-capital-territory', 'south-australia', 'western-australia', 'tasmania', 'northern-territory'];
+    if (request.method === 'GET' && STATE_SLUGS.includes(path.slice(1))) {
+      return env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}.html`, request.url), request));
+    }
+
     // Entry page: state selector and eligibility check (approved design)
     if (request.method === 'GET' && path === '/') {
       return env.ASSETS.fetch(new Request(new URL('/entry.html', request.url), request));

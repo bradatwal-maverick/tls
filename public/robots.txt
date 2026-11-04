@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# AI crawlers welcome: the site is built to be cited
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://tradelicencesolutions.com.au/sitemap.xml
