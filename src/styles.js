@@ -527,5 +527,11 @@ details[open] summary::after { content: '−'; }
 }
 
 @media print { .site-header, .call-bar { display: none; } }
+/* Audit fixes: skip link, two-column layout, honeypot */
+.skip-link { position: absolute; left: -9999px; top: 0; background: var(--navy); color: #fff; padding: 0.5rem 1rem; z-index: 999; }
+.skip-link:focus { left: 1rem; top: 1rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: stretch; }
+@media (max-width: 700px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   `;
 }

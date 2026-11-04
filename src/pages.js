@@ -2,8 +2,9 @@ export const pages = {
 
   // ===== HOME (full site) =====
   '/home': {
+    noindex: true,
     title: 'Trade Licence Solutions — Builder & Trade Licences Across Australia',
-    description: 'Get your builder licence, company licence or mutual recognition done right, the first time. 500+ licences obtained, 98% first-time approval. Dan handles everything from $550.',
+    description: 'Get your builder licence, company licence or mutual recognition done right, the first time. Dan handles everything from $550.',
     content: `
       <section class="hero">
         <div class="container">
@@ -13,24 +14,6 @@ export const pages = {
           <div class="hero__ctas">
             <a href="/contact" class="btn btn--primary">Book a free 15-minute call</a>
             <a href="tel:+61412767129" class="btn btn--ghost">📞 0412 767 129</a>
-          </div>
-          <div class="hero__stats">
-            <div>
-              <div class="hero__stat-num">500+</div>
-              <div class="hero__stat-label">Licences obtained</div>
-            </div>
-            <div>
-              <div class="hero__stat-num">98%</div>
-              <div class="hero__stat-label">First-time approval rate</div>
-            </div>
-            <div>
-              <div class="hero__stat-num">5+</div>
-              <div class="hero__stat-label">Years specialist experience</div>
-            </div>
-            <div>
-              <div class="hero__stat-num">8</div>
-              <div class="hero__stat-label">States and territories</div>
-            </div>
           </div>
         </div>
       </section>
@@ -45,7 +28,7 @@ export const pages = {
             <div class="card card--hero">
               <div class="card__label">Most requested</div>
               <h3>Company contractor licence</h3>
-              <p>Your Pty Ltd company must hold its own licence — separate from your personal licence. Thousands of building companies are unknowingly non-compliant. Fines in NSW can reach $110,000.</p>
+              <p>Your Pty Ltd company must hold its own licence — separate from your personal licence. Working without one can leave you with serious penalties.</p>
               <div class="card__price">From $550 <span>all-inclusive</span></div>
               <a href="/company-licence" class="btn btn--primary">Find out more</a>
             </div>
@@ -79,7 +62,7 @@ export const pages = {
 
       <div class="compare-bar" style="margin:0;border-radius:0;border-left:none;background:var(--navy-light);text-align:center;padding:1.25rem;">
         <div class="container">
-          <strong>Price check:</strong> The next cheapest specialist charges $3,495 for a builder licence application. Dan charges from $2,000 — including everything. <a href="/pricing">See full pricing →</a>
+          <strong>Price check:</strong> Builder licences start from $2,000, all-inclusive. <a href="/pricing">See full pricing →</a>
         </div>
       </div>
 
@@ -128,12 +111,12 @@ export const pages = {
 
       <section class="section">
         <div class="container">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+          <div class="two-col">
             <div>
               <p class="section-label">Why Dan</p>
               <h2>No call centres. No junior staff. Just Dan.</h2>
-              <p>When you work with Trade Licence Solutions, you deal directly with Dan Pleaner from your first call to your licence approval. Over 5 years, he's helped 500+ tradies and builders get their licences approved — with a 98% first-time success rate.</p>
-              <p>Most applications that fail or get delayed aren't about qualifications. They fail because of incomplete documentation, referees who weren't properly licensed, or forms filled out incorrectly. Dan's job is to make sure none of that happens to you.</p>
+              <p>When you work with Trade Licence Solutions, you deal directly with Dan Pleaner from your first call to your licence approval. He works with tradies and builders personally, from your first call to approval.</p>
+              <p>Delays usually come from incomplete documentation, referees who weren't properly licensed, or forms filled out incorrectly. Dan's job is to make sure none of that happens to you.</p>
               <div class="cta-block">
                 <a href="/about" class="btn btn--navy">About Dan</a>
                 <a href="/contact" class="btn btn--primary">Book a free call</a>
@@ -171,7 +154,7 @@ export const pages = {
             <details>
               <summary>How long does it take to get approved?</summary>
               <div class="faq-answer">
-                <p>Timeframes vary by state and licence type. Dan will give you a realistic timeline when you have your free call. His 98% first-time approval rate means your application doesn't get stuck in a back-and-forth with the regulator.</p>
+                <p>Timeframes vary by state and licence type. Dan will give you a realistic timeline when you have your free call. Dan works to keep your application from getting stuck in a back-and-forth with the regulator.</p>
               </div>
             </details>
             <details>
@@ -189,7 +172,7 @@ export const pages = {
             <details>
               <summary>Do you guarantee approval?</summary>
               <div class="faq-answer">
-                <p>Dan can't promise a guarantee — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. His 98% first-time approval rate speaks to that. If an application isn't successful, he'll tell you exactly why and what to do next.</p>
+                <p>Dan can't promise a guarantee — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. If an application isn't successful, he'll tell you exactly why and what to do next.</p>
               </div>
             </details>
           </div>
@@ -210,14 +193,14 @@ export const pages = {
         <div class="container">
           <p class="breadcrumb"><a href="/">Home</a> / Services</p>
           <h1>Company contractor licence</h1>
-          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Thousands of building companies are operating without a mandatory company licence — without knowing it. Dan fixes that.</p>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Operating without a mandatory company licence is a serious risk. Dan fixes that.</p>
         </div>
       </section>
 
       <section class="section">
         <div class="container container--narrow">
           <div class="alert-box">
-            <strong>Important:</strong> Operating without a company contractor licence carries fines of up to $110,000 in NSW. This is not a technicality — it is actively enforced by NSW Fair Trading and the QBCC.
+            <strong>Important:</strong> Operating without a company contractor licence carries serious fines in NSW. This is not a technicality — it is actively enforced by NSW Fair Trading and the QBCC.
           </div>
 
           <h2>The issue catching building businesses off guard</h2>
@@ -328,7 +311,7 @@ export const pages = {
   // ===== BUILDER LICENCE =====
   '/builder-licence': {
     title: 'Builder Licence Application Help — All States | Trade Licence Solutions',
-    description: 'Get your builder licence approved the first time. Dan Pleaner handles your NSW Fair Trading or QBCC application from $2,000. 500+ licences, 98% approval rate.',
+    description: 'Get your builder licence approved the first time. Dan Pleaner handles your NSW Fair Trading or QBCC application from $2,000.',
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -364,7 +347,7 @@ export const pages = {
           </div>
 
           <div class="compare-bar">
-            <strong>Price check:</strong> The next cheapest builder licence specialist charges $3,495. Dan charges from $2,000 — including everything, from document preparation to regulator follow-up.
+            <strong>Price check:</strong> Builder licences start from $2,000, including document preparation and regulator follow-up.
           </div>
 
           <h2 style="margin-top:2rem;">States covered</h2>
@@ -450,7 +433,7 @@ export const pages = {
       <section class="section">
         <div class="container">
           <div class="compare-bar" style="max-width:760px;margin:0 auto 2rem;">
-            <strong>Price check:</strong> The next cheapest builder licence specialist charges $3,495. Dan charges from $2,000 — including everything. For company licences and mutual recognition, most competitors charge $1,000+. Dan starts at $550.
+            <strong>Price check:</strong> Builder licences start from $2,000, all-inclusive. Company licences and mutual recognition start from $550.
           </div>
 
           <div class="pricing-grid">
@@ -758,7 +741,7 @@ export const pages = {
             <div class="card card--hero">
               <div class="card__label">Most requested</div>
               <h3>Company contractor licence</h3>
-              <p>Your Pty Ltd company must hold its own licence. Fines in NSW can reach $110,000 for non-compliance. Dan gets your company licensed fast.</p>
+              <p>Your Pty Ltd company must hold its own licence. Non-compliance can bring serious fines. Dan gets your company licensed fast.</p>
               <div class="card__price">From $550</div>
               <a href="/company-licence" class="btn btn--primary">Learn more</a>
             </div>
@@ -830,7 +813,7 @@ export const pages = {
             <details>
               <summary>Do you guarantee approval?</summary>
               <div class="faq-answer">
-                <p>Dan can't guarantee approval — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. His 98% first-time approval rate speaks to that. If an application isn't successful, he'll tell you exactly why and what to do next — including how to challenge the decision if appropriate.</p>
+                <p>Dan can't guarantee approval — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. If an application isn't successful, he'll tell you exactly why and what to do next — including how to challenge the decision if appropriate.</p>
               </div>
             </details>
             <details>
@@ -854,7 +837,7 @@ export const pages = {
             <details>
               <summary>How long does the application take?</summary>
               <div class="faq-answer">
-                <p>Timeframes vary significantly by state, licence type and the regulator's current workload. Dan gives you a realistic timeline in your free call. His 98% first-time approval rate means your application doesn't get stuck in a back-and-forth with the regulator, which is typically how timelines blow out.</p>
+                <p>Timeframes vary significantly by state, licence type and the regulator's current workload. Dan gives you a realistic timeline in your free call. Dan works to keep your application from getting stuck in a back-and-forth with the regulator, which is typically how timelines blow out.</p>
               </div>
             </details>
             <details>
@@ -918,36 +901,6 @@ export const pages = {
             <li>One-on-one support from Dan, from first call to approval</li>
             <li>Up to date with the latest licensing requirements</li>
           </ul>
-        </div>
-      </section>
-      <section class="section">
-        <div class="container container--narrow">
-          <p class="section-label text-center">Real results, real people <span style="color:var(--mid-grey);font-weight:400;">(to verify)</span></p>
-          <div style="display:grid;gap:1rem;margin-top:1.5rem;">
-            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Daniel made the whole licensing process so easy. Got my builder licence first time.&rdquo;</blockquote>
-            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Highly professional and knowledgeable. Couldn't recommend TLS highly enough.&rdquo;</blockquote>
-            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Daniel's guidance was invaluable. Everything was handled perfectly.&rdquo;</blockquote>
-            <blockquote style="margin:0;padding:1rem 1.25rem;border-left:4px solid #f5a623;background:#f7f9fc;">&ldquo;Fast, efficient and reliable. Got my licence approved without any issues.&rdquo;</blockquote>
-          </div>
-        </div>
-      </section>
-      <section class="section section--grey">
-        <div class="container container--narrow text-center">
-          <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;">
-            <div>
-              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">500+</div>
-              <div style="color:var(--mid-grey);">Licences obtained</div>
-            </div>
-            <div>
-              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">98%</div>
-              <div style="color:var(--mid-grey);">First-time approval rate</div>
-            </div>
-            <div>
-              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">8</div>
-              <div style="color:var(--mid-grey);">States and territories</div>
-            </div>
-          </div>
-          <p style="margin-top:1rem;color:var(--mid-grey);font-size:0.9rem;">Stats to verify with Dan before launch.</p>
         </div>
       </section>
     `,
@@ -1035,12 +988,11 @@ export const pages = {
         </div>
       </section>
       <section class="section">
-        <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
+        <div class="container two-col">
           <div>
             <h2>Get in touch</h2>
             <p>The fastest way to find out where you stand is a 15-minute call with Dan. He'll tell you exactly what licence you need, what it'll cost, and how long it'll take — before you commit to anything.</p>
-            <p style="margin-top:1.5rem;font-size:1.1rem;"><strong>📞 <a href="tel:+61412767129" style="color:var(--navy);text-decoration:none;">0412 767 129</a></strong><br>
-            <span style="color:var(--mid-grey);font-size:0.9rem;">Mon–Fri 8am–6pm AEST</span></p>
+            <p style="margin-top:1.5rem;font-size:1.1rem;"><strong>📞 <a href="tel:+61412767129" style="color:var(--navy);text-decoration:none;">0412 767 129</a></strong></p>
             <p style="margin-top:1rem;"><strong>Or send a message below</strong> and Dan will call you back.</p>
           </div>
           <div>
@@ -1075,6 +1027,8 @@ export const pages = {
                 <label for="c_message">What do you need help with?</label>
                 <textarea id="c_message" name="message" placeholder="e.g. I need a company licence in NSW…"></textarea>
               </div>
+              <div class="hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+              {{TURNSTILE_WIDGET}}
               <button type="submit" class="btn btn--primary" style="width:100%;">Send message →</button>
             </form>
           </div>
@@ -1087,11 +1041,12 @@ export const pages = {
   '/contact-submitted': {
     title: 'Message received — Trade Licence Solutions',
     description: 'Dan will call you back shortly.',
+    noindex: true,
     content: `
       <section class="hero">
         <div class="container">
           <h1>Message received — Dan will call you.</h1>
-          <p>Dan personally calls everyone back, usually within one business day. If it's urgent, call him directly on <a href="tel:+61412767129" style="color:var(--orange);">0412 767 129</a>.</p>
+          <p>Dan personally calls everyone back. If it's urgent, call him directly on <a href="tel:+61412767129" style="color:var(--orange);">0412 767 129</a>.</p>
           <div class="hero__ctas">
             <a href="/" class="btn btn--primary">Back to home</a>
           </div>
@@ -1134,6 +1089,7 @@ export const pages = {
     title: 'Page not found — Trade Licence Solutions',
     description: 'Page not found.',
     status: 404,
+    noindex: true,
     content: `
       <section class="hero">
         <div class="container">
