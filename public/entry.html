@@ -52,7 +52,7 @@ h2{font-size:clamp(1.9rem,6vw,2.6rem);font-weight:800;text-transform:uppercase}
 h3{font-size:1.5rem;font-weight:700}
 p{margin:0}
 :focus-visible{outline:3px solid var(--link);outline-offset:3px}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:0 1.3em;border-radius:6px;border:2px solid transparent;font:700 1.15rem/1 var(--display);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.btn{text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:0 1.3em;border-radius:6px;border:2px solid transparent;font:700 1.15rem/1 var(--display);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;text-decoration:none}
 .btn-hivis{background:var(--hivis);color:var(--hivis-ink);border-color:var(--hivis)}
 .btn-hivis:hover{filter:brightness(.95)}
 .btn-ghost{background:transparent;color:inherit;border-color:currentColor}
@@ -81,7 +81,7 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .q-opts{display:grid;gap:10px}
 .q-opts.states{grid-template-columns:1fr 1fr}
 @media(min-width:620px){.q-opts.states{grid-template-columns:repeat(4,1fr)}}
-.q-opt{text-align:left;min-height:56px;padding:10px 14px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:600 1.05rem var(--body);cursor:pointer}
+.q-opt{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:10px 14px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:600 1.05rem var(--body);cursor:pointer}
 .q-opt:hover{border-color:var(--ink)}
 .q-opt small{display:block;color:var(--muted);font-size:.85rem;font-weight:400}
 .q-back{margin-top:12px;background:none;border:0;color:var(--link);font:600 1rem var(--body);cursor:pointer;padding:6px 0}
@@ -147,7 +147,6 @@ footer strong{color:#fff}
     <div class="wrap">
       <div class="tool-hero-inner">
         <h1 id="hero-h">Your licence, approved first time</h1>
-        <p class="lead">Pick your state and answer a few quick questions. You'll get your rules and the next step.</p>
         <ul class="tool-hero-points">
           <li>Takes 60 seconds</li>
           <li>No sign-up</li>
@@ -328,7 +327,7 @@ footer strong{color:#fff}
   function progress(n){
     var h = '<div class="q-progress" aria-hidden="true">';
     for(var i=1;i<=TOTAL;i++) h += '<span class="'+(i<=n?'on':'')+'"></span>';
-    return h + '</div><div class="q-step">Step '+n+' of '+TOTAL+'</div>';
+    return h + '</div>';
   }
   function backBtn(){ return history.length > 1 ? '<button type="button" class="q-back" id="q-back">Back</button>' : ''; }
   function bind(){
