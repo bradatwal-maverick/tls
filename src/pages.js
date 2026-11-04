@@ -1,0 +1,1126 @@
+export const pages = {
+
+  // ===== HOME =====
+  '/': {
+    title: 'Trade Licence Solutions — Builder & Trade Licences Across Australia',
+    description: 'Get your builder licence, company licence or mutual recognition done right, the first time. 500+ licences obtained, 98% first-time approval. Dan handles everything from $550.',
+    content: `
+      <section class="hero">
+        <div class="container">
+          <div class="hero__badge">Australia's licence specialists — all 8 states</div>
+          <h1>Your trade licence, done right the first time</h1>
+          <p>Dan Pleaner handles your entire application — paperwork, referee statements, follow-up — so you get approved and get back on the tools.</p>
+          <div class="hero__ctas">
+            <a href="/contact" class="btn btn--primary">Book a free 15-minute call</a>
+            <a href="tel:+61412767129" class="btn btn--ghost">📞 0412 767 129</a>
+          </div>
+          <div class="hero__stats">
+            <div>
+              <div class="hero__stat-num">500+</div>
+              <div class="hero__stat-label">Licences obtained</div>
+            </div>
+            <div>
+              <div class="hero__stat-num">98%</div>
+              <div class="hero__stat-label">First-time approval rate</div>
+            </div>
+            <div>
+              <div class="hero__stat-num">5+</div>
+              <div class="hero__stat-label">Years specialist experience</div>
+            </div>
+            <div>
+              <div class="hero__stat-num">8</div>
+              <div class="hero__stat-label">States and territories</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <p class="section-label text-center">Our two hero services</p>
+          <h2 class="text-center">The licences that matter most</h2>
+          <p class="text-center" style="max-width:580px;margin:0.75rem auto 0;color:var(--dark-grey);">Company licences and mutual recognition are where most tradies leave money on the table. Dan specialises in both.</p>
+
+          <div class="cards" style="margin-top:2rem;">
+            <div class="card card--hero">
+              <div class="card__label">Most requested</div>
+              <h3>Company contractor licence</h3>
+              <p>Your Pty Ltd company must hold its own licence — separate from your personal licence. Thousands of building companies are unknowingly non-compliant. Fines in NSW can reach $110,000.</p>
+              <div class="card__price">From $550 <span>all-inclusive</span></div>
+              <a href="/company-licence" class="btn btn--primary">Find out more</a>
+            </div>
+
+            <div class="card card--hero">
+              <div class="card__label">Work interstate</div>
+              <h3>Mutual recognition</h3>
+              <p>Already licensed in one state? You may be able to work in other states without sitting new exams. Dan maps your licence across states and handles all the paperwork.</p>
+              <div class="card__price">From $550 <span>per state</span></div>
+              <a href="/mutual-recognition" class="btn btn--primary">Find out more</a>
+            </div>
+
+            <div class="card">
+              <div class="card__label">Build your own business</div>
+              <h3>Individual builder licence</h3>
+              <p>Contract directly with clients, run your own sites, take on jobs in your own name. Dan gets your NSW Fair Trading or QBCC application right the first time.</p>
+              <div class="card__price">From $2,000 <span>all-inclusive</span></div>
+              <a href="/builder-licence" class="btn btn--navy">Find out more</a>
+            </div>
+
+            <div class="card">
+              <div class="card__label">Tradespeople</div>
+              <h3>Trade contractor licence</h3>
+              <p>Electrical, plumbing, carpentry and more. Dan helps trade contractors get the right licence for their trade and their state — without the guesswork.</p>
+              <div class="card__price">From $550</div>
+              <a href="/trade-contractor" class="btn btn--navy">Find out more</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="compare-bar" style="margin:0;border-radius:0;border-left:none;background:var(--navy-light);text-align:center;padding:1.25rem;">
+        <div class="container">
+          <strong>Price check:</strong> The next cheapest specialist charges $3,495 for a builder licence application. Dan charges from $2,000 — including everything. <a href="/pricing">See full pricing →</a>
+        </div>
+      </div>
+
+      <section class="section section--grey">
+        <div class="container">
+          <p class="section-label text-center">Covered Australia-wide</p>
+          <h2 class="text-center">Every state and territory</h2>
+          <p class="text-center" style="max-width:580px;margin:0.75rem auto 0;color:var(--dark-grey);">Each state has its own regulator, its own forms, its own quirks. Dan knows them all.</p>
+
+          <div class="state-grid">
+            <a href="/nsw" class="state-tile">
+              <span class="state-tile__name">New South Wales</span>
+              <span class="state-tile__detail">NSW Fair Trading</span>
+            </a>
+            <a href="/qld" class="state-tile">
+              <span class="state-tile__name">Queensland</span>
+              <span class="state-tile__detail">QBCC</span>
+            </a>
+            <a href="/vic" class="state-tile">
+              <span class="state-tile__name">Victoria</span>
+              <span class="state-tile__detail">Building Commission VIC</span>
+            </a>
+            <a href="/act" class="state-tile">
+              <span class="state-tile__name">ACT</span>
+              <span class="state-tile__detail">Access Canberra</span>
+            </a>
+            <a href="/sa" class="state-tile">
+              <span class="state-tile__name">South Australia</span>
+              <span class="state-tile__detail">CBS</span>
+            </a>
+            <a href="/wa" class="state-tile">
+              <span class="state-tile__name">Western Australia</span>
+              <span class="state-tile__detail">Building and Energy</span>
+            </a>
+            <a href="/tas" class="state-tile">
+              <span class="state-tile__name">Tasmania</span>
+              <span class="state-tile__detail">CBOS</span>
+            </a>
+            <a href="/nt" class="state-tile">
+              <span class="state-tile__name">Northern Territory</span>
+              <span class="state-tile__detail">NT Building Practitioners Board</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+            <div>
+              <p class="section-label">Why Dan</p>
+              <h2>No call centres. No junior staff. Just Dan.</h2>
+              <p>When you work with Trade Licence Solutions, you deal directly with Dan Pleaner from your first call to your licence approval. Over 5 years, he's helped 500+ tradies and builders get their licences approved — with a 98% first-time success rate.</p>
+              <p>Most applications that fail or get delayed aren't about qualifications. They fail because of incomplete documentation, referees who weren't properly licensed, or forms filled out incorrectly. Dan's job is to make sure none of that happens to you.</p>
+              <div class="cta-block">
+                <a href="/about" class="btn btn--navy">About Dan</a>
+                <a href="/contact" class="btn btn--primary">Book a free call</a>
+              </div>
+            </div>
+            <div style="text-align:center;">
+              <img src="/images/dan.jpg" alt="Dan Pleaner — Trade Licence Solutions" style="max-width:100%;border-radius:12px;box-shadow:var(--shadow-hover);" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--navy">
+        <div class="container">
+          <p class="section-label" style="color:rgba(255,255,255,0.6);">Not sure where you stand?</p>
+          <h2 style="color:var(--white);max-width:600px;">Take the 2-minute licence readiness check</h2>
+          <p style="color:rgba(255,255,255,0.8);max-width:560px;">Answer a few quick questions and get a personalised breakdown of what you need, what state you're applying in, and what's likely to cause delays.</p>
+          <div class="cta-block">
+            <a href="/readiness-check" class="btn btn--primary">Start the check — it's free</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--grey">
+        <div class="container container--narrow">
+          <p class="section-label text-center">Common questions</p>
+          <h2 class="text-center">FAQs</h2>
+          <div class="faq-list">
+            <details>
+              <summary>How much does it cost?</summary>
+              <div class="faq-answer">
+                <p>Company licences and mutual recognition start from $550. Individual builder licence applications start from $2,000. Pricing depends on the state and the complexity of your application. <a href="/pricing">See full pricing →</a></p>
+              </div>
+            </details>
+            <details>
+              <summary>How long does it take to get approved?</summary>
+              <div class="faq-answer">
+                <p>Timeframes vary by state and licence type. Dan will give you a realistic timeline when you have your free call. His 98% first-time approval rate means your application doesn't get stuck in a back-and-forth with the regulator.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Do I need a company licence if I already have a personal licence?</summary>
+              <div class="faq-answer">
+                <p>Yes — in NSW, your company or partnership must hold its own contractor licence before it can contract, sub-contract or advertise to do residential building work over $5,000. Your personal licence does not cover the company's activities. This is one of the most common and costly compliance gaps Dan sees.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Can I apply for a licence myself?</summary>
+              <div class="faq-answer">
+                <p>Absolutely. Some people get through the process without help. Dan's here for those who want it done right the first time, without delays. Even a free 15-minute call can save you weeks — most people don't know what they don't know until they're already in trouble with their application.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Do you guarantee approval?</summary>
+              <div class="faq-answer">
+                <p>Dan can't promise a guarantee — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. His 98% first-time approval rate speaks to that. If an application isn't successful, he'll tell you exactly why and what to do next.</p>
+              </div>
+            </details>
+          </div>
+          <div class="cta-block">
+            <a href="/faq" class="btn btn--navy">View all FAQs</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== COMPANY LICENCE =====
+  '/company-licence': {
+    title: 'Company Contractor Licence — Trade Licence Solutions',
+    description: 'Your Pty Ltd company must hold its own contractor licence. Dan Pleaner gets company licences approved in NSW and QLD from $550 — fast, compliant, done right.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <h1>Company contractor licence</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Thousands of building companies are operating without a mandatory company licence — without knowing it. Dan fixes that.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <div class="alert-box">
+            <strong>Important:</strong> Operating without a company contractor licence carries fines of up to $110,000 in NSW. This is not a technicality — it is actively enforced by NSW Fair Trading and the QBCC.
+          </div>
+
+          <h2>The issue catching building businesses off guard</h2>
+          <p>Here's the scenario Dan sees regularly — and it affects businesses that have been operating for years.</p>
+          <p>A licensed builder sets up a company to run their building operations. Their individual contractor licence is current and valid. They're experienced, qualified, and doing good work. But the company itself — the entity entering contracts with clients, signing quotes, and advertising building services — doesn't hold its own contractor licence.</p>
+          <p>In NSW, this is a direct breach of the <em>Home Building Act 1989</em>. In Queensland, it's a breach of QBCC licensing requirements.</p>
+          <p><strong>The rule is clear:</strong> Your company or partnership must hold a contractor licence before it can contract, sub-contract or advertise to do residential building work where the reasonable market cost of labour and materials is more than $5,000 (including GST).</p>
+
+          <h2 style="margin-top:2rem;">The 7-day supervisor risk</h2>
+          <p>Company licences require a nominated qualified supervisor. If that supervisor leaves your business, you have just 7 days to notify the regulator and nominate a replacement — or your company licence is at risk. Most business owners don't know this rule exists until it's too late. Dan makes sure you do.</p>
+
+          <h2 style="margin-top:2rem;">What Dan does for you</h2>
+          <ul>
+            <li>Confirms whether your company needs a licence (and in which states)</li>
+            <li>Prepares all documentation and forms</li>
+            <li>Lodges your application with the right regulator</li>
+            <li>Follows up until your licence is issued</li>
+            <li>Advises on supervisor nomination and ongoing compliance</li>
+          </ul>
+
+          <div class="pricing-grid" style="margin-top:2rem;">
+            <div class="pricing-card pricing-card--featured">
+              <div class="pricing-card__header">
+                <h3>Company licence</h3>
+                <div class="pricing-card__price">From $550</div>
+              </div>
+              <div class="pricing-card__body">
+                <ul class="pricing-card__features">
+                  <li>Eligibility check</li>
+                  <li>Full document preparation</li>
+                  <li>Application lodgement</li>
+                  <li>Regulator follow-up</li>
+                  <li>Supervisor compliance advice</li>
+                </ul>
+                <a href="/contact" class="btn btn--primary" style="width:100%;display:block;text-align:center;">Book a free call</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="cta-block" style="margin-top:2.5rem;">
+            <a href="tel:+61412767129" class="btn btn--navy">📞 Call Dan — 0412 767 129</a>
+            <a href="/contact" class="btn btn--primary">Book a free call online</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== MUTUAL RECOGNITION =====
+  '/mutual-recognition': {
+    title: 'Mutual Recognition — Work in Any Australian State | Trade Licence Solutions',
+    description: 'Already licensed in one state? Dan Pleaner maps your licence across to any other state through mutual recognition. From $550. All states covered.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <h1>Mutual recognition — work in any state</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">If you hold a licence in one Australian state, you may be able to work in other states without sitting new exams. Dan handles the paperwork.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <h2>Two types of mutual recognition</h2>
+
+          <h3 style="margin-top:1.5rem;">Automatic Mutual Recognition (AMR)</h3>
+          <p>Under AMR, most licensed builders and trade contractors can notify the regulator in another state and start working there immediately — without a new application. This applies in most states for most licence types. Dan confirms whether AMR applies to your situation and handles the notification.</p>
+
+          <h3 style="margin-top:1.5rem;">Standard Mutual Recognition</h3>
+          <p>Some states and licence types still require a formal application. Dan maps your existing licence and experience across to meet the requirements of the new state, prepares your application, and follows up with the regulator.</p>
+
+          <h2 style="margin-top:2rem;">Which states recognise each other?</h2>
+          <p>All Australian states and territories participate in mutual recognition. However, the process and requirements differ significantly between states. Some states require endorsement, some require a notification, and some have specific carve-outs. Dan tells you exactly what applies in your situation.</p>
+
+          <div class="state-grid" style="margin-top:1.5rem;">
+            <a href="/nsw" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
+            <a href="/qld" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
+            <a href="/vic" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
+            <a href="/act" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
+            <a href="/sa" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
+            <a href="/wa" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
+            <a href="/tas" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
+            <a href="/nt" class="state-tile"><span class="state-tile__name">NT</span><span class="state-tile__detail">NT Building Practitioners Board</span></a>
+          </div>
+
+          <h2 style="margin-top:2rem;">What Dan does for you</h2>
+          <ul>
+            <li>Confirms whether AMR or standard MR applies in your situation</li>
+            <li>Checks your existing licence against the requirements of the target state</li>
+            <li>Identifies any gap training or additional documentation needed</li>
+            <li>Prepares and lodges your application or notification</li>
+            <li>Follows up with the regulator until you're licensed and working</li>
+          </ul>
+
+          <div class="compare-bar">
+            <strong>From $550 per state</strong> — including everything. Book a free 15-minute call to find out exactly which path applies to you.
+          </div>
+
+          <div class="cta-block">
+            <a href="/contact" class="btn btn--primary">Book a free call</a>
+            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== BUILDER LICENCE =====
+  '/builder-licence': {
+    title: 'Builder Licence Application Help — All States | Trade Licence Solutions',
+    description: 'Get your builder licence approved the first time. Dan Pleaner handles your NSW Fair Trading or QBCC application from $2,000. 500+ licences, 98% approval rate.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <h1>Builder licence application</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">A builder licence lets you contract directly with clients, run your own sites, and build your own business. Dan makes the application process straightforward.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <h2>What a builder licence lets you do</h2>
+          <ul>
+            <li>Contract, manage and supervise residential building work in your own name or under your company</li>
+            <li>Take on new home builds, renovations and extensions</li>
+            <li>Legally advertise and quote for work valued over $5,000</li>
+            <li>Supervise subcontractors at every stage of construction</li>
+          </ul>
+
+          <h2 style="margin-top:2rem;">Why applications fail (and how Dan prevents it)</h2>
+          <p>Most builder licence applications that fail or get delayed have nothing to do with qualifications. Here's what actually causes problems:</p>
+
+          <div style="margin:1.5rem 0;">
+            <div class="alert-box">
+              <strong>Incomplete experience documentation.</strong> The regulator requires detailed referee statements covering a wide range of building work stages. Generic or vague statements are the number one cause of delays — adding weeks to your timeline.
+            </div>
+            <div class="alert-box" style="margin-top:1rem;">
+              <strong>Referees who aren't properly licensed.</strong> Your referee must hold a current contractor licence in general building work. A referee whose licence lapsed — or who wasn't licensed during the period they supervised you — can invalidate your entire application.
+            </div>
+            <div class="alert-box" style="margin-top:1rem;">
+              <strong>Qualifications that don't tick the right boxes.</strong> Regulators are specific about which qualifications satisfy which requirements. Dan checks this before you apply.
+            </div>
+          </div>
+
+          <div class="compare-bar">
+            <strong>Price check:</strong> The next cheapest builder licence specialist charges $3,495. Dan charges from $2,000 — including everything, from document preparation to regulator follow-up.
+          </div>
+
+          <h2 style="margin-top:2rem;">States covered</h2>
+          <div class="state-grid">
+            <a href="/nsw" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
+            <a href="/qld" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
+            <a href="/vic" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
+            <a href="/act" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
+            <a href="/sa" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
+            <a href="/wa" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
+            <a href="/tas" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
+          </div>
+
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a free call</a>
+            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== TRADE CONTRACTOR =====
+  '/trade-contractor': {
+    title: 'Trade Contractor Licence Help — All Trades, All States | Trade Licence Solutions',
+    description: 'Electrical, plumbing, carpentry and more. Dan Pleaner helps trade contractors get the right licence for their trade and their state from $550.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <h1>Trade contractor licences</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Whether you're in electrical, plumbing, carpentry or another trade — Dan gets you the right licence for your trade and your state.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <h2>Trades Dan assists with</h2>
+          <ul>
+            <li>General building and carpentry</li>
+            <li>Electrical (where licensing is applicable)</li>
+            <li>Plumbing and drainage</li>
+            <li>Air conditioning and refrigeration</li>
+            <li>Roof plumbing</li>
+            <li>Excavation</li>
+            <li>Painting (where licensing is applicable)</li>
+            <li>Structural landscaping</li>
+          </ul>
+
+          <p style="margin-top:1rem;"><strong>Dan generally cannot assist with:</strong> forklift and warehouse licences, white cards, rigging in most states, and some specialist licences. If you're unsure whether he can help with your trade, the fastest way to find out is a free 15-minute call.</p>
+
+          <h2 style="margin-top:2rem;">What Dan does for you</h2>
+          <ul>
+            <li>Confirms which licence type applies to your trade and state</li>
+            <li>Checks your qualifications and experience against the requirements</li>
+            <li>Prepares all forms and documentation</li>
+            <li>Lodges your application</li>
+            <li>Follows up with the regulator until your licence is issued</li>
+          </ul>
+
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a free call</a>
+            <a href="/pricing" class="btn btn--navy">See pricing</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== PRICING =====
+  '/pricing': {
+    title: 'Pricing — Trade Licence Solutions',
+    description: 'Transparent, all-inclusive pricing for trade licence applications. Builder licences from $2,000. Company licences and mutual recognition from $550. No hidden fees.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>Pricing</h1>
+          <p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">No hidden fees. No surprises. Everything included.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="compare-bar" style="max-width:760px;margin:0 auto 2rem;">
+            <strong>Price check:</strong> The next cheapest builder licence specialist charges $3,495. Dan charges from $2,000 — including everything. For company licences and mutual recognition, most competitors charge $1,000+. Dan starts at $550.
+          </div>
+
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <div class="pricing-card__header">
+                <h3>Company licence</h3>
+                <div class="pricing-card__price">From $550</div>
+              </div>
+              <div class="pricing-card__body">
+                <ul class="pricing-card__features">
+                  <li>Eligibility check</li>
+                  <li>Full document preparation</li>
+                  <li>Application lodgement</li>
+                  <li>Regulator follow-up</li>
+                  <li>Supervisor compliance advice</li>
+                  <li>NSW and QLD covered</li>
+                </ul>
+                <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a free call</a>
+              </div>
+            </div>
+
+            <div class="pricing-card pricing-card--featured">
+              <div class="pricing-card__header">
+                <h3>Mutual recognition</h3>
+                <div class="pricing-card__price">From $550</div>
+              </div>
+              <div class="pricing-card__body">
+                <ul class="pricing-card__features">
+                  <li>AMR or standard MR assessment</li>
+                  <li>Licence mapping across states</li>
+                  <li>Gap training identification</li>
+                  <li>Application or notification prepared</li>
+                  <li>Regulator follow-up</li>
+                  <li>All 8 states and territories</li>
+                </ul>
+                <a href="/contact" class="btn btn--primary" style="display:block;text-align:center;">Book a free call</a>
+              </div>
+            </div>
+
+            <div class="pricing-card">
+              <div class="pricing-card__header">
+                <h3>Builder licence</h3>
+                <div class="pricing-card__price">From $2,000</div>
+              </div>
+              <div class="pricing-card__body">
+                <ul class="pricing-card__features">
+                  <li>Eligibility and experience check</li>
+                  <li>Referee statement preparation</li>
+                  <li>Full document preparation</li>
+                  <li>Application lodgement</li>
+                  <li>Regulator follow-up</li>
+                  <li>NSW and QLD covered</li>
+                </ul>
+                <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a free call</a>
+              </div>
+            </div>
+          </div>
+
+          <p style="text-align:center;color:var(--mid-grey);margin-top:2rem;font-size:0.9rem;">All prices are AUD and include GST. Final pricing confirmed in your free 15-minute call based on your specific situation and state.</p>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== NSW =====
+  '/nsw': {
+    title: 'NSW Builder & Trade Licences — NSW Fair Trading | Trade Licence Solutions',
+    description: 'Get your NSW builder licence or trade contractor licence approved the first time. Dan Pleaner handles all NSW Fair Trading applications. From $550.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p>
+          <h1>New South Wales licensing</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">NSW Fair Trading is the regulator for builder and trade contractor licences in New South Wales. Dan knows the NSW system inside out.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <h2>Licences Dan obtains in NSW</h2>
+          <ul>
+            <li>Individual contractor licence (general building work)</li>
+            <li>Company contractor licence</li>
+            <li>Trade contractor licences (carpentry, excavation, structural landscaping and more)</li>
+            <li>Owner-builder permits</li>
+          </ul>
+
+          <h2 style="margin-top:2rem;">The NSW rules you need to know</h2>
+          <p>In NSW, you need a contractor licence if the value of residential building work you contract, sub-contract or advertise for exceeds $5,000 (including labour and materials, GST included).</p>
+          <p>Your <strong>company</strong> must hold its own licence — your personal licence does not cover the company's activities. This catches many experienced builders off guard, with fines of up to $110,000 for non-compliance.</p>
+          <p>If your qualified supervisor leaves, you have <strong>7 days</strong> to notify NSW Fair Trading and nominate a replacement. Missing this window puts your licence at risk.</p>
+
+          <h2 style="margin-top:2rem;">Official NSW regulator</h2>
+          <p>
+            <a href="https://www.fairtrading.nsw.gov.au/trades-and-businesses/construction-and-trade-essentials/contractor-licences" target="_blank" rel="noopener" class="inline-link">NSW Fair Trading — contractor licences ↗</a>
+          </p>
+
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a free call</a>
+            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== QLD =====
+  '/qld': {
+    title: 'Queensland Builder & Trade Licences — QBCC | Trade Licence Solutions',
+    description: 'Get your QBCC builder or contractor licence approved the first time. Dan Pleaner handles all Queensland licence applications. From $550.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p>
+          <h1>Queensland licensing</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">The Queensland Building and Construction Commission (QBCC) issues all building and trade licences in Queensland. Dan handles QBCC applications from start to approval.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <h2>QBCC licences Dan obtains</h2>
+          <ul>
+            <li>Builder licence (medium-rise and low-rise)</li>
+            <li>Contractor licence (various categories)</li>
+            <li>Company contractor licence</li>
+            <li>Trade licence (relevant trades)</li>
+          </ul>
+
+          <h2 style="margin-top:2rem;">Company licence requirement in QLD</h2>
+          <p>Like NSW, Queensland requires the company entity to hold its own QBCC licence. Operating as a company under an individual's licence is a breach of QBCC requirements and carries significant penalties.</p>
+
+          <h2 style="margin-top:2rem;">Official QLD regulator</h2>
+          <p>
+            <a href="https://www.qbcc.qld.gov.au/licences-permits/getting-a-licence" target="_blank" rel="noopener" class="inline-link">QBCC — getting a licence ↗</a>
+          </p>
+
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a free call</a>
+            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== VIC =====
+  '/vic': {
+    title: 'Victoria Builder & Trade Licences — Building Commission VIC | Trade Licence Solutions',
+    description: 'Get your Victorian builder or trade licence through the Building Commission VIC. Dan Pleaner handles VIC licence applications from $550.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p>
+          <h1>Victoria licensing</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">The Building Commission Victoria (formerly the VBA) is the regulator for all building and plumbing practitioners in Victoria.</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container container--narrow">
+          <p>Dan assists with Victorian domestic building and trade licences, including mutual recognition for licensed practitioners from other states. The VIC system has specific requirements around minimum insurance levels and financial reporting.</p>
+          <p><a href="https://www.buildingcommission.com.au/practitioners/registration-and-licensing" target="_blank" rel="noopener" class="inline-link">Building Commission VIC — registration and licensing ↗</a></p>
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a free call</a>
+            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== STATES =====
+  '/states': {
+    title: 'All States — Trade Licences Across Australia | Trade Licence Solutions',
+    description: 'Trade Licence Solutions covers all 8 Australian states and territories. Builder licences, company licences, mutual recognition — whatever state, Dan handles it.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>All states and territories</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Each state has its own regulator, its own forms, its own quirks. Dan knows them all.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <div class="state-grid">
+            <a href="/nsw" class="state-tile">
+              <span class="state-tile__name">New South Wales</span>
+              <span class="state-tile__detail">NSW Fair Trading</span>
+            </a>
+            <a href="/qld" class="state-tile">
+              <span class="state-tile__name">Queensland</span>
+              <span class="state-tile__detail">QBCC</span>
+            </a>
+            <a href="/vic" class="state-tile">
+              <span class="state-tile__name">Victoria</span>
+              <span class="state-tile__detail">Building Commission VIC</span>
+            </a>
+            <a href="/act" class="state-tile">
+              <span class="state-tile__name">ACT</span>
+              <span class="state-tile__detail">Access Canberra</span>
+            </a>
+            <a href="/sa" class="state-tile">
+              <span class="state-tile__name">South Australia</span>
+              <span class="state-tile__detail">Consumer and Business Services (CBS)</span>
+            </a>
+            <a href="/wa" class="state-tile">
+              <span class="state-tile__name">Western Australia</span>
+              <span class="state-tile__detail">Building and Energy (DMIRS)</span>
+            </a>
+            <a href="/tas" class="state-tile">
+              <span class="state-tile__name">Tasmania</span>
+              <span class="state-tile__detail">CBOS</span>
+            </a>
+            <a href="/nt" class="state-tile">
+              <span class="state-tile__name">Northern Territory</span>
+              <span class="state-tile__detail">NT Building Practitioners Board</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== ACT =====
+  '/act': {
+    title: 'ACT Builder & Trade Licences — Access Canberra | Trade Licence Solutions',
+    description: 'Get your ACT builder or trade licence through Access Canberra. Dan Pleaner handles ACT licence applications. From $550.',
+    content: `
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>ACT licensing</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>Building and trade licences in the ACT are issued by Access Canberra. Dan assists with ACT contractor licences and mutual recognition for interstate licensees.</p>
+        <p><a href="https://www.accesscanberra.act.gov.au/app/answers/detail/a_id/1986" target="_blank" rel="noopener" class="inline-link">Access Canberra — building licences ↗</a></p>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+      </div></section>
+    `,
+  },
+
+  '/sa': {
+    title: 'South Australia Builder & Trade Licences — CBS | Trade Licence Solutions',
+    description: 'Get your SA builder or trade licence through Consumer and Business Services. Dan Pleaner handles SA licence applications. From $550.',
+    content: `
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>South Australia licensing</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>Building and trade licences in South Australia are issued by Consumer and Business Services (CBS). Dan assists with SA contractor licences and mutual recognition.</p>
+        <p><a href="https://www.cbs.sa.gov.au/licences/building" target="_blank" rel="noopener" class="inline-link">CBS South Australia — building licences ↗</a></p>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+      </div></section>
+    `,
+  },
+
+  '/wa': {
+    title: 'Western Australia Builder & Trade Licences — Building and Energy | Trade Licence Solutions',
+    description: 'Get your WA builder or trade licence through Building and Energy. Dan Pleaner handles WA licence applications. From $550.',
+    content: `
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>Western Australia licensing</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>Building and trade licences in Western Australia are issued by Building and Energy, a division of the Department of Mines, Industry Regulation and Safety (DMIRS). Dan assists with WA builder and trade licences and mutual recognition.</p>
+        <p><a href="https://www.buildingcommission.wa.gov.au/licensing" target="_blank" rel="noopener" class="inline-link">Building and Energy WA — licensing ↗</a></p>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+      </div></section>
+    `,
+  },
+
+  '/tas': {
+    title: 'Tasmania Builder & Trade Licences — CBOS | Trade Licence Solutions',
+    description: 'Get your Tasmanian builder or trade licence through CBOS. Dan Pleaner handles TAS licence applications. From $550.',
+    content: `
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>Tasmania licensing</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>Building and trade licences in Tasmania are issued by the Consumer, Building and Occupational Services (CBOS). Dan assists with Tasmanian contractor licences and mutual recognition from mainland states.</p>
+        <p><a href="https://www.cbos.tas.gov.au/topics/licensing" target="_blank" rel="noopener" class="inline-link">CBOS Tasmania — licensing ↗</a></p>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+      </div></section>
+    `,
+  },
+
+  '/nt': {
+    title: 'Northern Territory Builder & Trade Licences | Trade Licence Solutions',
+    description: 'Get your NT builder or trade licence through the NT Building Practitioners Board. Dan Pleaner handles NT licence applications. From $550.',
+    content: `
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>Northern Territory licensing</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>Building and trade licences in the Northern Territory are issued by the NT Building Practitioners Board. Dan assists with NT contractor licences and mutual recognition.</p>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+      </div></section>
+    `,
+  },
+
+  // ===== SERVICES =====
+  '/services': {
+    title: 'Services — Trade Licence Solutions',
+    description: 'Company licences, mutual recognition, builder licences, trade contractor licences. Dan Pleaner covers all licence types across all 8 Australian states.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>Services</h1>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="cards">
+            <div class="card card--hero">
+              <div class="card__label">Most requested</div>
+              <h3>Company contractor licence</h3>
+              <p>Your Pty Ltd company must hold its own licence. Fines in NSW can reach $110,000 for non-compliance. Dan gets your company licensed fast.</p>
+              <div class="card__price">From $550</div>
+              <a href="/company-licence" class="btn btn--primary">Learn more</a>
+            </div>
+            <div class="card card--hero">
+              <div class="card__label">Work interstate</div>
+              <h3>Mutual recognition</h3>
+              <p>Already licensed in one state? Dan maps your licence across to any other state through AMR or standard mutual recognition.</p>
+              <div class="card__price">From $550</div>
+              <a href="/mutual-recognition" class="btn btn--primary">Learn more</a>
+            </div>
+            <div class="card">
+              <div class="card__label">Build your business</div>
+              <h3>Individual builder licence</h3>
+              <p>Contract directly with clients and run your own sites. Dan handles your NSW Fair Trading or QBCC application from go to approval.</p>
+              <div class="card__price">From $2,000</div>
+              <a href="/builder-licence" class="btn btn--navy">Learn more</a>
+            </div>
+            <div class="card">
+              <div class="card__label">Tradespeople</div>
+              <h3>Trade contractor licence</h3>
+              <p>Electrical, plumbing, carpentry and more. The right licence for your trade and your state.</p>
+              <div class="card__price">From $550</div>
+              <a href="/trade-contractor" class="btn btn--navy">Learn more</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== FAQ =====
+  '/faq': {
+    title: 'FAQs — Trade Licence Solutions',
+    description: 'Answers to the most common questions about trade and builder licences in Australia. Company licences, mutual recognition, approval rates and more.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>Frequently asked questions</h1>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container container--narrow">
+          <div class="faq-list">
+            <details>
+              <summary>Which licences can Dan assist with?</summary>
+              <div class="faq-answer">
+                <p>Dan assists with the majority of licences across the construction industry, including: QBCC licences in Queensland, NSW Fair Trading licences, Building Commission VIC licences, Consumer and Business Services (CBS) licences in SA, CBOS Tasmania, and Access Canberra ACT licences. He generally cannot assist with forklift and warehouse licences, white cards, or rigging in most states.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Is Trade Licence Solutions a training organisation?</summary>
+              <div class="faq-answer">
+                <p>No. Dan is not a registered training organisation and does not issue qualifications. To apply for a trade or builder's licence you'll need the right qualification — Dan can point you to a suitable training organisation if needed. He handles the licence application, not the training.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Does Trade Licence Solutions issue the licence itself?</summary>
+              <div class="faq-answer">
+                <p>No. Each state and territory has its own government body that issues licences. Dan's role is to prepare your application, lodge it with the right regulator, and follow up until your licence is issued.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Can I apply for a licence myself?</summary>
+              <div class="faq-answer">
+                <p>Absolutely. Some people get through the process without help. Dan's here for those who want it done right the first time, without delays. Even a free 15-minute call can save you weeks — most people don't know what they don't know until they're already in trouble with their application.</p>
+              </div>
+            </details>
+            <details>
+              <summary>Do you guarantee approval?</summary>
+              <div class="faq-answer">
+                <p>Dan can't guarantee approval — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. His 98% first-time approval rate speaks to that. If an application isn't successful, he'll tell you exactly why and what to do next — including how to challenge the decision if appropriate.</p>
+              </div>
+            </details>
+            <details>
+              <summary>My company is already operating. Do I need a company licence?</summary>
+              <div class="faq-answer">
+                <p>In NSW, if your company is contracting for residential building work valued over $5,000 (including GST), it must hold its own contractor licence — regardless of whether a director holds a personal licence. This is one of the most common and costly compliance gaps Dan sees. A free 15-minute call will tell you exactly where your company stands.</p>
+              </div>
+            </details>
+            <details>
+              <summary>What's the 7-day supervisor rule?</summary>
+              <div class="faq-answer">
+                <p>In NSW, if your nominated qualified supervisor leaves your business, you have just 7 days to notify NSW Fair Trading and nominate a replacement. If you don't, your company licence is at risk. Most business owners don't know this rule exists. Dan makes sure you do — and helps you stay compliant.</p>
+              </div>
+            </details>
+            <details>
+              <summary>What is automatic mutual recognition (AMR)?</summary>
+              <div class="faq-answer">
+                <p>Automatic Mutual Recognition (AMR) allows most licensed builders and trade contractors to notify the regulator in another state and start working there immediately — without a new application. It applies in most states for most licence types. Dan confirms whether AMR applies in your situation and handles the notification. <a href="/mutual-recognition">Learn more about mutual recognition →</a></p>
+              </div>
+            </details>
+            <details>
+              <summary>How long does the application take?</summary>
+              <div class="faq-answer">
+                <p>Timeframes vary significantly by state, licence type and the regulator's current workload. Dan gives you a realistic timeline in your free call. His 98% first-time approval rate means your application doesn't get stuck in a back-and-forth with the regulator, which is typically how timelines blow out.</p>
+              </div>
+            </details>
+            <details>
+              <summary>How much does it cost?</summary>
+              <div class="faq-answer">
+                <p>Company licences and mutual recognition start from $550. Individual builder licence applications start from $2,000. Final pricing depends on the state and the complexity of your application and is confirmed in your free 15-minute call. <a href="/pricing">See full pricing →</a></p>
+              </div>
+            </details>
+          </div>
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a free call with Dan</a>
+            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== ABOUT =====
+  '/about': {
+    title: 'About Dan Pleaner — Trade Licence Solutions',
+    description: 'Dan Pleaner is Australia\'s most accessible trade licence specialist. 500+ licences, 98% first-time approval, 5+ years experience. He answers his own phone.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>About Dan Pleaner</h1>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="bio-block">
+            <div class="bio-block__photo">
+              <img src="/images/dan.jpg" alt="Dan Pleaner — Trade Licence Solutions specialist" loading="lazy">
+            </div>
+            <div>
+              <h2>The licence specialist who answers his own phone</h2>
+              <p>Dan Pleaner founded Trade Licence Solutions after seeing how many good tradies and builders were being knocked back — or stuck for months — not because they weren't qualified, but because their applications were poorly prepared.</p>
+              <p>Over 5+ years, Dan has helped more than 500 tradies, builders and building companies get their licences approved across Australia. His 98% first-time approval rate comes from one thing: getting the documentation right before it's lodged.</p>
+              <p>When you work with Trade Licence Solutions, you deal directly with Dan from your first call to your licence approval. No call centres, no junior staff, no outsourcing. Dan handles every application himself.</p>
+              <p>Dan is a member of the Housing Industry Association (HIA) and stays current with every regulator's requirements across all 8 states and territories.</p>
+              <div class="cta-block">
+                <a href="/contact" class="btn btn--primary">Book a free call with Dan</a>
+                <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section section--grey">
+        <div class="container container--narrow text-center">
+          <div style="display:flex;justify-content:center;gap:3rem;flex-wrap:wrap;">
+            <div>
+              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">500+</div>
+              <div style="color:var(--mid-grey);">Licences obtained</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">98%</div>
+              <div style="color:var(--mid-grey);">First-time approval rate</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">5+</div>
+              <div style="color:var(--mid-grey);">Years specialist experience</div>
+            </div>
+            <div>
+              <div style="font-family:var(--font-heading);font-size:2.5rem;font-weight:700;color:var(--navy);">8</div>
+              <div style="color:var(--mid-grey);">States and territories</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== READINESS CHECK =====
+  '/readiness-check': {
+    title: 'Licence Readiness Check — Trade Licence Solutions',
+    description: 'Answer a few quick questions and get a personalised breakdown of what you need for your trade licence application in Australia.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>Licence readiness check</h1>
+          <p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">2 minutes. No sign-up. Personalised to your situation.</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <form class="check-form" method="POST" action="/readiness-check">
+            <div class="form-group">
+              <label for="first_name">Your first name</label>
+              <input type="text" id="first_name" name="first_name" placeholder="e.g. James" autocomplete="given-name">
+            </div>
+            <div class="form-group">
+              <label for="licence_type">What are you looking to get?</label>
+              <select id="licence_type" name="licence_type" required>
+                <option value="">— Select one —</option>
+                <option value="builder">Individual builder licence</option>
+                <option value="company">Company contractor licence</option>
+                <option value="mutual-recognition">Work in another state (mutual recognition)</option>
+                <option value="trade">Trade contractor licence</option>
+                <option value="unsure">Not sure yet</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="state">Which state are you applying in?</label>
+              <select id="state" name="state" required>
+                <option value="">— Select state —</option>
+                <option value="nsw">New South Wales</option>
+                <option value="qld">Queensland</option>
+                <option value="vic">Victoria</option>
+                <option value="act">ACT</option>
+                <option value="sa">South Australia</option>
+                <option value="wa">Western Australia</option>
+                <option value="tas">Tasmania</option>
+                <option value="nt">Northern Territory</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="experience">Years of relevant experience</label>
+              <select id="experience" name="experience">
+                <option value="">— Select —</option>
+                <option value="lt2">Less than 2 years</option>
+                <option value="2to5">2–5 years</option>
+                <option value="5plus">5+ years</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="qualifications">Do you hold relevant trade or building qualifications?</label>
+              <select id="qualifications" name="qualifications">
+                <option value="">— Select —</option>
+                <option value="yes">Yes</option>
+                <option value="no">Not yet</option>
+                <option value="unsure">Not sure</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn--primary" style="width:100%;">Get my readiness result →</button>
+          </form>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== CONTACT =====
+  '/contact': {
+    title: 'Contact Dan — Book a Free Call | Trade Licence Solutions',
+    description: 'Book a free 15-minute call with Dan Pleaner. No obligation. Dan answers his own phone — 0412 767 129.',
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb"><a href="/">Home</a></p>
+          <h1>Book a free 15-minute call</h1>
+          <p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">No obligation. Dan answers his own phone. Tell him your situation and he'll tell you exactly what you need.</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
+          <div>
+            <h2>Get in touch</h2>
+            <p>The fastest way to find out where you stand is a 15-minute call with Dan. He'll tell you exactly what licence you need, what it'll cost, and how long it'll take — before you commit to anything.</p>
+            <p style="margin-top:1.5rem;font-size:1.1rem;"><strong>📞 <a href="tel:+61412767129" style="color:var(--navy);text-decoration:none;">0412 767 129</a></strong><br>
+            <span style="color:var(--mid-grey);font-size:0.9rem;">Mon–Fri 8am–6pm AEST</span></p>
+            <p style="margin-top:1rem;"><strong>Or send a message below</strong> and Dan will call you back.</p>
+          </div>
+          <div>
+            <form class="check-form" style="box-shadow:var(--shadow);" method="POST" action="/contact-submitted">
+              <div class="form-group">
+                <label for="c_name">Your name</label>
+                <input type="text" id="c_name" name="name" required placeholder="Your name" autocomplete="name">
+              </div>
+              <div class="form-group">
+                <label for="c_phone">Best phone number</label>
+                <input type="tel" id="c_phone" name="phone" required placeholder="e.g. 0400 000 000" autocomplete="tel">
+              </div>
+              <div class="form-group">
+                <label for="c_email">Email</label>
+                <input type="email" id="c_email" name="email" placeholder="your@email.com" autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="c_state">State you're applying in</label>
+                <select id="c_state" name="state">
+                  <option value="">— Select state —</option>
+                  <option value="nsw">New South Wales</option>
+                  <option value="qld">Queensland</option>
+                  <option value="vic">Victoria</option>
+                  <option value="act">ACT</option>
+                  <option value="sa">South Australia</option>
+                  <option value="wa">Western Australia</option>
+                  <option value="tas">Tasmania</option>
+                  <option value="nt">Northern Territory</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="c_message">What do you need help with?</label>
+                <textarea id="c_message" name="message" placeholder="e.g. I need a company licence in NSW…"></textarea>
+              </div>
+              <button type="submit" class="btn btn--primary" style="width:100%;">Send message →</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== CONTACT SUBMITTED =====
+  '/contact-submitted': {
+    title: 'Message received — Trade Licence Solutions',
+    description: 'Dan will call you back shortly.',
+    content: `
+      <section class="hero">
+        <div class="container">
+          <h1>Message received — Dan will call you.</h1>
+          <p>Dan personally calls everyone back, usually within one business day. If it's urgent, call him directly on <a href="tel:+61412767129" style="color:var(--orange);">0412 767 129</a>.</p>
+          <div class="hero__ctas">
+            <a href="/" class="btn btn--primary">Back to home</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
+  // ===== PRIVACY =====
+  '/privacy': {
+    title: 'Privacy Policy — Trade Licence Solutions',
+    description: 'Privacy policy for Trade Licence Solutions.',
+    noindex: true,
+    content: `
+      <section class="hero hero--inner"><div class="container"><h1>Privacy policy</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>Trade Licence Solutions collects personal information (name, phone, email, licence details) for the purpose of providing licence application services. Information is not sold or shared with third parties except where required to process your licence application with the relevant state regulator.</p>
+        <p>For questions about your personal information, contact Dan directly on <a href="tel:+61412767129">0412 767 129</a>.</p>
+      </div></section>
+    `,
+  },
+
+  // ===== FUTURE PROOFED =====
+  '/future-proofed': {
+    title: 'Future Proofed by Maverick Digital',
+    description: 'This site was built and future proofed by Maverick Digital — AI-powered websites for small business.',
+    noindex: true,
+    content: `
+      <section class="hero hero--inner"><div class="container"><h1>Future proofed by Maverick Digital</h1></div></section>
+      <section class="section"><div class="container container--narrow">
+        <p>This website was built by <a href="https://maverickdigital.com.ai" target="_blank" rel="noopener">Maverick Digital</a> — a Coffs Harbour based digital agency specialising in AI-powered websites and tools for small business owners.</p>
+        <p>Dan updates this site by talking into his phone. No agency middleman, no delays, no double handling.</p>
+        <a href="https://maverickdigital.com.ai" target="_blank" rel="noopener" class="btn btn--primary" style="margin-top:1rem;">Visit Maverick Digital</a>
+      </div></section>
+    `,
+  },
+
+  // ===== 404 =====
+  '/404': {
+    title: 'Page not found — Trade Licence Solutions',
+    description: 'Page not found.',
+    status: 404,
+    content: `
+      <section class="hero">
+        <div class="container">
+          <h1>Page not found</h1>
+          <p>That page doesn't exist. Try the links below, or call Dan directly.</p>
+          <div class="hero__ctas">
+            <a href="/" class="btn btn--primary">Back to home</a>
+            <a href="tel:+61412767129" class="btn btn--ghost">📞 0412 767 129</a>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+};
