@@ -9,9 +9,14 @@ import { getCSS } from './styles.js';
 import { layout } from './layout.js';
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     let path = url.pathname.replace(/\/$/, '') || '/';
+
+    // Serve images and other static files from /public
+    if (path.startsWith('/images/')) {
+      return env.ASSETS.fetch(request);
+    }
 
     // Handle readiness check form submission
     if (request.method === 'POST' && path === '/readiness-check') {
