@@ -18,6 +18,11 @@ export default {
       return env.ASSETS.fetch(request);
     }
 
+    // Entry page: state selector and eligibility check (approved design)
+    if (request.method === 'GET' && path === '/') {
+      return env.ASSETS.fetch(new Request(new URL('/entry.html', request.url), request));
+    }
+
     // Handle readiness check form submission
     if (request.method === 'POST' && path === '/readiness-check') {
       return handleReadinessCheck(request);
