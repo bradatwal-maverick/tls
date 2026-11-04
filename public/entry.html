@@ -119,9 +119,14 @@ summary::-webkit-details-marker{display:none}
 summary::after{content:"+";font-size:1.5rem;line-height:1}
 details[open] summary::after{content:"\2013"}
 details p{margin-top:8px;color:var(--muted);max-width:65ch}
-.callcard{background:var(--steel);color:#fff;border-radius:8px;padding:20px;display:grid;gap:10px}
+.callcard{background:#1f3346;color:#ffffff;border-radius:8px;padding:20px;display:grid;gap:16px;grid-template-columns:1fr;align-items:center}
+.callcard .callcard-text{display:grid;gap:10px;min-width:0}
+.callcard h3,.callcard p{color:#ffffff;margin:0}
 .callcard .num{font:800 2rem var(--display);letter-spacing:.02em}
-.callcard a{color:#fff}
+.callcard .num a{color:#ffffff}
+.callcard .btn-hivis{background:#ffd400;color:#16202b;border-color:#ffd400;justify-self:start}
+.callcard img{display:block;width:100%;max-width:240px;height:auto;border-radius:8px}
+@media(min-width:760px){.callcard{grid-template-columns:240px 1fr;gap:32px;padding:28px}}
 footer{background:var(--steel);color:#d9e2ea;font-size:.95rem}
 footer .wrap{padding-block:28px;display:grid;gap:10px}
 footer a{color:#fff}
@@ -224,11 +229,13 @@ footer strong{color:#fff}
       </div>
       <div class="callcard">
         <img src="/images/dan-headshot.jpg" alt="Dan Pleaner, Trade Licence Solutions" style="width:100%;max-width:240px;border-radius:8px;height:auto">
+        <div class="callcard-text">
         <h3>Rather talk?</h3>
         <p>Call Dan direct.</p>
         <p class="num"><a href="tel:+61412767129">0412 767 129</a></p>
         <p><a class="btn btn-hivis" href="/contact">Send an enquiry</a></p>
       </div>
+        </div>
     </div>
   </section>
 
