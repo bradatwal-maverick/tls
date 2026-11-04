@@ -21,6 +21,7 @@ const SECURITY_HEADERS = {
 };
 
 const LLMS_LINKS = [
+  ['/', 'Home: check your licence in 60 seconds'],
   ['/builder-licence', 'Builder licences'],
   ['/company-licence', 'Company licences'],
   ['/mutual-recognition', 'Mutual recognition'],
@@ -63,6 +64,11 @@ export default {
     if (isGet && path === '/sitemap.xml') return textResponse(sitemapXml(), 'application/xml; charset=UTF-8');
     if (isGet && path === '/llms.txt') return textResponse(llmsTxt(), 'text/plain; charset=UTF-8');
 
+    // One home page only: old /home and /entry.html addresses go to /
+    if (path === '/home' || path === '/entry.html') {
+      return Response.redirect(`${url.origin}/`, 301);
+    }
+
     // Old state URLs permanently redirect to the new state pages
     if (OLD_STATE_URLS[path]) {
       return Response.redirect(`${url.origin}/${OLD_STATE_URLS[path]}`, 301);
@@ -75,7 +81,7 @@ export default {
 
     // Entry page: state selector and eligibility check (approved design)
     if (isGet && path === '/') {
-      const asset = await env.ASSETS.fetch(new Request(new URL('/entry.html', request.url), request));
+      const asset = await env.ASSETS.fetch(new Request(new URL('/home.html', request.url), request));
       return new Response(asset.body, {
         status: asset.status,
         headers: { ...Object.fromEntries(asset.headers), ...SECURITY_HEADERS },
@@ -306,7 +312,7 @@ Sitemap: ${SITE}/sitemap.xml
 }
 
 function sitemapXml() {
-  const skip = new Set(['/404', '/readiness-check', '/contact-submitted', ...Object.keys(OLD_STATE_URLS)]);
+  const skip = new Set(['/404', '/readiness-check', '/contact-submitted', '/home', ...Object.keys(OLD_STATE_URLS)]);
   const paths = ['/', ...Object.entries(pages)
     .filter(([p, page]) => !page.noindex && !skip.has(p))
     .map(([p]) => p)];
