@@ -35,10 +35,6 @@ export function layout(page, css, ctx = {}) {
   const robots = page.noindex ? 'noindex,nofollow' : 'index,follow';
   const canonical = page.noindex ? '' : `\n  <link rel="canonical" href="${pageUrl}">`;
   const credit = 'https://maverickdigital.com.ai/future-proofed/?utm_source=tradelicencesolutions&amp;utm_medium=referral&amp;utm_campaign=future-proofed';
-  const ga4Id = ctx.ga4Id && !page.noindex ? ctx.ga4Id : null;
-  const ga4Snippet = ga4Id ? `\n  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');</script>` : '';
 
   return `<!DOCTYPE html>
 <html lang="en-AU">
@@ -64,7 +60,7 @@ export function layout(page, css, ctx = {}) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>${css}</style>${ga4Snippet}
+  <style>${css}</style>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
