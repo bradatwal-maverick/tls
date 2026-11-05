@@ -94,7 +94,6 @@ export function layout(page, css, ctx = {}) {
     </ul>
     <div class="nav__cta-mobile">
       <a href="tel:+61412767129" class="nav__call-mobile" aria-label="Call Dan">📞 Call</a>
-      <a href="/contact" class="btn-book">Book</a>
     </div>
   </nav>
 </header>
