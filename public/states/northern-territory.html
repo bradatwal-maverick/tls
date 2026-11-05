@@ -24,7 +24,9 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/nav.css">
 <link rel="stylesheet" href="/states.css">
+<link rel="stylesheet" href="/tool.css">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": ["Organization", "ProfessionalService"], "@id": "https://tradelicencesolutions.com.au/#organization", "name": "Trade Licence Solutions", "url": "https://tradelicencesolutions.com.au/", "telephone": "+61412767129", "logo": "https://tradelicencesolutions.com.au/images/tls-logo.png", "founder": {"@id": "https://tradelicencesolutions.com.au/#dan"}, "areaServed": {"@type": "Country", "name": "Australia"}, "address": {"@type": "PostalAddress", "addressCountry": "AU"}}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "@id": "https://tradelicencesolutions.com.au/#dan", "name": "Daniel Pleaner", "jobTitle": "Founder", "worksFor": {"@id": "https://tradelicencesolutions.com.au/#organization"}, "url": "https://tradelicencesolutions.com.au/about", "image": "https://tradelicencesolutions.com.au/images/dan-headshot.jpg", "knowsAbout": ["Builder licensing", "Contractor licences", "Mutual recognition", "Licence applications in Australia"]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://tradelicencesolutions.com.au/northern-territory#webpage", "url": "https://tradelicencesolutions.com.au/northern-territory", "name": "Northern Territory Licence Solutions", "description": "Northern Territory licence help from Dan Pleaner. Rules, steps, prices and FAQs. Regulator: Building Practitioners Board.", "inLanguage": "en-AU", "isPartOf": {"@id": "https://tradelicencesolutions.com.au/#website"}, "dateModified": "2026-11-04", "about": {"@type": "Thing", "name": "Northern Territory contractor licence"}}</script>
@@ -32,13 +34,26 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Service", "name": "Northern Territory builder and trade licence support", "serviceType": "Contractor licence application support", "provider": {"@id": "https://tradelicencesolutions.com.au/#organization"}, "areaServed": {"@type": "State", "name": "Northern Territory", "containedInPlace": {"@type": "Country", "name": "Australia"}}, "description": "In the Northern Territory, builders are regulated by the Building Practitioners Board. Requirements depend on the type of work, so Dan will confirm your exact steps.", "offers": [{"@type": "Offer", "name": "General builder licence", "price": "2000", "priceCurrency": "AUD", "description": "from $2,000 ex GST and government fees"}, {"@type": "Offer", "name": "Company or partnership licence", "price": "550", "priceCurrency": "AUD", "description": "from $550 ex GST and government fees"}, {"@type": "Offer", "name": "Mutual recognition", "price": "550", "priceCurrency": "AUD", "description": "from $550 ex GST and government fees"}, {"@type": "Offer", "name": "Trade contractor licence", "price": "495", "priceCurrency": "AUD", "description": "from $495 ex GST and government fees"}]}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Who regulates builders in the NT?", "acceptedAnswer": {"@type": "Answer", "text": "The Building Practitioners Board, with NT Government."}}, {"@type": "Question", "name": "Do I need a licence for every job in the NT?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the work type (to verify with Dan)."}}, {"@type": "Question", "name": "How much does an NT licence cost?", "acceptedAnswer": {"@type": "Answer", "text": "Dan's fees start from $2,000 for a general builder licence, ex GST and government fees (to verify NT pricing)."}}, {"@type": "Question", "name": "Can I use an interstate licence in the NT?", "acceptedAnswer": {"@type": "Answer", "text": "Mutual recognition may apply. Dan will check first (to verify)."}}]}</script>
 </head>
-<body>
+<body data-state="nt">
 <a class="skip" href="#main">Skip to content</a>
-<header class="top">
-  <div class="wrap bar">
-    <a class="logo" href="/" aria-label="Trade Licence Solutions home"><img src="/images/tls-logo.png" alt="" width="44" height="44"><span>Trade Licence Solutions</span></a>
-    <a class="btn small" href="tel:+61412767129">Call 0412 767 129</a>
-  </div>
+<header class="site-header" role="banner">
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav__logo" aria-label="Trade Licence Solutions — home">
+      <img src="/images/logo.png" alt="Trade Licence Solutions" width="52" height="52">
+    </a>
+    <ul class="nav__links" role="list">
+      <li><a href="/services">Services</a></li>
+      <li><a href="/states">By state</a></li>
+      <li><a href="/pricing">Pricing</a></li>
+      <li><a href="/about">About Dan</a></li>
+      <li><a href="/faq">FAQs</a></li>
+      <li><a href="/contact" class="nav__cta">Book a free call</a></li>
+    </ul>
+    <div class="nav__cta-mobile">
+      <a href="tel:+61412767129" class="nav__call-mobile" aria-label="Call Dan">📞 Call</a>
+      <a href="/contact" class="btn-book">Book</a>
+    </div>
+  </nav>
 </header>
 <nav class="crumbs wrap" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/states">States</a></li><li aria-current="page">Northern Territory</li></ol></nav>
 <main id="main">
@@ -47,7 +62,7 @@
     <p class="answer">In the Northern Territory, builders are regulated by the Building Practitioners Board. Requirements depend on the type of work, so Dan will confirm your exact steps.</p>
     <p class="meta">Regulator: <strong>Building Practitioners Board</strong>. NT Government. Dan Pleaner, founder, Trade Licence Solutions.</p>
     <p class="unverified"><strong>Rules not yet verified for Northern Territory.</strong> Dan is still checking the exact requirements (to verify). Call 0412 767 129 for your steps.</p>
-    <p class="cta"><a class="btn" href="/#tool">Check your Northern Territory licence in 60 seconds</a></p>
+    <section class="state-test" aria-labelledby="test-h"><h2 id="test-h">Check your licence in 60 seconds</h2><div class="tool" id="tool" aria-live="polite"></div><p class="tool-note">A guide only. Your state regulator makes the final decision on every licence.</p></section>
 
     <section aria-labelledby="rules-h">
       <h2 id="rules-h">The Northern Territory rules</h2>
@@ -88,12 +103,42 @@
     </section>
   </article>
 </main>
-<footer>
-  <div class="wrap">
-    <strong>Trade Licence Solutions</strong>
-    <span>Builder, company and mutual recognition licence support across Australia. Dan is not a government body; the regulator makes the final decision.</span>
-    <span>Future proofed by Maverick Digital</span>
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <img src="/images/logo.png" alt="Trade Licence Solutions">
+      </div>
+      <p class="footer-tagline">Trade licence specialist for builders and trade contractors across Australia. Builder, company, mutual recognition and trade contractor licences in all 8 states and territories, with clear, step-by-step help from Dan.</p>
+      <a class="footer-phone" href="tel:+61412767129" aria-label="Call Dan on 0412 767 129"><span class="footer-phone__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span><span>0412 767 129</span></a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="/company-licence">Company licences</a></li>
+        <li><a href="/mutual-recognition">Mutual recognition</a></li>
+        <li><a href="/builder-licence">Builder licences</a></li>
+        <li><a href="/trade-contractor">Trade contractor</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>By state</h4>
+      <ul>
+        <li><a href="/new-south-wales">New South Wales</a></li>
+        <li><a href="/queensland">Queensland</a></li>
+        <li><a href="/victoria">Victoria</a></li>
+        <li><a href="/australian-capital-territory">ACT</a></li>
+        <li><a href="/south-australia">South Australia</a></li>
+        <li><a href="/states">All states →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.4);">Privacy</a></p>
+    <p class="footer-credit">Future proofed by <a href="https://maverickdigital.com.ai/future-proofed/?utm_source=tradelicencesolutions&amp;utm_medium=referral&amp;utm_campaign=future-proofed" target="_blank" rel="noopener">Maverick Digital</a></p>
   </div>
 </footer>
+<script src="/tool.js"></script>
 </body>
 </html>

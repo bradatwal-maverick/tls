@@ -127,7 +127,7 @@ ${page.content}
         <img src="/images/logo.png" alt="Trade Licence Solutions">
       </div>
       <p class="footer-tagline">Trade licence specialist for builders and trade contractors across Australia. Builder, company, mutual recognition and trade contractor licences in all 8 states and territories, with clear, step-by-step help from Dan.</p>
-      <p style="margin-top:1rem;font-size:0.85rem;"><a href="tel:+61412767129" style="color:rgba(255,255,255,0.65);text-decoration:none;">📞 0412 767 129</a></p>
+      <a class="footer-phone" href="tel:+61412767129" aria-label="Call Dan on 0412 767 129"><span class="footer-phone__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span><span>0412 767 129</span></a>
     </div>
     <div class="footer-col">
       <h4>Services</h4>
@@ -142,11 +142,11 @@ ${page.content}
     <div class="footer-col">
       <h4>By state</h4>
       <ul>
-        <li><a href="/nsw">New South Wales</a></li>
-        <li><a href="/qld">Queensland</a></li>
-        <li><a href="/vic">Victoria</a></li>
-        <li><a href="/act">ACT</a></li>
-        <li><a href="/sa">South Australia</a></li>
+        <li><a href="/new-south-wales">New South Wales</a></li>
+        <li><a href="/queensland">Queensland</a></li>
+        <li><a href="/victoria">Victoria</a></li>
+        <li><a href="/australian-capital-territory">ACT</a></li>
+        <li><a href="/south-australia">South Australia</a></li>
         <li><a href="/states">All states →</a></li>
       </ul>
     </div>
