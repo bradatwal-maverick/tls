@@ -493,8 +493,11 @@ details[open] summary::after { content: '−'; }
   margin: 0 auto 2rem;
 }
 @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
-.footer-logo img { height: 56px; width: auto; margin-bottom: 1rem; filter: brightness(0) invert(1) opacity(0.8); }
+.footer-logo img { height: 56px; width: auto; margin-bottom: 1rem; }
 .footer-tagline { font-size: 0.85rem; line-height: 1.6; }
+.footer-phone { display: inline-flex; align-items: center; gap: 0.6rem; margin-top: 1rem; color: var(--white); text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+.footer-phone__icon { width: 36px; height: 36px; border-radius: 50%; background: var(--orange); color: var(--near-black); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.footer-phone:hover span:last-child { color: var(--orange); }
 .footer-col h4 { color: var(--white); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1rem; }
 .footer-col ul { list-style: none; padding: 0; margin: 0; }
 .footer-col ul li { margin-bottom: 0.5rem; }

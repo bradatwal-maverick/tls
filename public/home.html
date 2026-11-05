@@ -12,6 +12,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/nav.css">
 <meta name="theme-color" content="#0b5cad">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,122 +28,27 @@
   "description": "Builder, company and mutual recognition trade licence support across all 8 Australian states and territories."
 }
 </script>
-<style>
-:root{
-  --bg:#ffffff;--surface:#f2f4f6;--ink:#16202b;--muted:#4a5866;--line:#d5dbe1;
-  --hivis:#ffd400;--hivis-ink:#16202b;--steel:#1f3346;
-  --link:#0b5cad;--ok:#1e7a3c;--ok-bg:#e5f4ea;--amber:#9a5b00;--amber-bg:#fff3d6;--red:#b3261e;--red-bg:#fbe6e4;--grey-bg:#eef1f4;
-  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  color-scheme:light;box-sizing:border-box;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0f161d;--surface:#18222c;--ink:#eef2f5;--muted:#a9b6c2;--line:#2c3a47;
-  --steel:#1a2c3d;--link:#7cb8f5;--ok:#6fd38f;--ok-bg:#16301f;--amber:#f2b84b;--amber-bg:#33270e;--red:#f28b82;--red-bg:#3a1a18;--grey-bg:#18222c;color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0f161d;--surface:#18222c;--ink:#eef2f5;--muted:#a9b6c2;--line:#2c3a47;
-  --steel:#1a2c3d;--link:#7cb8f5;--ok:#6fd38f;--ok-bg:#16301f;--amber:#f2b84b;--amber-bg:#33270e;--red:#f28b82;--red-bg:#3a1a18;--grey-bg:#18222c;color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.5}
-.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-a{color:var(--link)}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.05;margin:0}
-h1{font-size:clamp(2.2rem,8vw,3.6rem);font-weight:800;text-transform:uppercase;color:#fff}
-h2{font-size:clamp(1.9rem,6vw,2.6rem);font-weight:800;text-transform:uppercase}
-h3{font-size:1.5rem;font-weight:700}
-p{margin:0}
-:focus-visible{outline:3px solid var(--link);outline-offset:3px}
-.btn{text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:52px;padding:0 1.3em;border-radius:6px;border:2px solid transparent;font:700 1.15rem/1 var(--display);letter-spacing:.04em;text-transform:uppercase;cursor:pointer;text-decoration:none}
-.btn-hivis{background:var(--hivis);color:var(--hivis-ink);border-color:var(--hivis)}
-.btn-hivis:hover{filter:brightness(.95)}
-.btn-ghost{background:transparent;color:inherit;border-color:currentColor}
-
-header.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:8px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
-.logo img{width:52px;height:52px;object-fit:contain}
-.logo-text{font:800 1.2rem/1 var(--display);text-transform:uppercase;letter-spacing:.02em}
-.logo-text small{display:block;font:600 .8rem var(--body);text-transform:none;color:var(--muted);letter-spacing:0;margin-top:2px}
-header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
-
-.tool-hero{background:var(--steel);color:#fff}
-.tool-hero-inner{padding-block:28px 32px;display:grid;gap:14px}
-.tool-hero p.lead{color:#d9e2ea;font-size:1.1rem;max-width:36ch}
-.tool-hero-points{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.95rem;color:#d9e2ea;list-style:none;padding:0;margin:0}
-.tool-hero-points li::before{content:"";display:inline-block;width:9px;height:9px;background:var(--hivis);border-radius:2px;margin-right:7px}
-.tool{background:var(--bg);color:var(--ink);border-radius:10px;padding:18px;max-width:720px;width:100%}
-.tool-note{color:#d9e2ea;font-size:.88rem}
-
-.q-progress{display:flex;gap:6px;margin-bottom:14px}
-.q-progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
-.q-progress span.on{background:var(--hivis)}
-.q-step{font:700 .9rem var(--body);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.q-question{font:700 1.6rem/1.15 var(--display);margin:6px 0 14px}
-.q-opts{display:grid;gap:10px}
-.q-opts.states{grid-template-columns:1fr 1fr}
-@media(min-width:620px){.q-opts.states{grid-template-columns:repeat(4,1fr)}}
-.q-opt{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:10px 14px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:600 1.05rem var(--body);cursor:pointer}
-.q-opt:hover{border-color:var(--ink)}
-.q-opt small{display:block;color:var(--muted);font-size:.85rem;font-weight:400}
-.q-back{margin-top:12px;background:none;border:0;color:var(--link);font:600 1rem var(--body);cursor:pointer;padding:6px 0}
-.result{border-radius:6px;padding:16px;display:grid;gap:10px}
-.result.green{background:var(--ok-bg)} .result.amber{background:var(--amber-bg)} .result.red{background:var(--red-bg)} .result.grey{background:var(--grey-bg)}
-.badge{display:inline-flex;align-items:center;gap:8px;font:700 .95rem var(--body);text-transform:uppercase;letter-spacing:.06em}
-.badge::before{content:"";width:12px;height:12px;border-radius:50%;background:currentColor}
-.green .badge{color:var(--ok)} .amber .badge{color:var(--amber)} .red .badge{color:var(--red)} .grey .badge{color:var(--muted)}
-.result h3{font-size:1.7rem}
-.result ul{margin:0;padding-left:1.2em}
-.result .rules{font-size:.98rem;border-top:1px solid var(--line);padding-top:10px}
-.result .rules strong{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em}
-.result .actions{display:flex;flex-wrap:wrap;gap:10px}
-.fine{font-size:.88rem;color:var(--muted)}
-
-section{padding-block:46px}
-section.alt{background:var(--surface)}
-.section-head{display:grid;gap:8px;margin-bottom:22px;max-width:62ch}
-.section-head p{color:var(--muted)}
-.services{display:grid;gap:14px}
-@media(min-width:760px){.services{grid-template-columns:repeat(3,1fr)}}
-.svc{display:flex;flex-direction:column;gap:8px;background:var(--bg);border:1px solid var(--line);border-top:6px solid var(--hivis);border-radius:6px;padding:20px}
-.svc p{color:var(--muted)}
-.svc .who{font-weight:600;color:var(--ink);font-size:1rem}
-.svc .go{margin-top:auto;font-weight:700;text-decoration:none}
-.steps{list-style:none;padding:0;margin:0;display:grid;gap:12px}
-@media(min-width:760px){.steps{grid-template-columns:repeat(4,1fr)}}
-.steps li{display:flex;flex-direction:column;gap:6px;padding:16px;border-left:4px solid var(--hivis);background:var(--bg)}
-.steps li::before{content:attr(data-n);font:800 2rem/1 var(--display);color:var(--muted)}
-.steps li strong{font-family:var(--display);font-size:1.3rem;font-weight:700}
-.steps li span{color:var(--muted);font-size:.98rem}
-details{border-bottom:1px solid var(--line);padding:12px 0}
-summary{cursor:pointer;font:700 1.3rem var(--display);list-style:none;display:flex;justify-content:space-between;gap:12px}
-summary::-webkit-details-marker{display:none}
-summary::after{content:"+";font-size:1.5rem;line-height:1}
-details[open] summary::after{content:"\2013"}
-details p{margin-top:8px;color:var(--muted);max-width:65ch}
-.callcard{background:#1f3346;color:#ffffff;border-radius:8px;padding:20px;display:grid;gap:16px;grid-template-columns:1fr;align-items:center}
-.callcard .callcard-text{display:grid;gap:10px;min-width:0}
-.callcard h3,.callcard p{color:#ffffff;margin:0}
-.callcard .num{font:800 2rem var(--display);letter-spacing:.02em}
-.callcard .num a{color:#ffffff}
-.callcard .btn-hivis{background:#ffd400;color:#16202b;border-color:#ffd400;justify-self:start}
-.callcard img{display:block;width:100%;max-width:240px;height:auto;border-radius:8px}
-@media(min-width:760px){.callcard{grid-template-columns:240px 1fr;gap:32px;padding:28px}}
-footer{background:var(--steel);color:#d9e2ea;font-size:.95rem}
-footer .wrap{padding-block:28px;display:grid;gap:10px}
-footer a{color:#fff}
-footer strong{color:#fff}
-</style>
+<link rel="stylesheet" href="/home.css">
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <a class="logo" href="/" aria-label="Trade Licence Solutions home">
-      <img src="/images/tls-logo.png" alt="" width="52" height="52">
-      <span class="logo-text">Trade Licence Solutions<small>Australia-wide licence specialists</small></span>
+<header class="site-header" role="banner">
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="/" class="nav__logo" aria-label="Trade Licence Solutions — home">
+      <img src="/images/logo.png" alt="Trade Licence Solutions" width="52" height="52">
     </a>
-    <a class="btn btn-hivis" href="tel:+61412767129">Call</a>
-  </div>
+    <ul class="nav__links" role="list">
+      <li><a href="/services">Services</a></li>
+      <li><a href="/states">By state</a></li>
+      <li><a href="/pricing">Pricing</a></li>
+      <li><a href="/about">About Dan</a></li>
+      <li><a href="/faq">FAQs</a></li>
+      <li><a href="/contact" class="nav__cta">Book a free call</a></li>
+    </ul>
+    <div class="nav__cta-mobile">
+      <a href="tel:+61412767129" class="nav__call-mobile" aria-label="Call Dan">📞 Call</a>
+    </div>
+  </nav>
 </header>
 
 <main>
@@ -238,170 +144,43 @@ footer strong{color:#fff}
 
 </main>
 
-<footer>
-  <div class="wrap">
-    <strong>Trade Licence Solutions</strong>
-    <span>Builder, company and mutual recognition licence support across Australia.</span>
-    <span><a href="/states">States</a> · <a href="/pricing">Pricing</a> · <a href="/about">About Dan</a> · <a href="/faq">FAQ</a> · <a href="/privacy">Privacy</a></span>
-    <span>Future proofed by Maverick Digital</span>
+<footer class="site-footer" role="contentinfo">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">
+        <img src="/images/logo.png" alt="Trade Licence Solutions">
+      </div>
+      <p class="footer-tagline">Trade licence specialist for builders and trade contractors across Australia. Builder, company, mutual recognition and trade contractor licences in all 8 states and territories, with clear, step-by-step help from Dan.</p>
+      <a class="footer-phone" href="tel:+61412767129" aria-label="Call Dan on 0412 767 129"><span class="footer-phone__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span><span>0412 767 129</span></a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="/company-licence">Company licences</a></li>
+        <li><a href="/mutual-recognition">Mutual recognition</a></li>
+        <li><a href="/builder-licence">Builder licences</a></li>
+        <li><a href="/trade-contractor">Trade contractor</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>By state</h4>
+      <ul>
+        <li><a href="/new-south-wales">New South Wales</a></li>
+        <li><a href="/queensland">Queensland</a></li>
+        <li><a href="/victoria">Victoria</a></li>
+        <li><a href="/australian-capital-territory">ACT</a></li>
+        <li><a href="/south-australia">South Australia</a></li>
+        <li><a href="/states">All states →</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.4);">Privacy</a></p>
+    <p class="footer-credit">Future proofed by <a href="https://maverickdigital.com.ai/future-proofed/?utm_source=tradelicencesolutions&amp;utm_medium=referral&amp;utm_campaign=future-proofed" target="_blank" rel="noopener">Maverick Digital</a></p>
   </div>
 </footer>
 
-<script>
-(function(){
-  // NSW, QLD and VIC have checked rules from their state pages.
-  // Other states are marked as not yet verified, so no wrong steps are shown.
-  var STATES = {
-    nsw:{name:"New South Wales",page:"/new-south-wales",verified:true,regulator:"NSW Fair Trading",
-      rules:["Contractor licence needed for residential work over $5,000, labour and materials and GST included.",
-             "Your company must hold its own licence. Your personal licence doesn't cover it.",
-             "If your qualified supervisor leaves, you have 7 days to nominate a replacement."]},
-    qld:{name:"Queensland",page:"/queensland",verified:true,regulator:"QBCC",
-      rules:["The QBCC issues all building and trade licences in Queensland.",
-             "Like NSW, your company must hold its own QBCC licence. Trading as a company under your personal licence is a breach."]},
-    vic:{name:"Victoria",page:"/victoria",verified:true,regulator:"Building Commission Victoria",
-      rules:["Building Commission Victoria (formerly the VBA) regulates building and plumbing practitioners.",
-             "Victoria has specific minimum insurance and financial reporting requirements. Dan will walk you through them (to verify)."]},
-    act:{name:"ACT",page:"/australian-capital-territory",verified:false},
-    sa:{name:"South Australia",page:"/south-australia",verified:false},
-    wa:{name:"Western Australia",page:"/western-australia",verified:false},
-    tas:{name:"Tasmania",page:"/tasmania",verified:false},
-    nt:{name:"Northern Territory",page:"/northern-territory",verified:false}
-  };
-  var STATE_ORDER = ["nsw","qld","vic","act","sa","wa","tas","nt"];
-  var TYPE_LABELS = {builder:"Builder licence",company:"Company licence",mutual:"Mutual recognition",trade:"Trade licence"};
-  var TOTAL = 4;
-
-  // Question tree. Each option either goes to a follow-up question or ends with a result.
-  var TREE = {
-    builder:{q:"Do you hold a building qualification?",opts:[
-      {t:"Yes, Cert IV in Building or a building degree",next:"builderExp",score:2},
-      {t:"I have a Cert III in a trade only",next:"builderExp",score:1},
-      {t:"Not yet",next:"builderExp",score:0}]},
-    builderExp:{q:"How long have you worked on site?",opts:[
-      {t:"2 years or more",end:true,exp:true},
-      {t:"Under 2 years",end:true,exp:false}]},
-    company:{q:"Is your company set up with an ABN?",opts:[
-      {t:"Yes",next:"companySup",score:1},
-      {t:"Not yet",next:"companySup",score:0}]},
-    companySup:{q:"Does a director or employee hold the right licence or supervisor certificate?",opts:[
-      {t:"Yes",end:true,exp:true},
-      {t:"No, or not sure",end:true,exp:false}]},
-    mutual:{q:"Is your interstate or NZ licence current?",opts:[
-      {t:"Yes, it's current",next:"mutualMatch",score:1},
-      {t:"It's expired or suspended",next:"mutualMatch",score:0}]},
-    mutualMatch:{q:"Does it cover the same kind of work you'll do?",opts:[
-      {t:"Yes, same work",end:true,exp:true},
-      {t:"Not sure",end:true,exp:false}]},
-    trade:{q:"Do you hold a Cert III in your trade?",opts:[
-      {t:"Yes",next:"tradeExp",score:1},
-      {t:"Not yet",next:"tradeExp",score:0}]},
-    tradeExp:{q:"Will you contract jobs over $5,000 including GST?",opts:[
-      {t:"Yes",end:true,exp:true},
-      {t:"No, I only work as an employee",end:true,exp:false}]}
-  };
-
-  function verdict(type, score, exp){
-    if(type==="builder"){
-      if(score===2&&exp) return {k:"green",head:"You look ready for your builder licence",pts:["Next we line up your evidence and referee statements.","Most knock-backs come from paperwork, not experience."]};
-      if(score===2) return {k:"amber",head:"Qualified, building your experience",pts:["You'll usually need about two years of relevant on-site work.","Talk to Dan about what counts as experience."]};
-      if(score===1) return {k:"amber",head:"A trade cert is a strong start",pts:["A builder licence usually needs a Cert IV in Building and Construction.","Dan can map the fastest path from your Cert III."]};
-      return {k:"red",head:"Start with the qualification",pts:["Get your building qualification first.","Dan can point you to the right course, then help with the licence."]};
-    }
-    if(type==="company"){
-      if(score&&exp) return {k:"green",head:"Your company looks ready to apply",pts:["We check the supervisor's licence class matches the work.","Then we line up the company paperwork."]};
-      if(exp) return {k:"amber",head:"Set up the company first",pts:["Applying needs the company's ABN and a current director.","Your supervisor is sorted, so you're close."]};
-      return {k:"amber",head:"You need a nominated supervisor",pts:["Someone in the business needs the right individual licence.","Dan can work out the quickest way to get there."]};
-    }
-    if(type==="mutual"){
-      if(score&&exp) return {k:"green",head:"Mutual recognition looks likely",pts:["We match your licence to its equivalent.","Then you lodge with our checklist beside you."]};
-      if(score) return {k:"amber",head:"Let's check the licence class",pts:["The new licence has to cover the same work.","Dan can compare the two classes for you."]};
-      return {k:"red",head:"Renew your current licence first",pts:["Mutual recognition needs a current licence.","Once it's current, come back and we'll match it."]};
-    }
-    if(score&&exp) return {k:"green",head:"You look ready for your trade licence",pts:["Next we check your evidence and referees.","Then you lodge with your state regulator."]};
-    if(!exp) return {k:"amber",head:"Check what your role needs",pts:["A contractor licence is for contracting work over $5,000.","A supervisor certificate lets you do and supervise work. Dan can tell you which fits."]};
-    return {k:"red",head:"Start with your Cert III",pts:["Contracting work over $5,000 needs a licence, and that needs the qualification.","Dan can point you to the right course."]};
-  }
-
-  var tool = document.getElementById("tool");
-  var history = [];   // screen functions, so Back can redo the last one
-  var st = null, type = null, score = 0;
-
-  function go(fn){ history.push(fn); fn(); }
-  function back(){ history.pop(); var prev = history.pop(); go(prev || showState); }
-  function progress(n){
-    var h = '<div class="q-progress" aria-hidden="true">';
-    for(var i=1;i<=TOTAL;i++) h += '<span class="'+(i<=n?'on':'')+'"></span>';
-    return h + '</div>';
-  }
-  function backBtn(){ return history.length > 1 ? '<button type="button" class="q-back" id="q-back">Back</button>' : ''; }
-  function bind(){
-    var b = document.getElementById("q-back");
-    if(b) b.addEventListener("click", back);
-  }
-
-  function showState(){
-    st = null; type = null; score = 0;
-    var h = progress(1) + '<p class="q-question">Which state are you licensing in?</p><div class="q-opts states">';
-    STATE_ORDER.forEach(function(k){ h += '<button type="button" class="q-opt" data-st="'+k+'">'+STATES[k].name+'</button>'; });
-    tool.innerHTML = h + '</div>';
-    tool.querySelectorAll("[data-st]").forEach(function(b){
-      b.addEventListener("click", function(){ st = b.dataset.st; go(STATES[st].verified ? showType : showUnverified); });
-    });
-    bind();
-  }
-
-  function showType(){
-    var h = progress(2) + '<p class="q-question">What licence do you need?</p><div class="q-opts">';
-    [["builder","Builder licence","Run your own building jobs"],["company","Company licence","Your business is a company"],["mutual","Mutual recognition","Licensed in another state or NZ"],["trade","Trade licence","Carpentry, painting, bricklaying and more"]].forEach(function(t){
-      h += '<button type="button" class="q-opt" data-t="'+t[0]+'">'+t[1]+'<small>'+t[2]+'</small></button>';
-    });
-    tool.innerHTML = h + '</div>' + backBtn();
-    tool.querySelectorAll("[data-t]").forEach(function(b){
-      b.addEventListener("click", function(){ type = b.dataset.t; score = 0; go(function(){ showQ(type); }); });
-    });
-    bind();
-  }
-
-  function showQ(key){
-    var node = TREE[key];
-    var step = (key===type) ? 3 : 4;
-    var h = progress(step) + '<p class="q-question">'+node.q+'</p><div class="q-opts">';
-    node.opts.forEach(function(o,i){ h += '<button type="button" class="q-opt" data-i="'+i+'">'+o.t+'</button>'; });
-    tool.innerHTML = h + '</div>' + backBtn();
-    tool.querySelectorAll("[data-i]").forEach(function(b){
-      b.addEventListener("click", function(){
-        var o = node.opts[+b.dataset.i];
-        if(o.end){ go(function(){ showResult(verdict(type, score, o.exp)); }); return; }
-        score = o.score;
-        go(function(){ showQ(o.next); });
-      });
-    });
-    bind();
-  }
-
-  function showUnverified(){
-    var s = STATES[st];
-    tool.innerHTML = progress(2) + '<div class="result grey"><span class="badge">Rules not yet checked</span><h3>We haven\'t verified '+s.name+' yet</h3><p>We don\'t want to give you wrong steps. Call Dan and he\'ll walk you through the exact rules for '+s.name+'.</p><div class="result actions" style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-hivis" href="tel:+61412767129">Call 0412 767 129</a><a class="btn btn-ghost" href="'+s.page+'">'+s.name+' page</a></div></div>' + backBtn();
-    bind();
-  }
-
-  function showResult(r){
-    var s = STATES[st];
-    var rules = '<div class="rules"><strong>'+s.name+' rules</strong><ul>';
-    s.rules.forEach(function(x){ rules += '<li>'+x+'</li>'; });
-    rules += '</ul><p class="fine" style="margin-top:6px">Regulator: '+s.regulator+'.</p></div>';
-    var label = {green:"Ready to apply",amber:"Nearly there",red:"First step needed"}[r.k];
-    var html = '<div class="result '+r.k+'"><span class="badge">'+label+'</span><h3>'+r.head+'</h3><ul>';
-    r.pts.forEach(function(p){ html += '<li>'+p+'</li>'; });
-    html += '</ul>'+rules+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a><a class="btn btn-ghost" href="tel:+61412767129">Call</a></div></div>';
-    html += '<button type="button" class="q-back" id="q-again">Start again</button>';
-    tool.innerHTML = html;
-    document.getElementById("q-again").addEventListener("click", function(){ history = []; go(showState); });
-  }
-
-  go(showState);
-})();
-</script>
+<script src="/tool.js"></script>
 </body>
 </html>
