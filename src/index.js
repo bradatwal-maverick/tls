@@ -82,9 +82,14 @@ export default {
     // Entry page: state selector and eligibility check (approved design)
     if (isGet && path === '/') {
       const asset = await env.ASSETS.fetch(new Request(new URL('/home.html', request.url), request));
-      return new Response(asset.body, {
+      const ga4Id = env.GA4_MEASUREMENT_ID || '';
+      const ga4Snippet = ga4Id
+        ? `<!-- Google Analytics 4 -->\n<script async src="https://www.googletagmanager.com/gtag/js?id=${ga4Id}"></script>\n<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${ga4Id}');</script>`
+        : '';
+      const html = (await asset.text()).replace('{{GA4_SNIPPET}}', ga4Snippet);
+      return new Response(html, {
         status: asset.status,
-        headers: { ...Object.fromEntries(asset.headers), ...SECURITY_HEADERS },
+        headers: { 'Content-Type': 'text/html;charset=UTF-8', ...SECURITY_HEADERS },
       });
     }
 
@@ -104,7 +109,7 @@ export default {
 };
 
 function renderPage(page, path, env, status) {
-  const html = layout(page, getCSS(), { path }).replace('{{TURNSTILE_WIDGET}}', turnstileWidget(env));
+  const html = layout(page, getCSS(), { path, ga4Id: env.GA4_MEASUREMENT_ID || '' }).replace('{{TURNSTILE_WIDGET}}', turnstileWidget(env));
   return new Response(html, {
     status: status || page.status || 200,
     headers: { 'Content-Type': 'text/html;charset=UTF-8', ...SECURITY_HEADERS },
