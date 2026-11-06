@@ -40,6 +40,7 @@ export function layout(page, css, ctx = {}) {
 <html lang="en-AU">
 <head>
   <meta charset="UTF-8">
+  <script src="/analytics.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
   <meta name="description" content="${description}">

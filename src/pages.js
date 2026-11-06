@@ -883,6 +883,7 @@ export const pages = {
           </div>
         </div>
       </section>
+      <script>if (window.trackEvent) trackEvent('form_complete', { form: 'contact' });</script>
     `,
   },
 
@@ -908,7 +909,7 @@ export const pages = {
         <p>This site uses two tools to understand how it's used:</p>
         <ul>
           <li><strong>Cloudflare Web Analytics</strong> — a privacy-friendly analytics tool that doesn't use cookies or track you individually. It just gives us aggregate numbers like how many people visited and which pages were popular.</li>
-          <li><strong>Google Analytics</strong> — measures site traffic and how people navigate the site. It may use cookies and collect your approximate location, device and browser type, and the pages you view. It does not collect your name, phone number or email unless you submit the contact form separately.</li>
+          <li><strong>Google Analytics</strong> — measures site traffic and how people navigate the site. It may use cookies and collect your approximate location, device and browser type, the pages you view, and a small number of actions such as completing the licence check tool, submitting the contact form, clicking to call, or clicking through to book a call. It does not collect your name, phone number or email unless you submit the contact form separately.</li>
         </ul>
         <p>No advertising pixels (such as Meta/Facebook) are used on this site.</p>
 

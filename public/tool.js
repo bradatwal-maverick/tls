@@ -149,6 +149,7 @@
     html += '</ul>'+rules+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a><a class="btn btn-ghost" href="tel:+61412767129">Call</a></div></div>';
     html += '<button type="button" class="q-back" id="q-again">Start again</button>';
     tool.innerHTML = html;
+    if (window.trackEvent) trackEvent('tool_complete', { licence_type: type, state: st, result: r.k });
     document.getElementById("q-again").addEventListener("click", function(){ history = []; go(LOCKED && STATES[LOCKED] ? showType : showState); });
   }
 
