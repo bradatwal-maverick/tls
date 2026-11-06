@@ -19,6 +19,7 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .q-opts{display:grid;gap:10px}
 .q-opts.states{grid-template-columns:1fr 1fr}
 .q-opts.states{grid-template-columns:repeat(4,1fr)}
+@media (max-width:600px){.q-opts.states{grid-template-columns:1fr 1fr}}
 .q-opt{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:56px;padding:10px 14px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font:600 1.05rem var(--body);cursor:pointer}
 .q-opt:hover{border-color:var(--ink)}
 .q-opt small{display:block;color:var(--muted);font-size:.85rem;font-weight:400}
