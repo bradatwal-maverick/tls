@@ -255,6 +255,24 @@ export const pages = {
           <div class="pricing-grid">
             <div class="pricing-card">
               <div class="pricing-card__header">
+                <h3>Builder licence</h3>
+                <div class="pricing-card__price">From $2,000</div>
+              </div>
+              <div class="pricing-card__body">
+                <ul class="pricing-card__features">
+                  <li>Eligibility and experience check</li>
+                  <li>Referee statement preparation</li>
+                  <li>Full document preparation</li>
+                  <li>Application lodgement</li>
+                  <li>Regulator follow-up</li>
+                  <li>NSW and QLD covered</li>
+                </ul>
+                <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a free call</a>
+              </div>
+            </div>
+
+            <div class="pricing-card pricing-card--featured">
+              <div class="pricing-card__header">
                 <h3>Company licence</h3>
                 <div class="pricing-card__price">From $550</div>
               </div>
@@ -267,11 +285,11 @@ export const pages = {
                   <li>Supervisor compliance advice</li>
                   <li>NSW and QLD covered</li>
                 </ul>
-                <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a free call</a>
+                <a href="/contact" class="btn btn--primary" style="display:block;text-align:center;">Book a free call</a>
               </div>
             </div>
 
-            <div class="pricing-card pricing-card--featured">
+            <div class="pricing-card">
               <div class="pricing-card__header">
                 <h3>Mutual recognition</h3>
                 <div class="pricing-card__price">From $550</div>
@@ -284,24 +302,6 @@ export const pages = {
                   <li>Application or notification prepared</li>
                   <li>Regulator follow-up</li>
                   <li>All 8 states and territories</li>
-                </ul>
-                <a href="/contact" class="btn btn--primary" style="display:block;text-align:center;">Book a free call</a>
-              </div>
-            </div>
-
-            <div class="pricing-card">
-              <div class="pricing-card__header">
-                <h3>Builder licence</h3>
-                <div class="pricing-card__price">From $2,000</div>
-              </div>
-              <div class="pricing-card__body">
-                <ul class="pricing-card__features">
-                  <li>Eligibility and experience check</li>
-                  <li>Referee statement preparation</li>
-                  <li>Full document preparation</li>
-                  <li>Application lodgement</li>
-                  <li>Regulator follow-up</li>
-                  <li>NSW and QLD covered</li>
                 </ul>
                 <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a free call</a>
               </div>

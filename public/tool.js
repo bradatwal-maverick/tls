@@ -20,7 +20,7 @@
   };
   var STATE_ORDER = ["nsw","qld","vic","act","sa","wa","tas","nt"];
   var TYPE_LABELS = {builder:"Builder licence",company:"Company licence",mutual:"Mutual recognition",trade:"Trade licence"};
-  var TOTAL = 4;
+  var TOTAL = 5;
 
   // Question tree. Each option either goes to a follow-up question or ends with a result.
   var TREE = {
@@ -144,7 +144,7 @@
     s.rules.forEach(function(x){ rules += '<li>'+x+'</li>'; });
     rules += '</ul><p class="fine" style="margin-top:6px">Regulator: '+s.regulator+'.</p></div>';
     var label = {green:"Ready to apply",amber:"Nearly there",red:"First step needed"}[r.k];
-    var html = '<div class="result '+r.k+'"><span class="badge">'+label+'</span><h3>'+r.head+'</h3><ul>';
+    var html = progress(5) + '<div class="result '+r.k+'"><span class="badge">'+label+'</span><h3>'+r.head+'</h3><ul>';
     r.pts.forEach(function(p){ html += '<li>'+p+'</li>'; });
     html += '</ul>'+rules+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a><a class="btn btn-ghost" href="tel:+61412767129">Call</a></div></div>';
     html += '<button type="button" class="q-back" id="q-again">Start again</button>';

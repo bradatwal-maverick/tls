@@ -129,7 +129,7 @@ ${page.content}
       <a class="footer-phone" href="tel:+61412767129" aria-label="Call Dan on 0412 767 129"><span class="footer-phone__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span><span>0412 767 129</span></a>
     </div>
     <div class="footer-col">
-      <h4>Services</h4>
+      <h3>Services</h3>
       <ul>
         <li><a href="/company-licence">Company licences</a></li>
         <li><a href="/mutual-recognition">Mutual recognition</a></li>
@@ -139,7 +139,7 @@ ${page.content}
       </ul>
     </div>
     <div class="footer-col">
-      <h4>By state</h4>
+      <h3>By state</h3>
       <ul>
         <li><a href="/new-south-wales">New South Wales</a></li>
         <li><a href="/queensland">Queensland</a></li>
@@ -151,7 +151,7 @@ ${page.content}
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.4);">Privacy</a></p>
+    <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.65);">Privacy</a></p>
     <p class="footer-credit">Future proofed by <a href="${credit}" target="_blank" rel="noopener">Maverick Digital</a></p>
   </div>
 </footer>
