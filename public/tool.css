@@ -41,3 +41,25 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .result .actions{display:flex;flex-wrap:wrap;gap:10px}
 .fine{font-size:.88rem;color:var(--muted)}
 .callcard .btn-hivis{background:#ffd400;color:#16202b;border-color:#ffd400;justify-self:start}
+
+/* Jargon Buster — click (not hover), in-place, easy to close. Same module everywhere on the site. */
+.jargon-term{display:inline-flex;align-items:center;gap:3px;border-bottom:2px dotted currentColor;cursor:pointer;font-weight:inherit}
+.jargon-mark{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;border-radius:50%;background:var(--hivis);color:var(--hivis-ink);font:800 .68rem/1 var(--body);flex:none}
+.jargon-modal{position:fixed;inset:0;background:rgba(10,18,26,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:80}
+.jargon-modal.open{display:flex}
+.jargon-card{background:var(--surface);color:var(--ink);border-radius:10px;max-width:420px;width:100%;padding:20px;max-height:85vh;overflow:auto;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.jargon-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.jargon-head h4{font:700 1.2rem var(--display);margin:0}
+.jargon-x{background:var(--bg);border:2px solid var(--line);border-radius:7px;width:34px;height:34px;font-size:1.1rem;line-height:1;cursor:pointer;color:var(--ink);flex:none}
+.jargon-def{font:400 1rem/1.45 var(--body);margin:0}
+.jargon-dad{margin-top:12px;background:var(--hivis);color:var(--hivis-ink);border-radius:6px;padding:12px 14px}
+.jargon-dad strong{display:block;font:700 .72rem var(--body);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+
+/* Licence Ready certificate strip, shown with every result */
+.ready-card{border:2px dashed var(--line);border-radius:6px;padding:14px 16px;display:grid;gap:4px;text-align:center}
+.ready-label{font:700 .72rem var(--body);text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.ready-verdict{font:700 1.15rem var(--display)}
+.ready-meta{font:600 .85rem var(--body);color:var(--muted);font-variant-numeric:tabular-nums}
+.ready-green .ready-verdict{color:var(--ok)}
+.ready-amber .ready-verdict{color:var(--amber)}
+.ready-red .ready-verdict{color:var(--red)}

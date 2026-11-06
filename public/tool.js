@@ -2,7 +2,7 @@
   // NSW, QLD and VIC have checked rules from their state pages.
   // Other states are marked as not yet verified, so no wrong steps are shown.
   var STATES = {
-    nsw:{name:"New South Wales",page:"/new-south-wales",verified:true,regulator:"NSW Fair Trading",
+    nsw:{name:"New South Wales",page:"/new-south-wales",verified:true,regulator:"Building Commission NSW (formerly NSW Fair Trading)",
       rules:["Contractor licence needed for residential work over $5,000, labour and materials and GST included.",
              "Your company must hold its own licence. Your personal licence doesn't cover it.",
              "If your qualified supervisor leaves, you have 7 days to nominate a replacement."]},
@@ -22,19 +22,76 @@
   var TYPE_LABELS = {builder:"Builder licence",company:"Company licence",mutual:"Mutual recognition",trade:"Trade licence"};
   var TOTAL = 5;
 
+  // Jargon Buster — same in-place pop-up everywhere on the site. Click, not hover. Never a link out.
+  var JARGON = {
+    cert4:{t:"Cert IV in Building",d:"A formal building and construction qualification (CPC40120). It's usually the baseline a builder licence application asks for.",dad:"A piece of paper that says you've been taught how to run a building job properly, not just do the work."},
+    cert3:{t:"Cert III",d:"The hands-on trade qualification for your specific trade — carpentry, tiling, bricklaying and so on. It's the usual base for a trade licence.",dad:"The ticket that says you know your trade."},
+    supervisor:{t:"Qualified supervisor",d:"The licensed person who can sign off and personally supervise the work a company does. A company licence needs one, and there are rules for what happens if they leave.",dad:"The person allowed to put their name on the job and say it was done right."},
+    mutual:{t:"Mutual recognition",d:"A rule that lets a licence from another Australian state or New Zealand be recognised here, as long as it covers the same kind of work and is still current.",dad:"If you're already licensed somewhere else, you often don't have to start from scratch here."},
+    abn:{t:"ABN",d:"Australian Business Number — the ID your company is registered under. A company licence application needs this in place.",dad:"The number that says your business is official."}
+  };
+  var jargonModal = null, jargonReturnFocus = null;
+  function ensureJargonModal(){
+    if (jargonModal) return jargonModal;
+    var m = document.createElement("div");
+    m.className = "jargon-modal";
+    m.setAttribute("role", "dialog");
+    m.setAttribute("aria-modal", "true");
+    m.innerHTML = '<div class="jargon-card"><div class="jargon-head"><h4 id="jargon-title"></h4><button type="button" class="jargon-x" aria-label="Close">&times;</button></div><p class="jargon-def" id="jargon-def"></p><div class="jargon-dad"><strong>Explain it to my dad</strong><span id="jargon-dad"></span></div></div>';
+    document.body.appendChild(m);
+    m.addEventListener("click", function(e){ if (e.target === m) closeJargon(); });
+    m.querySelector(".jargon-x").addEventListener("click", closeJargon);
+    jargonModal = m;
+    return m;
+  }
+  function openJargon(key){
+    var j = JARGON[key];
+    if (!j) return;
+    var m = ensureJargonModal();
+    m.querySelector("#jargon-title").textContent = j.t;
+    m.querySelector("#jargon-def").textContent = j.d;
+    m.querySelector("#jargon-dad").textContent = j.dad;
+    jargonReturnFocus = document.activeElement;
+    m.classList.add("open");
+    m.querySelector(".jargon-x").focus();
+  }
+  function closeJargon(){
+    if (jargonModal) jargonModal.classList.remove("open");
+    if (jargonReturnFocus) jargonReturnFocus.focus();
+  }
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && jargonModal && jargonModal.classList.contains("open")) closeJargon(); });
+  // A span, never a button — these sit inside q-opt buttons, and a button can't nest inside a button.
+  function jargonTrigger(key, label){
+    return '<span class="jargon-term" data-jargon="'+key+'" role="button" tabindex="0">'+label+'<span class="jargon-mark" aria-hidden="true">?</span></span>';
+  }
+  function isJargonHit(e){
+    var hit = e.target.closest && e.target.closest("[data-jargon]");
+    if (!hit) return false;
+    e.stopPropagation();
+    openJargon(hit.dataset.jargon);
+    return true;
+  }
+  function bindJargon(root){
+    (root || tool).querySelectorAll("[data-jargon]").forEach(function(t){
+      t.addEventListener("keydown", function(e){
+        if (e.key === "Enter" || e.key === " "){ e.preventDefault(); e.stopPropagation(); openJargon(t.dataset.jargon); }
+      });
+    });
+  }
+
   // Question tree. Each option either goes to a follow-up question or ends with a result.
   var TREE = {
     builder:{q:"Do you hold a building qualification?",opts:[
-      {t:"Yes, Cert IV in Building or a building degree",next:"builderExp",score:2},
-      {t:"I have a Cert III in a trade only",next:"builderExp",score:1},
+      {t:"Yes, "+jargonTrigger("cert4","Cert IV in Building")+" or a building degree",next:"builderExp",score:2},
+      {t:"I have a "+jargonTrigger("cert3","Cert III")+" in a trade only",next:"builderExp",score:1},
       {t:"Not yet",next:"builderExp",score:0}]},
     builderExp:{q:"How long have you worked on site?",opts:[
       {t:"2 years or more",end:true,exp:true},
       {t:"Under 2 years",end:true,exp:false}]},
-    company:{q:"Is your company set up with an ABN?",opts:[
+    company:{q:"Is your company set up with an "+jargonTrigger("abn","ABN")+"?",opts:[
       {t:"Yes",next:"companySup",score:1},
       {t:"Not yet",next:"companySup",score:0}]},
-    companySup:{q:"Does a director or employee hold the right licence or supervisor certificate?",opts:[
+    companySup:{q:"Does a director or employee hold the right licence or "+jargonTrigger("supervisor","supervisor certificate")+"?",opts:[
       {t:"Yes",end:true,exp:true},
       {t:"No, or not sure",end:true,exp:false}]},
     mutual:{q:"Is your interstate or NZ licence current?",opts:[
@@ -43,7 +100,7 @@
     mutualMatch:{q:"Does it cover the same kind of work you'll do?",opts:[
       {t:"Yes, same work",end:true,exp:true},
       {t:"Not sure",end:true,exp:false}]},
-    trade:{q:"Do you hold a Cert III in your trade?",opts:[
+    trade:{q:"Do you hold a "+jargonTrigger("cert3","Cert III")+" in your trade?",opts:[
       {t:"Yes",next:"tradeExp",score:1},
       {t:"Not yet",next:"tradeExp",score:0}]},
     tradeExp:{q:"Will you contract jobs over $5,000 including GST?",opts:[
@@ -55,7 +112,7 @@
     if(type==="builder"){
       if(score===2&&exp) return {k:"green",head:"You look ready for your builder licence",pts:["Next we line up your evidence and referee statements.","Most knock-backs come from paperwork, not experience."]};
       if(score===2) return {k:"amber",head:"Qualified, building your experience",pts:["You'll usually need about two years of relevant on-site work.","Talk to Dan about what counts as experience."]};
-      if(score===1) return {k:"amber",head:"A trade cert is a strong start",pts:["A builder licence usually needs a Cert IV in Building and Construction.","We can map the fastest path from your Cert III."]};
+      if(score===1) return {k:"amber",head:"A trade cert is a strong start",pts:["A builder licence usually needs a "+jargonTrigger("cert4","Cert IV in Building")+" and Construction.","We can map the fastest path from your "+jargonTrigger("cert3","Cert III")+"."]};
       return {k:"red",head:"Start with the qualification",pts:["Get your building qualification first.","We can point you to the right course, then help with the licence."]};
     }
     if(type==="company"){
@@ -69,8 +126,8 @@
       return {k:"red",head:"Renew your current licence first",pts:["Mutual recognition needs a current licence.","Once it's current, come back and we'll match it."]};
     }
     if(score&&exp) return {k:"green",head:"You look ready for your trade licence",pts:["Next we check your evidence and referees.","Then you lodge with your state regulator."]};
-    if(!exp) return {k:"amber",head:"Check what your role needs",pts:["A contractor licence is for contracting work over $5,000.","A supervisor certificate lets you do and supervise work. We can tell you which fits."]};
-    return {k:"red",head:"Start with your Cert III",pts:["Contracting work over $5,000 needs a licence, and that needs the qualification.","We can point you to the right course."]};
+    if(!exp) return {k:"amber",head:"Check what your role needs",pts:["A contractor licence is for contracting work over $5,000.","A "+jargonTrigger("supervisor","supervisor certificate")+" lets you do and supervise work. We can tell you which fits."]};
+    return {k:"red",head:"Start with your Cert III",pts:["Contracting work over $5,000 needs a licence, and that needs the "+jargonTrigger("cert3","Cert III")+" qualification.","We can point you to the right course."]};
   }
 
   var tool = document.getElementById("tool");
@@ -90,6 +147,7 @@
   function bind(){
     var b = document.getElementById("q-back");
     if(b) b.addEventListener("click", back);
+    bindJargon();
   }
 
   function showState(){
@@ -108,9 +166,10 @@
     [["builder","Builder licence","Run your own building jobs"],["company","Company licence","Your business is a company"],["mutual","Mutual recognition","Licensed in another state or NZ"],["trade","Trade licence","Carpentry, painting, bricklaying and more"]].forEach(function(t){
       h += '<button type="button" class="q-opt" data-t="'+t[0]+'">'+t[1]+'<small>'+t[2]+'</small></button>';
     });
+    h = h.replace("Mutual recognition<small>", jargonTrigger("mutual","Mutual recognition")+"<small>");
     tool.innerHTML = h + '</div>' + backBtn();
     tool.querySelectorAll("[data-t]").forEach(function(b){
-      b.addEventListener("click", function(){ type = b.dataset.t; score = 0; go(function(){ showQ(type); }); });
+      b.addEventListener("click", function(e){ if(isJargonHit(e)) return; type = b.dataset.t; score = 0; go(function(){ showQ(type); }); });
     });
     bind();
   }
@@ -122,7 +181,8 @@
     node.opts.forEach(function(o,i){ h += '<button type="button" class="q-opt" data-i="'+i+'">'+o.t+'</button>'; });
     tool.innerHTML = h + '</div>' + backBtn();
     tool.querySelectorAll("[data-i]").forEach(function(b){
-      b.addEventListener("click", function(){
+      b.addEventListener("click", function(e){
+        if(isJargonHit(e)) return;
         var o = node.opts[+b.dataset.i];
         if(o.end){ go(function(){ showResult(verdict(type, score, o.exp)); }); return; }
         score = o.score;
@@ -144,11 +204,17 @@
     s.rules.forEach(function(x){ rules += '<li>'+x+'</li>'; });
     rules += '</ul><p class="fine" style="margin-top:6px">Regulator: '+s.regulator+'.</p></div>';
     var label = {green:"Ready to apply",amber:"Nearly there",red:"First step needed"}[r.k];
+    var refCode = "TLS-" + (Date.now() % 100000).toString().padStart(5, "0");
+    var today = new Date().toLocaleDateString("en-AU", {day:"numeric", month:"short", year:"numeric"});
+    var cert = '<div class="ready-card ready-'+r.k+'"><span class="ready-label">Licence Ready Check</span>'+
+      '<strong class="ready-verdict">'+label+' &mdash; '+TYPE_LABELS[type]+'</strong>'+
+      '<span class="ready-meta">'+s.name+' &middot; Ref '+refCode+' &middot; '+today+'</span></div>';
     var html = progress(5) + '<div class="result '+r.k+'"><span class="badge">'+label+'</span><h3>'+r.head+'</h3><ul>';
     r.pts.forEach(function(p){ html += '<li>'+p+'</li>'; });
-    html += '</ul>'+rules+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a><a class="btn btn-ghost" href="tel:+61412767129">Call</a></div></div>';
+    html += '</ul>'+rules+cert+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a><a class="btn btn-ghost" href="tel:+61412767129">Call</a></div></div>';
     html += '<button type="button" class="q-back" id="q-again">Start again</button>';
     tool.innerHTML = html;
+    bindJargon();
     if (window.trackEvent) trackEvent('tool_complete', { licence_type: type, state: st, result: r.k });
     document.getElementById("q-again").addEventListener("click", function(){ history = []; go(LOCKED && STATES[LOCKED] ? showType : showState); });
   }
