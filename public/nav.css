@@ -130,6 +130,11 @@
   transition: background var(--transition), transform var(--transition);
 }
 .ask-dan:hover { background: var(--orange-dark); transform: translateY(-2px); }
+.ph-icon { vertical-align: -3px; margin-right: 0.3rem; }
+@media (max-width: 400px) {
+  .ask-dan { gap: 0; padding: 0; width: 52px; height: 52px; border-radius: 50%; justify-content: center; }
+  .ask-dan span { display: none; }
+}
 @media print { .ask-dan { display: none; } }
 
 /* ===== FOOTER ===== */

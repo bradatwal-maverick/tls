@@ -57,7 +57,7 @@ export const pages = {
           </div>
 
           <div class="cta-block" style="margin-top:2.5rem;">
-            <a href="tel:+61412767129" class="btn btn--navy">📞 Call Dan — 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> Call Dan — 0412 767 129</a>
             <a href="/contact" class="btn btn--primary">Book a free call online</a>
           </div>
         </div>
@@ -117,7 +117,7 @@ export const pages = {
 
           <div class="cta-block">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
-            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
@@ -179,7 +179,7 @@ export const pages = {
 
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
-            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
@@ -349,7 +349,7 @@ export const pages = {
 
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
-            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
@@ -389,7 +389,7 @@ export const pages = {
 
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
-            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
@@ -414,7 +414,7 @@ export const pages = {
           <p><a href="https://www.buildingcommission.com.au/practitioners/registration-and-licensing" target="_blank" rel="noopener" class="inline-link">Building Commission VIC — registration and licensing ↗</a></p>
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
-            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
@@ -484,7 +484,7 @@ export const pages = {
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in the ACT are issued by Access Canberra. Dan assists with ACT contractor licences and mutual recognition for interstate licensees.</p>
         <p><a href="https://www.accesscanberra.act.gov.au/app/answers/detail/a_id/1986" target="_blank" rel="noopener" class="inline-link">Access Canberra — building licences ↗</a></p>
-        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a></div>
       </div></section>
     `,
   },
@@ -497,7 +497,7 @@ export const pages = {
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in South Australia are issued by Consumer and Business Services (CBS). Dan assists with SA contractor licences and mutual recognition.</p>
         <p><a href="https://www.cbs.sa.gov.au/licences/building" target="_blank" rel="noopener" class="inline-link">CBS South Australia — building licences ↗</a></p>
-        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a></div>
       </div></section>
     `,
   },
@@ -510,7 +510,7 @@ export const pages = {
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in Western Australia are issued by Building and Energy, a division of the Department of Mines, Industry Regulation and Safety (DMIRS). Dan assists with WA builder and trade licences and mutual recognition.</p>
         <p><a href="https://www.buildingcommission.wa.gov.au/licensing" target="_blank" rel="noopener" class="inline-link">Building and Energy WA — licensing ↗</a></p>
-        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a></div>
       </div></section>
     `,
   },
@@ -523,7 +523,7 @@ export const pages = {
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in Tasmania are issued by the Consumer, Building and Occupational Services (CBOS). Dan assists with Tasmanian contractor licences and mutual recognition from mainland states.</p>
         <p><a href="https://www.cbos.tas.gov.au/topics/licensing" target="_blank" rel="noopener" class="inline-link">CBOS Tasmania — licensing ↗</a></p>
-        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a></div>
       </div></section>
     `,
   },
@@ -535,7 +535,7 @@ export const pages = {
       <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/states">States</a></p><h1>Northern Territory licensing</h1></div></section>
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in the Northern Territory are issued by the NT Building Practitioners Board. Dan assists with NT contractor licences and mutual recognition.</p>
-        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
+        <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a></div>
       </div></section>
     `,
   },
@@ -665,7 +665,7 @@ export const pages = {
           </div>
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call with Dan</a>
-            <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
@@ -699,7 +699,7 @@ export const pages = {
               <p><strong>Daniel Pleaner</strong><br>Founder, Trade Licence Solutions Australia</p>
               <div class="cta-block">
                 <a href="/contact" class="btn btn--primary">Book a free call with Dan</a>
-                <a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a>
+                <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
               </div>
             </div>
           </div>
@@ -808,7 +808,7 @@ export const pages = {
           <div>
             <h2>Get in touch</h2>
             <p>The fastest way to find out where you stand is a 15-minute call with Dan. He'll tell you exactly what licence you need, what it'll cost, and how long it'll take — before you commit to anything.</p>
-            <p style="margin-top:1.5rem;font-size:1.1rem;"><strong>📞 <a href="tel:+61412767129" style="color:var(--navy);text-decoration:none;">0412 767 129</a></strong></p>
+            <p style="margin-top:1.5rem;font-size:1.1rem;"><strong><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> <a href="tel:+61412767129" style="color:var(--navy);text-decoration:none;">0412 767 129</a></strong></p>
             <p style="margin-top:1rem;"><strong>Or send a message below</strong> and Dan will call you back.</p>
           </div>
           <div>
@@ -976,7 +976,7 @@ export const pages = {
           <p>That page doesn't exist. Try the links below, or call Dan directly.</p>
           <div class="hero__ctas">
             <a href="/" class="btn btn--primary">Back to home</a>
-            <a href="tel:+61412767129" class="btn btn--ghost">📞 0412 767 129</a>
+            <a href="tel:+61412767129" class="btn btn--ghost"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
         </div>
       </section>
