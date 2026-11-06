@@ -611,7 +611,7 @@ export const pages = {
             <details>
               <summary>Is Trade Licence Solutions a training organisation?</summary>
               <div class="faq-answer">
-                <p>No. Dan is not a registered training organisation and does not issue qualifications. To apply for a trade or builder's licence you'll need the right qualification — Dan can point you to a suitable training organisation if needed. He handles the licence application, not the training.</p>
+                <p>No. Dan is not a registered training organisation and does not issue qualifications. To apply for a trade or builder's licence you'll need the right qualification — we can point you to a suitable training organisation if needed. We handle the licence application, not the training.</p>
               </div>
             </details>
             <details>
@@ -629,7 +629,7 @@ export const pages = {
             <details>
               <summary>Do you guarantee approval?</summary>
               <div class="faq-answer">
-                <p>Dan can't guarantee approval — no one legitimately can, because the final decision rests with the state regulator. What he can promise is that your application will be as strong as it possibly can be. If an application isn't successful, he'll tell you exactly why and what to do next — including how to challenge the decision if appropriate.</p>
+                <p>We can't guarantee approval — no one legitimately can, because the final decision rests with the state regulator. What we can promise is that your application will be as strong as it possibly can be. If an application isn't successful, we'll tell you exactly why and what to do next — including how to challenge the decision if appropriate.</p>
               </div>
             </details>
             <details>
@@ -928,7 +928,7 @@ export const pages = {
         <p>Trade Licence Solutions prepares and lodges licence applications on your behalf. The decision to approve or refuse any licence rests entirely with the relevant state or territory regulator (such as NSW Fair Trading or the QBCC) — not with Trade Licence Solutions. We can't and don't guarantee approval.</p>
 
         <h3 style="margin-top:1.5rem;">Not a training organisation</h3>
-        <p>Trade Licence Solutions is not a registered training organisation and doesn't issue qualifications. Where a qualification is needed, Dan can point you to a suitable training provider, but the training itself isn't part of this service.</p>
+        <p>Trade Licence Solutions is not a registered training organisation and doesn't issue qualifications. Where a qualification is needed, we can point you to a suitable training provider, but the training itself isn't part of this service.</p>
 
         <h3 style="margin-top:1.5rem;">Pricing</h3>
         <p>Prices shown on this site are indicative starting prices in Australian dollars, including GST. Your final price is confirmed during your free call based on your specific situation and state.</p>

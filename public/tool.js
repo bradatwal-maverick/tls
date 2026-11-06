@@ -55,22 +55,22 @@
     if(type==="builder"){
       if(score===2&&exp) return {k:"green",head:"You look ready for your builder licence",pts:["Next we line up your evidence and referee statements.","Most knock-backs come from paperwork, not experience."]};
       if(score===2) return {k:"amber",head:"Qualified, building your experience",pts:["You'll usually need about two years of relevant on-site work.","Talk to Dan about what counts as experience."]};
-      if(score===1) return {k:"amber",head:"A trade cert is a strong start",pts:["A builder licence usually needs a Cert IV in Building and Construction.","Dan can map the fastest path from your Cert III."]};
-      return {k:"red",head:"Start with the qualification",pts:["Get your building qualification first.","Dan can point you to the right course, then help with the licence."]};
+      if(score===1) return {k:"amber",head:"A trade cert is a strong start",pts:["A builder licence usually needs a Cert IV in Building and Construction.","We can map the fastest path from your Cert III."]};
+      return {k:"red",head:"Start with the qualification",pts:["Get your building qualification first.","We can point you to the right course, then help with the licence."]};
     }
     if(type==="company"){
       if(score&&exp) return {k:"green",head:"Your company looks ready to apply",pts:["We check the supervisor's licence class matches the work.","Then we line up the company paperwork."]};
       if(exp) return {k:"amber",head:"Set up the company first",pts:["Applying needs the company's ABN and a current director.","Your supervisor is sorted, so you're close."]};
-      return {k:"amber",head:"You need a nominated supervisor",pts:["Someone in the business needs the right individual licence.","Dan can work out the quickest way to get there."]};
+      return {k:"amber",head:"You need a nominated supervisor",pts:["Someone in the business needs the right individual licence.","We can work out the quickest way to get there."]};
     }
     if(type==="mutual"){
       if(score&&exp) return {k:"green",head:"Mutual recognition looks likely",pts:["We match your licence to its equivalent.","Then you lodge with our checklist beside you."]};
-      if(score) return {k:"amber",head:"Let's check the licence class",pts:["The new licence has to cover the same work.","Dan can compare the two classes for you."]};
+      if(score) return {k:"amber",head:"Let's check the licence class",pts:["The new licence has to cover the same work.","We can compare the two classes for you."]};
       return {k:"red",head:"Renew your current licence first",pts:["Mutual recognition needs a current licence.","Once it's current, come back and we'll match it."]};
     }
     if(score&&exp) return {k:"green",head:"You look ready for your trade licence",pts:["Next we check your evidence and referees.","Then you lodge with your state regulator."]};
-    if(!exp) return {k:"amber",head:"Check what your role needs",pts:["A contractor licence is for contracting work over $5,000.","A supervisor certificate lets you do and supervise work. Dan can tell you which fits."]};
-    return {k:"red",head:"Start with your Cert III",pts:["Contracting work over $5,000 needs a licence, and that needs the qualification.","Dan can point you to the right course."]};
+    if(!exp) return {k:"amber",head:"Check what your role needs",pts:["A contractor licence is for contracting work over $5,000.","A supervisor certificate lets you do and supervise work. We can tell you which fits."]};
+    return {k:"red",head:"Start with your Cert III",pts:["Contracting work over $5,000 needs a licence, and that needs the qualification.","We can point you to the right course."]};
   }
 
   var tool = document.getElementById("tool");
