@@ -55,7 +55,7 @@ export default {
     const isGet = request.method === 'GET';
 
     // Images and other static files from /public
-    if (path.startsWith('/images/') || /^\/(favicon[^/]*\.(ico|png)|apple-touch-icon\.png|icon-(192|512)\.png|site\.webmanifest)$/.test(path)) {
+    if (path.startsWith('/images/') || /^\/[\w-]+\.(css|js)$/.test(path) || /^\/(favicon[^/]*\.(ico|png)|apple-touch-icon\.png|icon-(192|512)\.png|site\.webmanifest)$/.test(path)) {
       return env.ASSETS.fetch(request);
     }
 
@@ -65,7 +65,7 @@ export default {
     if (isGet && path === '/llms.txt') return textResponse(llmsTxt(), 'text/plain; charset=UTF-8');
 
     // One home page only: old /home and /entry.html addresses go to /
-    if (path === '/home' || path === '/entry.html') {
+    if (path === '/home' || path === '/home.html' || path === '/entry.html') {
       return Response.redirect(`${url.origin}/`, 301);
     }
 
@@ -74,14 +74,21 @@ export default {
       return Response.redirect(`${url.origin}/${OLD_STATE_URLS[path]}`, 301);
     }
 
-    // State pages: clean URLs such as /new-south-wales served from /states/<slug>.html
+    // The /states/<slug> file addresses are never shown: send them to the clean /<slug> URL
+    const fileState = path.match(/^\/states\/([\w-]+?)(\.html)?$/);
+    if (fileState && STATE_PAGES.some(([slug]) => slug === fileState[1])) {
+      return Response.redirect(`${url.origin}/${fileState[1]}`, 301);
+    }
+
+    // State pages: clean URLs such as /new-south-wales served from /states/<slug>.html.
+    // Ask the asset store for the extensionless path: asking for .html makes it answer with a redirect.
     if (isGet && STATE_PAGES.some(([slug]) => slug === path.slice(1))) {
-      return env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}.html`, request.url), request));
+      return env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}`, request.url), request));
     }
 
     // Entry page: state selector and eligibility check (approved design)
     if (isGet && path === '/') {
-      const asset = await env.ASSETS.fetch(new Request(new URL('/home.html', request.url), request));
+      const asset = await env.ASSETS.fetch(new Request(new URL('/home', request.url), request));
       return new Response(asset.body, {
         status: asset.status,
         headers: { ...Object.fromEntries(asset.headers), ...SECURITY_HEADERS },
