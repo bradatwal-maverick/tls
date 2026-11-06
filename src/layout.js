@@ -90,7 +90,6 @@ export function layout(page, css, ctx = {}) {
       <li><a href="/states">By state</a></li>
       <li><a href="/pricing">Pricing</a></li>
       <li><a href="/about">About Dan</a></li>
-      <li><a href="/faq">FAQs</a></li>
       <li><a href="/contact" class="nav__cta">Book a free call</a></li>
     </ul>
     <div class="nav__actions">
@@ -144,6 +143,7 @@ ${page.content}
         <li><a href="/builder-licence">Builder licences</a></li>
         <li><a href="/trade-contractor">Trade contractor</a></li>
         <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/faq">FAQs</a></li>
       </ul>
     </div>
     <div class="footer-col">
