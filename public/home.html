@@ -47,12 +47,38 @@
       <img src="/images/logo.png" alt="Trade Licence Solutions" width="52" height="52">
     </a>
     <ul id="nav-menu" class="nav__links" role="list">
-      <li><a href="/services">Services</a></li>
-      <li><a href="/states">By state</a></li>
-      <li><a href="/pricing">Pricing</a></li>
-      <li><a href="/about">About Dan</a></li>
-      <li><a href="/faq">FAQs</a></li>
-      <li><a href="/contact" class="nav__cta">Book a free call</a></li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="/services">Services</a>
+        <button class="nav__sub-toggle" type="button" aria-label="Services pages" aria-expanded="false" aria-controls="sub-services">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <ul id="sub-services" class="nav__sub" role="list">
+          <li><a href="/builder-licence">Builder licences</a></li>
+          <li><a href="/company-licence">Company licences</a></li>
+          <li><a href="/mutual-recognition">Mutual recognition</a></li>
+          <li><a href="/trade-contractor">Trade contractor</a></li>
+        </ul>
+      </li>
+      <li class="nav__item nav__item--has-sub">
+        <a href="/states">By state</a>
+        <button class="nav__sub-toggle" type="button" aria-label="State pages" aria-expanded="false" aria-controls="sub-states">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <ul id="sub-states" class="nav__sub" role="list">
+          <li><a href="/australian-capital-territory">Australian Capital Territory</a></li>
+          <li><a href="/new-south-wales">New South Wales</a></li>
+          <li><a href="/northern-territory">Northern Territory</a></li>
+          <li><a href="/queensland">Queensland</a></li>
+          <li><a href="/south-australia">South Australia</a></li>
+          <li><a href="/tasmania">Tasmania</a></li>
+          <li><a href="/victoria">Victoria</a></li>
+          <li><a href="/western-australia">Western Australia</a></li>
+        </ul>
+      </li>
+      <li class="nav__item"><a href="/pricing">Pricing</a></li>
+      <li class="nav__item"><a href="/about">About Dan</a></li>
+      <li class="nav__item"><a href="/faq">FAQs</a></li>
+      <li class="nav__item"><a href="/contact" class="nav__cta">Book a free call</a></li>
     </ul>
     <div class="nav__actions">
       <a href="tel:+61412767129" class="nav__call" aria-label="Call Dan on 0412 767 129">
@@ -215,6 +241,13 @@
   nav.querySelectorAll('.nav__links a').forEach(function (a) { a.addEventListener('click', close); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && nav.classList.contains('nav--open')) { close(); toggle.focus(); }
+  });
+  nav.querySelectorAll('.nav__sub-toggle').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.nav__item--has-sub');
+      var open = item.classList.toggle('nav__item--open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
   });
 })();
 </script>

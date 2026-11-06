@@ -2,8 +2,18 @@ export const pages = {
 
   // ===== COMPANY LICENCE =====
   '/company-licence': {
-    title: 'Company Contractor Licence — Trade Licence Solutions',
+    title: 'Company Contractor Licence — NSW & QLD from $550 | Trade Licence Solutions',
     description: 'Your Pty Ltd company must hold its own contractor licence. Dan Pleaner gets company licences approved in NSW and QLD from $550 — fast, compliant, done right.',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Company contractor licence application',
+      serviceType: 'Company contractor licence application',
+      description: 'Preparation and lodgement of company (Pty Ltd) contractor licence applications in NSW and QLD, including supervisor nomination and compliance advice.',
+      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      areaServed: { '@type': 'Country', name: 'Australia' },
+      offers: { '@type': 'Offer', price: '550', priceCurrency: 'AUD', description: 'Company contractor licence — from $550' },
+    },
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -15,6 +25,10 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
+          <div class="quick-answer">
+            <p><strong>In short:</strong> If your Pty Ltd company contracts, sub-contracts or advertises residential building work worth more than $5,000 (incl GST), the company itself must hold a contractor licence — a director's personal licence is not enough. Dan prepares and lodges company contractor licence applications in NSW and QLD <strong>from $550</strong> and follows up with the regulator until it's issued.</p>
+          </div>
+
           <div class="alert-box">
             <strong>Important:</strong> Operating without a company contractor licence carries serious fines in NSW. This is not a technicality — it is actively enforced by NSW Fair Trading and the QBCC.
           </div>
@@ -60,6 +74,26 @@ export const pages = {
             <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> Call Dan — 0412 767 129</a>
             <a href="/contact" class="btn btn--primary">Book a free call online</a>
           </div>
+
+          <h2 style="margin-top:2.5rem;">Company licence FAQs</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Does my company need its own licence if I already hold a personal contractor licence?</summary>
+              <div class="faq-answer"><p>Yes, in most cases. In NSW, if your company contracts for residential building work valued over $5,000 (incl GST), the company must hold its own contractor licence — a director's personal licence does not cover the company. Queensland has the same principle under QBCC rules. A free 15-minute call will confirm exactly where your company stands.</p></div>
+            </details>
+            <details>
+              <summary>How much does a company contractor licence cost?</summary>
+              <div class="faq-answer"><p>Dan's fee starts from $550, including the eligibility check, full document preparation, lodgement with the regulator and follow-up until the licence is issued. Government lodgement fees are separate and vary by state.</p></div>
+            </details>
+            <details>
+              <summary>What happens if my nominated supervisor leaves?</summary>
+              <div class="faq-answer"><p>A company licence needs a nominated qualified supervisor at all times. If they leave, you generally have just 7 days to notify the regulator and nominate a replacement, or the company licence is at risk. Dan advises you on supervisor nomination so this does not catch you out.</p></div>
+            </details>
+            <details>
+              <summary>Which states does Dan handle company licences in?</summary>
+              <div class="faq-answer"><p>Dan prepares company contractor licence applications across all 8 Australian states and territories. Most company-licence work is in NSW (NSW Fair Trading) and Queensland (QBCC), where the requirement is most strictly enforced.</p></div>
+            </details>
+          </div>
         </div>
       </section>
     `,
@@ -67,8 +101,18 @@ export const pages = {
 
   // ===== MUTUAL RECOGNITION =====
   '/mutual-recognition': {
-    title: 'Mutual Recognition — Work in Any Australian State | Trade Licence Solutions',
+    title: 'Mutual Recognition — Work in Any Australian State from $550 | Trade Licence Solutions',
     description: 'Already licensed in one state? Dan Pleaner maps your licence across to any other state through mutual recognition. From $550. All states covered.',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Mutual recognition — interstate licence transfer',
+      serviceType: 'Mutual recognition licence application',
+      description: 'Transferring a trade or builder licence from one Australian state to another through Automatic Mutual Recognition (AMR) or standard mutual recognition.',
+      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      areaServed: { '@type': 'Country', name: 'Australia' },
+      offers: { '@type': 'Offer', price: '550', priceCurrency: 'AUD', description: 'Mutual recognition — from $550 per state' },
+    },
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -80,6 +124,10 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
+          <div class="quick-answer">
+            <p><strong>In short:</strong> If you already hold a trade or builder licence in one Australian state, mutual recognition lets you work in another state without sitting new exams. Under <strong>Automatic Mutual Recognition (AMR)</strong> you notify the regulator rather than re-apply; some states and licence types still need a formal application. Dan confirms which path applies and handles the paperwork <strong>from $550 per state</strong>.</p>
+          </div>
+
           <h2>Two types of mutual recognition</h2>
 
           <h3 style="margin-top:1.5rem;">Automatic Mutual Recognition (AMR)</h3>
@@ -92,14 +140,14 @@ export const pages = {
           <p>All Australian states and territories participate in mutual recognition. However, the process and requirements differ significantly between states. Some states require endorsement, some require a notification, and some have specific carve-outs. Dan tells you exactly what applies in your situation.</p>
 
           <div class="state-grid" style="margin-top:1.5rem;">
-            <a href="/nsw" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
-            <a href="/qld" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
-            <a href="/vic" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
-            <a href="/act" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
-            <a href="/sa" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
-            <a href="/wa" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
-            <a href="/tas" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
-            <a href="/nt" class="state-tile"><span class="state-tile__name">NT</span><span class="state-tile__detail">NT Building Practitioners Board</span></a>
+            <a href="/australian-capital-territory" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
+            <a href="/new-south-wales" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
+            <a href="/northern-territory" class="state-tile"><span class="state-tile__name">NT</span><span class="state-tile__detail">NT Building Practitioners Board</span></a>
+            <a href="/queensland" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
+            <a href="/south-australia" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
+            <a href="/tasmania" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
+            <a href="/victoria" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
+            <a href="/western-australia" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
           </div>
 
           <h2 style="margin-top:2rem;">What Dan does for you</h2>
@@ -119,6 +167,26 @@ export const pages = {
             <a href="/contact" class="btn btn--primary">Book a free call</a>
             <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
           </div>
+
+          <h2 style="margin-top:2.5rem;">Mutual recognition FAQs</h2>
+          <div class="faq-list">
+            <details>
+              <summary>What is Automatic Mutual Recognition (AMR)?</summary>
+              <div class="faq-answer"><p>AMR lets most licensed builders and trade contractors notify the regulator in another state and start working there, without a fresh application. It applies in most states for most licence types. Dan confirms whether AMR covers your licence and handles the notification.</p></div>
+            </details>
+            <details>
+              <summary>Do I need to sit exams again to work in another state?</summary>
+              <div class="faq-answer"><p>Usually not. Mutual recognition is designed so you don't repeat training or exams you've already passed. Dan maps your existing licence and experience across to the new state's requirements and flags any gap before you apply.</p></div>
+            </details>
+            <details>
+              <summary>How much does mutual recognition cost?</summary>
+              <div class="faq-answer"><p>From $550 per state, including the eligibility check, document preparation, lodgement or notification, and follow-up with the regulator. Government fees are separate and vary by state.</p></div>
+            </details>
+            <details>
+              <summary>Which states take part in mutual recognition?</summary>
+              <div class="faq-answer"><p>All 8 Australian states and territories participate, but the process differs between them — some need a notification, some a formal application, some an endorsement. Dan tells you exactly what applies for your licence and your target state.</p></div>
+            </details>
+          </div>
         </div>
       </section>
     `,
@@ -126,8 +194,18 @@ export const pages = {
 
   // ===== BUILDER LICENCE =====
   '/builder-licence': {
-    title: 'Builder Licence Application Help — All States | Trade Licence Solutions',
+    title: 'Builder Licence Application Help — All States from $2,000 | Trade Licence Solutions',
     description: 'Get your builder licence approved the first time. Dan Pleaner handles your NSW Fair Trading or QBCC application from $2,000.',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Builder licence application',
+      serviceType: 'Builder licence application',
+      description: 'Preparation and lodgement of individual builder licence applications with NSW Fair Trading, QBCC and other state regulators, including referee and experience documentation.',
+      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      areaServed: { '@type': 'Country', name: 'Australia' },
+      offers: { '@type': 'Offer', price: '2000', priceCurrency: 'AUD', description: 'Builder licence application — from $2,000' },
+    },
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -139,6 +217,10 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
+          <div class="quick-answer">
+            <p><strong>In short:</strong> A builder licence lets you contract directly with clients, run your own sites and legally quote for residential work over $5,000. Most applications that stall fail on experience documentation or referees — not qualifications. Dan prepares and lodges your NSW Fair Trading, QBCC or other state application <strong>from $2,000</strong>, built to be approved the first time.</p>
+          </div>
+
           <h2>What a builder licence lets you do</h2>
           <ul>
             <li>Contract, manage and supervise residential building work in your own name or under your company</li>
@@ -168,18 +250,38 @@ export const pages = {
 
           <h2 style="margin-top:2rem;">States covered</h2>
           <div class="state-grid">
-            <a href="/nsw" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
-            <a href="/qld" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
-            <a href="/vic" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
-            <a href="/act" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
-            <a href="/sa" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
-            <a href="/wa" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
-            <a href="/tas" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
+            <a href="/australian-capital-territory" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
+            <a href="/new-south-wales" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
+            <a href="/queensland" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
+            <a href="/south-australia" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
+            <a href="/tasmania" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
+            <a href="/victoria" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
+            <a href="/western-australia" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
           </div>
 
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
             <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
+          </div>
+
+          <h2 style="margin-top:2.5rem;">Builder licence FAQs</h2>
+          <div class="faq-list">
+            <details>
+              <summary>How much does a builder licence application cost?</summary>
+              <div class="faq-answer"><p>Dan's fee starts from $2,000, covering document preparation, referee and experience statements, lodgement and follow-up with the regulator. Government lodgement fees are separate and vary by state.</p></div>
+            </details>
+            <details>
+              <summary>Why do builder licence applications get delayed?</summary>
+              <div class="faq-answer"><p>Most delays come down to incomplete experience documentation, referees who aren't properly licensed, or qualifications that don't match the exact requirement — not a lack of skill. Dan checks all three before you lodge, so your application isn't sent back.</p></div>
+            </details>
+            <details>
+              <summary>How long does a builder licence take to approve?</summary>
+              <div class="faq-answer"><p>It depends on the state and how complete the application is. A clean, well-documented application moves far faster than one the regulator has to query. Getting it right the first time is the single biggest thing you can do to speed it up.</p></div>
+            </details>
+            <details>
+              <summary>Which states does Dan handle builder licences in?</summary>
+              <div class="faq-answer"><p>Dan prepares builder licence applications across ACT, NSW, QLD, SA, TAS, VIC and WA. Not sure which regulator covers you? A free 15-minute call will tell you exactly what applies in your state.</p></div>
+            </details>
           </div>
         </div>
       </section>
@@ -188,8 +290,18 @@ export const pages = {
 
   // ===== TRADE CONTRACTOR =====
   '/trade-contractor': {
-    title: 'Trade Contractor Licence Help — All Trades, All States | Trade Licence Solutions',
+    title: 'Trade Contractor Licence Help — All Trades, All States from $495 | Trade Licence Solutions',
     description: 'Electrical, plumbing, carpentry and more. Dan Pleaner helps trade contractors get the right licence for their trade and their state from $495.',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Trade contractor licence application',
+      serviceType: 'Trade contractor licence application',
+      description: 'Helping trade contractors — carpentry, plumbing, electrical, air conditioning, roof plumbing and more — get the right licence for their trade and state.',
+      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      areaServed: { '@type': 'Country', name: 'Australia' },
+      offers: { '@type': 'Offer', price: '495', priceCurrency: 'AUD', description: 'Trade contractor licence — from $495' },
+    },
     content: `
       <section class="hero hero--inner">
         <div class="container">
@@ -201,6 +313,10 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
+          <div class="quick-answer">
+            <p><strong>In short:</strong> A trade contractor licence lets you contract for work in your specific trade — carpentry, plumbing, electrical, air conditioning, roof plumbing and more. The right licence type depends on your trade and your state. Dan checks your qualifications, prepares the application and lodges it <strong>from $495</strong>.</p>
+          </div>
+
           <h2>Trades Dan assists with</h2>
           <ul>
             <li>General building and carpentry</li>
@@ -227,6 +343,26 @@ export const pages = {
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
             <a href="/pricing" class="btn btn--navy">See pricing</a>
+          </div>
+
+          <h2 style="margin-top:2.5rem;">Trade contractor FAQs</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Which trades can Dan help licence?</summary>
+              <div class="faq-answer"><p>Dan assists with most construction trades, including general building and carpentry, plumbing and drainage, air conditioning and refrigeration, roof plumbing, excavation, structural landscaping, and electrical or painting where those are licensed in your state. If you're unsure, a free 15-minute call will confirm it.</p></div>
+            </details>
+            <details>
+              <summary>How much does a trade contractor licence cost?</summary>
+              <div class="faq-answer"><p>From $495, including checking your qualifications and experience, preparing the forms, lodging the application and following up with the regulator. Government lodgement fees are separate and vary by state.</p></div>
+            </details>
+            <details>
+              <summary>What can't Dan help with?</summary>
+              <div class="faq-answer"><p>Dan generally can't assist with forklift and warehouse licences, white cards, rigging in most states, and some specialist licences. The fastest way to check your specific trade is a free 15-minute call.</p></div>
+            </details>
+            <details>
+              <summary>Do I need a different licence in each state?</summary>
+              <div class="faq-answer"><p>Licensing rules differ by state, so the right licence depends on where you work. If you're already licensed in one state and want to work in another, mutual recognition may let you transfer it — Dan can map that across for you too.</p></div>
+            </details>
           </div>
         </div>
       </section>
@@ -437,37 +573,37 @@ export const pages = {
       <section class="section">
         <div class="container">
           <div class="state-grid">
-            <a href="/nsw" class="state-tile">
+            <a href="/australian-capital-territory" class="state-tile">
+              <span class="state-tile__name">Australian Capital Territory</span>
+              <span class="state-tile__detail">Access Canberra</span>
+            </a>
+            <a href="/new-south-wales" class="state-tile">
               <span class="state-tile__name">New South Wales</span>
               <span class="state-tile__detail">NSW Fair Trading</span>
             </a>
-            <a href="/qld" class="state-tile">
+            <a href="/northern-territory" class="state-tile">
+              <span class="state-tile__name">Northern Territory</span>
+              <span class="state-tile__detail">NT Building Practitioners Board</span>
+            </a>
+            <a href="/queensland" class="state-tile">
               <span class="state-tile__name">Queensland</span>
               <span class="state-tile__detail">QBCC</span>
             </a>
-            <a href="/vic" class="state-tile">
-              <span class="state-tile__name">Victoria</span>
-              <span class="state-tile__detail">Building Commission VIC</span>
-            </a>
-            <a href="/act" class="state-tile">
-              <span class="state-tile__name">ACT</span>
-              <span class="state-tile__detail">Access Canberra</span>
-            </a>
-            <a href="/sa" class="state-tile">
+            <a href="/south-australia" class="state-tile">
               <span class="state-tile__name">South Australia</span>
               <span class="state-tile__detail">Consumer and Business Services (CBS)</span>
             </a>
-            <a href="/wa" class="state-tile">
-              <span class="state-tile__name">Western Australia</span>
-              <span class="state-tile__detail">Building and Energy (DMIRS)</span>
-            </a>
-            <a href="/tas" class="state-tile">
+            <a href="/tasmania" class="state-tile">
               <span class="state-tile__name">Tasmania</span>
               <span class="state-tile__detail">CBOS</span>
             </a>
-            <a href="/nt" class="state-tile">
-              <span class="state-tile__name">Northern Territory</span>
-              <span class="state-tile__detail">NT Building Practitioners Board</span>
+            <a href="/victoria" class="state-tile">
+              <span class="state-tile__name">Victoria</span>
+              <span class="state-tile__detail">Building Commission VIC</span>
+            </a>
+            <a href="/western-australia" class="state-tile">
+              <span class="state-tile__name">Western Australia</span>
+              <span class="state-tile__detail">Building and Energy (DMIRS)</span>
             </a>
           </div>
         </div>
