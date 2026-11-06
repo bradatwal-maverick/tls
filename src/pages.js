@@ -886,16 +886,64 @@ export const pages = {
     `,
   },
 
-  // ===== PRIVACY =====
+  // ===== PRIVACY & TERMS =====
   '/privacy': {
-    title: 'Privacy Policy — Trade Licence Solutions',
-    description: 'Privacy policy for Trade Licence Solutions.',
+    title: 'Privacy & Terms — Trade Licence Solutions',
+    description: 'Privacy policy and terms of use for Trade Licence Solutions — how your information is collected and used, and the terms for using this website.',
     noindex: true,
     content: `
-      <section class="hero hero--inner"><div class="container"><h1>Privacy policy</h1></div></section>
+      <section class="hero hero--inner"><div class="container"><h1>Privacy &amp; terms</h1><p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">Last updated: 6 November 2026</p></div></section>
       <section class="section"><div class="container container--narrow">
-        <p>Trade Licence Solutions collects personal information (name, phone, email, licence details) for the purpose of providing licence application services. Information is not sold or shared with third parties except where required to process your licence application with the relevant state regulator.</p>
-        <p>For questions about your personal information, contact Dan directly on <a href="tel:+61412767129">0412 767 129</a>.</p>
+
+        <h2>Privacy policy</h2>
+        <p>Trade Licence Solutions (Dan Pleaner) respects your privacy. This page explains what information this website collects and how it's used.</p>
+
+        <h3 style="margin-top:1.5rem;">What we collect</h3>
+        <p>When you use the contact form or the licence readiness check, we collect what you enter — typically your name, phone number, the state and licence type you're asking about, and, if you choose to add them, your email and a message. Nothing else is required to use the site.</p>
+
+        <h3 style="margin-top:1.5rem;">How it's used</h3>
+        <p>Information you submit is sent straight to Dan (as an email, and as a row in a private Google Sheet he uses to track enquiries) so he can call you back. It's used only to respond to your enquiry and, if you go ahead, to help with your licence application. It is not sold, and it is not shared with anyone else — except the relevant state licensing regulator where that's genuinely needed to process your application (for example, NSW Fair Trading or the QBCC).</p>
+
+        <h3 style="margin-top:1.5rem;">Analytics</h3>
+        <p>This site uses two tools to understand how it's used:</p>
+        <ul>
+          <li><strong>Cloudflare Web Analytics</strong> — a privacy-friendly analytics tool that doesn't use cookies or track you individually. It just gives us aggregate numbers like how many people visited and which pages were popular.</li>
+          <li><strong>Google Analytics</strong> — measures site traffic and how people navigate the site. It may use cookies and collect your approximate location, device and browser type, and the pages you view. It does not collect your name, phone number or email unless you submit the contact form separately.</li>
+        </ul>
+        <p>No advertising pixels (such as Meta/Facebook) are used on this site.</p>
+
+        <h3 style="margin-top:1.5rem;">Security and retention</h3>
+        <p>Enquiry details are kept only as long as needed to assist with your licence application and for reasonable record-keeping afterwards. The form is protected against spam and bots using Cloudflare Turnstile.</p>
+
+        <h3 style="margin-top:1.5rem;">Your rights</h3>
+        <p>You can ask what information we hold about you, ask us to correct it, or ask us to delete it. Contact Dan directly on <a href="tel:+61412767129">0412 767 129</a> and he'll sort it personally.</p>
+
+        <h2 style="margin-top:2.5rem;">Terms of use</h2>
+
+        <h3 style="margin-top:1.5rem;">About this site</h3>
+        <p>This website is published by Dan Pleaner, trading as Trade Licence Solutions. Content on this site is general information only and doesn't take the place of a conversation with Dan about your specific situation — pricing, timeframes and eligibility are always confirmed in your free call.</p>
+
+        <h3 style="margin-top:1.5rem;">No guarantee of approval</h3>
+        <p>Trade Licence Solutions prepares and lodges licence applications on your behalf. The decision to approve or refuse any licence rests entirely with the relevant state or territory regulator (such as NSW Fair Trading or the QBCC) — not with Trade Licence Solutions. We can't and don't guarantee approval.</p>
+
+        <h3 style="margin-top:1.5rem;">Not a training organisation</h3>
+        <p>Trade Licence Solutions is not a registered training organisation and doesn't issue qualifications. Where a qualification is needed, Dan can point you to a suitable training provider, but the training itself isn't part of this service.</p>
+
+        <h3 style="margin-top:1.5rem;">Pricing</h3>
+        <p>Prices shown on this site are indicative starting prices in Australian dollars, including GST. Your final price is confirmed during your free call based on your specific situation and state.</p>
+
+        <h3 style="margin-top:1.5rem;">Website content</h3>
+        <p>Everything on this site — text, design and logo — belongs to Trade Licence Solutions unless otherwise noted, and shouldn't be copied without permission. We've made reasonable efforts to keep information accurate, but licensing rules change, so always confirm current requirements with Dan or the relevant regulator before relying on anything here.</p>
+
+        <h3 style="margin-top:1.5rem;">Governing law</h3>
+        <p>These terms are governed by the laws of New South Wales, Australia.</p>
+
+        <h3 style="margin-top:1.5rem;">Changes</h3>
+        <p>This page may be updated from time to time. The date at the top shows when it was last changed.</p>
+
+        <h3 style="margin-top:1.5rem;">Questions?</h3>
+        <p>Call Dan directly on <a href="tel:+61412767129">0412 767 129</a>.</p>
+
       </div></section>
     `,
   },

@@ -151,7 +151,7 @@ ${page.content}
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.65);">Privacy</a></p>
+    <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.65);">Privacy &amp; Terms</a></p>
     <p class="footer-credit">Future proofed by <a href="${credit}" target="_blank" rel="noopener">Maverick Digital</a></p>
   </div>
 </footer>
