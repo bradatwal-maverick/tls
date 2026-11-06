@@ -165,7 +165,7 @@ async function handleContact(request, env) {
 
   if (!name || !phone) {
     return renderPage(
-      notice('Please add your name and phone number', '<p>Dan needs both to call you back.</p>'),
+      notice('Just need your name and number', '<p>Dan needs both so he can call you back. Add them and send again.</p>'),
       '/contact-submitted', env, 400
     );
   }
@@ -182,13 +182,13 @@ async function handleContact(request, env) {
       const result = await verify.json();
       if (!result.success) {
         return renderPage(
-          notice('Security check did not pass', `<p>Please go back and try again, or call Dan directly.</p>`),
+          notice('Quick security check didn’t clear', `<p>Head back and send it again, or just call Dan — he answers his own phone.</p>`),
           '/contact-submitted', env, 403
         );
       }
     } catch (err) {
       return renderPage(
-        notice('Something went wrong', `<p>Please call Dan directly and he will take it from there.</p>`),
+        notice('That didn’t go through', `<p>No dramas — give Dan a call and he’ll take your details himself.</p>`),
         '/contact-submitted', env, 502
       );
     }
@@ -197,7 +197,7 @@ async function handleContact(request, env) {
   // Email relay (Google Apps Script, see dan/gmail-relay-apps-script.js)
   if (!env.GMAIL_RELAY_URL || !env.GMAIL_RELAY_KEY) {
     return renderPage(
-      notice('The form is not working right now', `<p>Sorry about that. Please call Dan and he will take your details.</p>`),
+      notice('Let’s do this the quick way', `<p>The form didn’t send just now. Give Dan a call and he’ll take your details straight away.</p>`),
       '/contact-submitted', env, 503
     );
   }
@@ -222,7 +222,7 @@ async function handleContact(request, env) {
 
   if (!sent) {
     return renderPage(
-      notice('The form is not working right now', `<p>Sorry about that. Please call Dan and he will take your details.</p>`),
+      notice('Let’s do this the quick way', `<p>The form didn’t send just now. Give Dan a call and he’ll take your details straight away.</p>`),
       '/contact-submitted', env, 502
     );
   }
