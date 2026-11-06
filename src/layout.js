@@ -80,6 +80,7 @@ export function layout(page, css, ctx = {}) {
 
 <a href="#main" class="skip-link">Skip to content</a>
 
+<div class="site-top">
 <header class="site-header" role="banner">
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <a href="/" class="nav__logo" aria-label="Trade Licence Solutions — home">
@@ -112,6 +113,7 @@ export function layout(page, css, ctx = {}) {
     <li>All 8 states and territories</li>
     <li>Dan answers his own phone</li>
   </ul>
+</div>
 </div>
 
 <main id="main" tabindex="-1">

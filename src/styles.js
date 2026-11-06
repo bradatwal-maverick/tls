@@ -64,13 +64,15 @@ strong { font-weight: 600; }
 .section--orange-light { background: var(--orange-light); }
 
 /* ===== HEADER ===== */
-.site-header {
-  background: var(--white);
-  border-bottom: 3px solid var(--orange);
+.site-top {
   position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: var(--shadow);
+}
+.site-header {
+  background: var(--white);
+  border-bottom: 3px solid var(--orange);
 }
 
 .nav {
@@ -80,6 +82,7 @@ strong { font-weight: 600; }
   padding: 0.7rem 1.25rem;
   max-width: 1100px;
   margin: 0 auto;
+  position: relative;
 }
 
 .nav__logo img {
