@@ -7,7 +7,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <p class="breadcrumb">Services</p>
           <h1>Company contractor licence</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Operating without a mandatory company licence is a serious risk. Dan fixes that.</p>
         </div>
@@ -72,7 +72,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <p class="breadcrumb">Services</p>
           <h1>Mutual recognition — work in any state</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">If you hold a licence in one Australian state, you may be able to work in other states without sitting new exams. Dan handles the paperwork.</p>
         </div>
@@ -131,7 +131,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <p class="breadcrumb">Services</p>
           <h1>Builder licence application</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">A builder licence lets you contract directly with clients, run your own sites, and build your own business. Dan makes the application process straightforward.</p>
         </div>
@@ -193,7 +193,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / Services</p>
+          <p class="breadcrumb">Services</p>
           <h1>Trade contractor licences</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Whether you're in electrical, plumbing, carpentry or another trade — Dan gets you the right licence for your trade and your state.</p>
         </div>
@@ -240,7 +240,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>Pricing</h1>
           <p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">No hidden fees. No surprises. Everything included.</p>
         </div>
@@ -321,7 +321,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p>
+          <p class="breadcrumb"><a href="/states">States</a></p>
           <h1>New South Wales licensing</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">NSW Fair Trading is the regulator for builder and trade contractor licences in New South Wales. Dan knows the NSW system inside out.</p>
         </div>
@@ -363,7 +363,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p>
+          <p class="breadcrumb"><a href="/states">States</a></p>
           <h1>Queensland licensing</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">The Queensland Building and Construction Commission (QBCC) issues all building and trade licences in Queensland. Dan handles QBCC applications from start to approval.</p>
         </div>
@@ -403,7 +403,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p>
+          <p class="breadcrumb"><a href="/states">States</a></p>
           <h1>Victoria licensing</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">The Building Commission Victoria (formerly the VBA) is the regulator for all building and plumbing practitioners in Victoria.</p>
         </div>
@@ -428,7 +428,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>All states and territories</h1>
           <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Each state has its own regulator, its own forms, its own quirks. Dan knows them all.</p>
         </div>
@@ -480,7 +480,7 @@ export const pages = {
     title: 'ACT Builder & Trade Licences — Access Canberra | Trade Licence Solutions',
     description: 'Get your ACT builder or trade licence through Access Canberra. Dan Pleaner handles ACT licence applications. From $550.',
     content: `
-      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>ACT licensing</h1></div></section>
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/states">States</a></p><h1>ACT licensing</h1></div></section>
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in the ACT are issued by Access Canberra. Dan assists with ACT contractor licences and mutual recognition for interstate licensees.</p>
         <p><a href="https://www.accesscanberra.act.gov.au/app/answers/detail/a_id/1986" target="_blank" rel="noopener" class="inline-link">Access Canberra — building licences ↗</a></p>
@@ -493,7 +493,7 @@ export const pages = {
     title: 'South Australia Builder & Trade Licences — CBS | Trade Licence Solutions',
     description: 'Get your SA builder or trade licence through Consumer and Business Services. Dan Pleaner handles SA licence applications. From $550.',
     content: `
-      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>South Australia licensing</h1></div></section>
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/states">States</a></p><h1>South Australia licensing</h1></div></section>
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in South Australia are issued by Consumer and Business Services (CBS). Dan assists with SA contractor licences and mutual recognition.</p>
         <p><a href="https://www.cbs.sa.gov.au/licences/building" target="_blank" rel="noopener" class="inline-link">CBS South Australia — building licences ↗</a></p>
@@ -506,7 +506,7 @@ export const pages = {
     title: 'Western Australia Builder & Trade Licences — Building and Energy | Trade Licence Solutions',
     description: 'Get your WA builder or trade licence through Building and Energy. Dan Pleaner handles WA licence applications. From $550.',
     content: `
-      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>Western Australia licensing</h1></div></section>
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/states">States</a></p><h1>Western Australia licensing</h1></div></section>
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in Western Australia are issued by Building and Energy, a division of the Department of Mines, Industry Regulation and Safety (DMIRS). Dan assists with WA builder and trade licences and mutual recognition.</p>
         <p><a href="https://www.buildingcommission.wa.gov.au/licensing" target="_blank" rel="noopener" class="inline-link">Building and Energy WA — licensing ↗</a></p>
@@ -519,7 +519,7 @@ export const pages = {
     title: 'Tasmania Builder & Trade Licences — CBOS | Trade Licence Solutions',
     description: 'Get your Tasmanian builder or trade licence through CBOS. Dan Pleaner handles TAS licence applications. From $550.',
     content: `
-      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>Tasmania licensing</h1></div></section>
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/states">States</a></p><h1>Tasmania licensing</h1></div></section>
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in Tasmania are issued by the Consumer, Building and Occupational Services (CBOS). Dan assists with Tasmanian contractor licences and mutual recognition from mainland states.</p>
         <p><a href="https://www.cbos.tas.gov.au/topics/licensing" target="_blank" rel="noopener" class="inline-link">CBOS Tasmania — licensing ↗</a></p>
@@ -532,7 +532,7 @@ export const pages = {
     title: 'Northern Territory Builder & Trade Licences | Trade Licence Solutions',
     description: 'Get your NT builder or trade licence through the NT Building Practitioners Board. Dan Pleaner handles NT licence applications. From $550.',
     content: `
-      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/">Home</a> / <a href="/states">States</a></p><h1>Northern Territory licensing</h1></div></section>
+      <section class="hero hero--inner"><div class="container"><p class="breadcrumb"><a href="/states">States</a></p><h1>Northern Territory licensing</h1></div></section>
       <section class="section"><div class="container container--narrow">
         <p>Building and trade licences in the Northern Territory are issued by the NT Building Practitioners Board. Dan assists with NT contractor licences and mutual recognition.</p>
         <div class="cta-block" style="margin-top:2rem;"><a href="/contact" class="btn btn--primary">Book a free call</a><a href="tel:+61412767129" class="btn btn--navy">📞 0412 767 129</a></div>
@@ -547,7 +547,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>Services</h1>
         </div>
       </section>
@@ -595,7 +595,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>Frequently asked questions</h1>
         </div>
       </section>
@@ -679,7 +679,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>About Dan Pleaner</h1>
         </div>
       </section>
@@ -729,7 +729,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>Licence readiness check</h1>
           <p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">2 minutes. No sign-up. Personalised to your situation.</p>
         </div>
@@ -798,7 +798,7 @@ export const pages = {
     content: `
       <section class="hero hero--inner">
         <div class="container">
-          <p class="breadcrumb"><a href="/">Home</a></p>
+          
           <h1>Book a free 15-minute call</h1>
           <p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">No obligation. Dan answers his own phone. Tell him your situation and he'll tell you exactly what you need.</p>
         </div>
