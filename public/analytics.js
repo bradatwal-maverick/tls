@@ -1,8 +1,6 @@
 // GA4 — Trade Licence Solutions
-// TODO Brad: replace the ID below with TLS's own GA4 Measurement ID (not Maverick Digital's),
-// then every page on the site starts sending data and the events below go live automatically.
 (function () {
-  var GA4_ID = 'G-XXXXXXXXXX';
+  var GA4_ID = 'G-EE5GWQWLK8';
   var ready = GA4_ID && GA4_ID.indexOf('XXXX') === -1;
 
   window.dataLayer = window.dataLayer || [];
