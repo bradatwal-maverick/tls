@@ -56,7 +56,8 @@
              "You need a Cert IV in Building, 3 years' experience, 3 references from registered practitioners and $50,000 in net tangible assets.",
              "A company needs a registered director or nominee in the right category, and $50,000 in net assets."]}
   };
-  var STATE_ORDER = ["nsw","qld","vic","act","sa","wa","tas","nt"];
+  var ABBR = {nsw:"NSW",qld:"QLD",vic:"VIC",act:"ACT",sa:"SA",wa:"WA",tas:"TAS",nt:"NT"};
+  var STATE_ORDER = ["act","nsw","nt","qld","sa","tas","vic","wa"];
   var TYPE_LABELS = {builder:"Builder licence",company:"Company licence",mutual:"Mutual recognition",trade:"Trade licence"};
   var TOTAL = 5;
 
@@ -207,7 +208,7 @@
   function showState(){
     st = null; type = null; score = 0;
     var h = progress(1) + '<p class="q-question">Which state are you licensing in?</p><div class="q-opts states">';
-    STATE_ORDER.forEach(function(k){ h += '<button type="button" class="q-opt" data-st="'+k+'">'+STATES[k].name+'</button>'; });
+    STATE_ORDER.forEach(function(k){ h += '<button type="button" class="q-opt" data-st="'+k+'" aria-label="'+STATES[k].name+'" title="'+STATES[k].name+'">'+ABBR[k]+'</button>'; });
     tool.innerHTML = h + '</div>';
     tool.querySelectorAll("[data-st]").forEach(function(b){
       b.addEventListener("click", function(){ st = b.dataset.st; go(STATES[st].verified ? showType : showUnverified); });
