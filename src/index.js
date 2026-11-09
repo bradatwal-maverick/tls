@@ -7,6 +7,7 @@
 import { pages } from './pages.js';
 import { getCSS } from './styles.js';
 import { layout } from './layout.js';
+import { handleDashboard, saveEnquiry, notifyNewEnquiry } from './dashboard.js';
 
 const SITE = 'https://tradelicencesolutions.com.au';
 const PHONE_DISPLAY = '0412 767 129';
@@ -49,10 +50,25 @@ const OLD_STATE_URLS = { '/nsw': 'new-south-wales', '/qld': 'queensland', '/vic'
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export default {
+  // Wraps every response: remembers Google Ad click details for the enquiry form (first-party cookie)
   async fetch(request, env, ctx) {
+    const res = await routeRequest(request, env, ctx);
+    const adCookie = adCookieFor(request);
+    if (!adCookie) return res;
+    const out = new Response(res.body, res);
+    out.headers.append('Set-Cookie', adCookie);
+    return out;
+  },
+};
+
+async function routeRequest(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/$/, '') || '/';
     const isGet = request.method === 'GET';
+
+    // Enquiry dashboard (Cloudflare Access protected, see src/dashboard.js)
+    const dash = await handleDashboard(request, env, ctx, path);
+    if (dash) return dash;
 
     // Images and other static files from /public
     if (path.startsWith('/images/') || /^\/[\w-]+\.(css|js)$/.test(path) || /^\/(favicon[^/]*\.(ico|png)|apple-touch-icon\.png|icon-(192|512)\.png|site\.webmanifest)$/.test(path)) {
@@ -102,7 +118,7 @@ export default {
 
     // Contact form submission
     if (request.method === 'POST' && path === '/contact-submitted') {
-      return handleContact(request, env);
+      return handleContact(request, env, ctx);
     }
 
     // Live Google reviews for the homepage reviews widget (edge-cached)
@@ -112,8 +128,7 @@ export default {
 
     const page = pages[path] || pages['/404'];
     return renderPage(page, path, env);
-  },
-};
+}
 
 function renderPage(page, path, env, status) {
   const html = layout(page, getCSS(), { path }).replace('{{TURNSTILE_WIDGET}}', turnstileWidget(env));
@@ -154,7 +169,7 @@ function notice(title, bodyHtml) {
   };
 }
 
-async function handleContact(request, env) {
+async function handleContact(request, env, ctx) {
   const form = await request.formData();
   const field = (key) => String(form.get(key) || '').trim();
 
@@ -199,6 +214,15 @@ async function handleContact(request, env) {
     }
   }
 
+  // Save to the enquiry dashboard (D1) and alert Dan's phones. Runs even if the email relay is off.
+  const referer = request.headers.get('Referer') || '';
+  let source = '/contact';
+  try { source = new URL(referer).pathname || '/contact'; } catch (err) { /* no referer */ }
+  try {
+    await saveEnquiry(env, { name, phone, email, state, licence, message, source, ...readAdCookie(request) });
+    if (ctx && ctx.waitUntil) ctx.waitUntil(notifyNewEnquiry(env).catch(() => {}));
+  } catch (err) { /* the email relay below still runs */ }
+
   // Email relay (Google Apps Script, see dan/gmail-relay-apps-script.js)
   if (!env.GMAIL_RELAY_URL || !env.GMAIL_RELAY_KEY) {
     return renderPage(
@@ -208,9 +232,6 @@ async function handleContact(request, env) {
   }
 
   // Enquiry goes to Dan's Google Apps Script, which adds a row to his sheet and emails him
-  const referer = request.headers.get('Referer') || '';
-  let source = '/contact';
-  try { source = new URL(referer).pathname || '/contact'; } catch (err) { /* no referer */ }
 
   let sent = false;
   try {
@@ -364,6 +385,8 @@ function robotsTxt() {
   return `User-agent: *
 Allow: /
 
+Disallow: /dashboard
+
 Sitemap: ${SITE}/sitemap.xml
 `;
 }
@@ -393,4 +416,35 @@ ${LLMS_LINKS.map(([p, label]) => `- [${label}](${SITE}${p})`).join('\n')}
 ## State pages
 ${STATE_PAGES.map(([slug, name]) => `- [${name} Licence Solutions](${SITE}/${slug})`).join('\n')}
 `;
+}
+
+// ---------- Google Ad tracking ----------
+// Keeps gclid and UTM values from the ad click for 30 days, so the enquiry form can record them.
+const AD_KEYS = ['gclid', 'utm_source', 'utm_medium', 'utm_campaign'];
+
+function adCookieFor(request) {
+  if (request.method !== 'GET') return null;
+  const url = new URL(request.url);
+  const ad = {};
+  for (const k of AD_KEYS) {
+    const v = (url.searchParams.get(k) || '').slice(0, 200);
+    if (v) ad[k] = v;
+  }
+  if (!Object.keys(ad).length) return null;
+  ad.landing_page = url.pathname.slice(0, 200);
+  return `tls_ad=${encodeURIComponent(JSON.stringify(ad))}; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=Lax`;
+}
+
+function readAdCookie(request) {
+  const header = request.headers.get('Cookie') || '';
+  const part = header.split(';').map((c) => c.trim()).find((c) => c.startsWith('tls_ad='));
+  if (!part) return {};
+  try {
+    const data = JSON.parse(decodeURIComponent(part.slice(7)));
+    const out = {};
+    for (const k of [...AD_KEYS, 'landing_page']) if (typeof data[k] === 'string') out[k] = data[k].slice(0, 200);
+    return out;
+  } catch (err) {
+    return {};
+  }
 }
