@@ -40,7 +40,7 @@ export function layout(page, css) {
     <a href="/" class="nav__logo" aria-label="Trade Licence Solutions — home">
       <img src="/images/logo.png" alt="Trade Licence Solutions" width="52" height="52">
     </a>
-    <ul class="nav__links" role="list">
+    <ul id="nav-menu" class="nav__links" role="list">
       <li><a href="/services">Services</a></li>
       <li><a href="/states">By state</a></li>
       <li><a href="/pricing">Pricing</a></li>
@@ -51,6 +51,11 @@ export function layout(page, css) {
     <div class="nav__cta-mobile">
       <a href="tel:+61412767129" class="nav__call-mobile" aria-label="Call Dan">📞 Call</a>
       <a href="/contact" class="btn-book">Book</a>
+      <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
     </div>
   </nav>
 </header>
@@ -112,6 +117,30 @@ ${page.content}
     <p class="footer-credit">Future proofed by <a href="https://maverickdigital.com.ai/future-proofed/" target="_blank" rel="noopener">Maverick Digital</a></p>
   </div>
 </footer>
+
+<script>
+(function () {
+  var nav = document.querySelector('.nav');
+  var toggle = document.querySelector('.nav__toggle');
+  if (!nav || !toggle) return;
+  function setOpen(open) {
+    nav.classList.toggle('nav--open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  toggle.addEventListener('click', function () {
+    setOpen(!nav.classList.contains('nav--open'));
+  });
+  nav.querySelectorAll('.nav__links a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
+  });
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('nav--open') && !nav.contains(e.target)) setOpen(false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('nav--open')) { setOpen(false); toggle.focus(); }
+  });
+})();
+</script>
 
 </body>
 </html>`;
