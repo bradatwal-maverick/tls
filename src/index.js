@@ -229,7 +229,7 @@ async function handleContact(request, env, ctx) {
     console.error('D1 save failed', err);
   }
 
-  // Email via Google Apps Script (see apps-script/SETUP.md). Adds a row to Dan's sheet and emails him.
+  // Email via Google Apps Script (see apps-script/SETUP.md). Emails Dan.
   let emailed = false;
   if (env.GMAIL_RELAY_URL && env.GMAIL_RELAY_KEY) {
     try {
