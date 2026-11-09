@@ -40,6 +40,14 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .tool-hero p.lead{color:#d9e2ea;font-size:1.1rem;max-width:36ch}
 .tool-hero-points{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.95rem;color:#d9e2ea;list-style:none;padding:0;margin:0}
 .tool-hero-points li::before{content:"";display:inline-block;width:9px;height:9px;background:var(--hivis);border-radius:2px;margin-right:7px}
+.tool-hero-copy{display:grid;gap:14px;align-content:center;justify-items:start;text-align:left}
+.tool-hero-card{display:none}
+@media(min-width:880px){
+  .tool-hero-inner{grid-template-columns:minmax(0,1fr) 340px;column-gap:36px;align-items:center}
+  .tool-hero-copy{grid-column:1;grid-row:1}
+  .tool-hero-card{display:block;grid-column:2;grid-row:1;width:100%;height:auto;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+  .tool-hero-inner .tool,.tool-hero-inner .tool-note{grid-column:1 / -1}
+}
 .tool-start{display:flex;align-items:center;gap:8px;font:800 1.05rem/1 var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--hivis)}
 .tool-start::after{content:"↓";font-size:1.3rem;line-height:1;animation:tool-start-bounce 1.6s ease-in-out infinite}
 @keyframes tool-start-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
