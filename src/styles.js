@@ -86,7 +86,7 @@ strong { font-weight: 600; }
 }
 
 .nav__logo img {
-  height: 104px;
+  height: 78px;
   width: auto;
   display: block;
 }
@@ -103,7 +103,7 @@ strong { font-weight: 600; }
 .nav__links a {
   text-decoration: none;
   color: var(--dark-grey);
-  font-size: 1.8rem;
+  font-size: 1.35rem;
   font-weight: 500;
   transition: color var(--transition);
 }
