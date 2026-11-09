@@ -1,11 +1,11 @@
 /**
- * Trade Licence Solutions: enquiry relay for Dan.
+ * Trade Licence Solutions: enquiry email relay for Dan.
  *
- * What it does, for each enquiry from the website:
- *  1. Adds a row to the Google Sheet this script is attached to.
- *  2. Emails Dan, with the customer's email as reply-to, so he can reply from Gmail.
+ * Emails Dan each enquiry from the website, with the customer's email as reply-to,
+ * so he can reply from Gmail. Enquiries are also saved in the enquiry dashboard database (D1).
+ * This script does not use a Google Sheet.
  *
- * Setup is in apps-script/SETUP.md. Owner: Dan's Google account.
+ * Setup is in apps-script/SETUP.md.
  */
 
 // Must match the GMAIL_RELAY_KEY value set on the Worker. Make up a long random word.
@@ -13,9 +13,6 @@ const RELAY_KEY = 'CHANGE_ME_TO_A_LONG_RANDOM_KEY';
 
 // Where the email goes.
 const DAN_EMAIL = 'dpleaner@gmail.com';
-
-// Column order in the sheet. Row 1 is written automatically if the sheet is empty.
-const HEADERS = ['Submitted (AEST)', 'Name', 'Phone', 'Email', 'State', 'Licence needed', 'Message', 'Source page'];
 
 function doPost(e) {
   let data;
@@ -27,24 +24,6 @@ function doPost(e) {
   if (data.key !== RELAY_KEY) {
     return reply({ ok: false, error: 'bad key' });
   }
-
-  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow(HEADERS);
-    sheet.setFrozenRows(1);
-  }
-
-  const when = Utilities.formatDate(new Date(), 'Australia/Sydney', 'dd/MM/yyyy HH:mm');
-  sheet.appendRow([
-    when,
-    data.name || '',
-    data.phone || '',
-    data.email || '',
-    data.state || '',
-    data.licence || '',
-    data.message || '',
-    data.source || '',
-  ]);
 
   const lines = [
     'Name: ' + (data.name || ''),

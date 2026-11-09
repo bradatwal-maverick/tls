@@ -1028,7 +1028,7 @@ export const pages = {
         <p>When you use the contact form or the licence readiness check, we collect what you enter — typically your name, phone number, the state and licence type you're asking about, and, if you choose to add them, your email and a message. Nothing else is required to use the site.</p>
 
         <h3 style="margin-top:1.5rem;">How it's used</h3>
-        <p>Information you submit is sent straight to Dan (as an email, and as a row in a private Google Sheet he uses to track enquiries) so he can call you back. It's used only to respond to your enquiry and, if you go ahead, to help with your licence application. It is not sold, and it is not shared with anyone else — except the relevant state licensing regulator where that's genuinely needed to process your application (for example, NSW Fair Trading or the QBCC).</p>
+        <p>Information you submit is sent straight to Dan (as an email, and saved in a private enquiry log he uses to track enquiries) so he can call you back. It's used only to respond to your enquiry and, if you go ahead, to help with your licence application. It is not sold, and it is not shared with anyone else — except the relevant state licensing regulator where that's genuinely needed to process your application (for example, NSW Fair Trading or the QBCC).</p>
 
         <h3 style="margin-top:1.5rem;">Analytics</h3>
         <p>This site uses two tools to understand how it's used:</p>
