@@ -40,7 +40,11 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .tool-hero p.lead{color:#d9e2ea;font-size:1.1rem;max-width:36ch}
 .tool-hero-points{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.95rem;color:#d9e2ea;list-style:none;padding:0;margin:0}
 .tool-hero-points li::before{content:"";display:inline-block;width:9px;height:9px;background:var(--hivis);border-radius:2px;margin-right:7px}
-.tool{background:var(--bg);color:var(--ink);border-radius:10px;padding:18px;max-width:720px;width:100%}
+.tool-start{display:flex;align-items:center;gap:8px;font:800 1.05rem/1 var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--hivis)}
+.tool-start::after{content:"↓";font-size:1.3rem;line-height:1;animation:tool-start-bounce 1.6s ease-in-out infinite}
+@keyframes tool-start-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){.tool-start::after{animation:none}}
+.tool{background:var(--bg);color:var(--ink);border-radius:10px;padding:18px;max-width:720px;width:100%;box-shadow:0 0 0 3px var(--hivis)}
 .tool-note{color:#d9e2ea;font-size:.88rem}
 
 .q-progress{display:flex;gap:6px;margin-bottom:14px}
@@ -66,6 +70,13 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .result .rules strong{font-family:var(--display);text-transform:uppercase;letter-spacing:.03em}
 .result .actions{display:flex;flex-wrap:wrap;gap:10px}
 .fine{font-size:.88rem;color:var(--muted)}
+
+.trust-strip{background:var(--surface);padding-block:20px;border-bottom:1px solid var(--line)}
+.trust-strip-inner{display:grid;gap:14px}
+@media(min-width:760px){.trust-strip-inner{grid-template-columns:repeat(3,1fr)}}
+.trust-strip-inner p{display:grid;gap:2px}
+.trust-strip-inner strong{font:700 1.05rem var(--body);color:var(--ink)}
+.trust-strip-inner span{color:var(--muted);font-size:.9rem}
 
 section{padding-block:46px}
 section.alt{background:var(--surface)}
@@ -97,6 +108,13 @@ details p{margin-top:8px;color:var(--muted);max-width:65ch}
 .callcard .btn-hivis{background:#ffd400;color:#16202b;border-color:#ffd400;justify-self:start}
 .callcard img{display:block;width:100%;max-width:240px;height:auto;border-radius:8px}
 @media(min-width:760px){.callcard{grid-template-columns:240px 1fr;gap:32px;padding:28px}}
+.reviews{display:grid;gap:14px}
+@media(min-width:760px){.reviews{grid-template-columns:1fr 1fr}}
+.review{margin:0;background:var(--bg);border:1px solid var(--line);border-top:6px solid var(--hivis);border-radius:6px;padding:20px;display:grid;gap:10px}
+.review blockquote{margin:0;font:600 1.1rem/1.45 var(--body)}
+.review blockquote::before{content:"\201C"}
+.review blockquote::after{content:"\201D"}
+.review figcaption{color:var(--muted);font-weight:600}
 footer{background:var(--steel);color:#d9e2ea;font-size:.95rem}
 footer .wrap{padding-block:28px;display:grid;gap:10px}
 footer a{color:#fff}
