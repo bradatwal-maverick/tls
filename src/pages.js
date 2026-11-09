@@ -248,17 +248,6 @@ export const pages = {
             <strong>Price check:</strong> Builder licences start from $2,000, including document preparation and regulator follow-up.
           </div>
 
-          <h2 style="margin-top:2rem;">States covered</h2>
-          <div class="state-grid">
-            <a href="/australian-capital-territory" class="state-tile"><span class="state-tile__name">ACT</span><span class="state-tile__detail">Access Canberra</span></a>
-            <a href="/new-south-wales" class="state-tile"><span class="state-tile__name">NSW</span><span class="state-tile__detail">NSW Fair Trading</span></a>
-            <a href="/queensland" class="state-tile"><span class="state-tile__name">QLD</span><span class="state-tile__detail">QBCC</span></a>
-            <a href="/south-australia" class="state-tile"><span class="state-tile__name">SA</span><span class="state-tile__detail">CBS</span></a>
-            <a href="/tasmania" class="state-tile"><span class="state-tile__name">TAS</span><span class="state-tile__detail">CBOS</span></a>
-            <a href="/victoria" class="state-tile"><span class="state-tile__name">VIC</span><span class="state-tile__detail">Building Commission VIC</span></a>
-            <a href="/western-australia" class="state-tile"><span class="state-tile__name">WA</span><span class="state-tile__detail">Building and Energy</span></a>
-          </div>
-
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a free call</a>
             <a href="tel:+61412767129" class="btn btn--navy"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
