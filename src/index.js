@@ -218,35 +218,37 @@ async function handleContact(request, env, ctx) {
   const referer = request.headers.get('Referer') || '';
   let source = '/contact';
   try { source = new URL(referer).pathname || '/contact'; } catch (err) { /* no referer */ }
+  // Each route is tried on its own. The enquiry counts as received if either one works,
+  // so a failed email never shows the visitor an error when the enquiry is already saved in D1.
+  let saved = false;
   try {
-    await saveEnquiry(env, { name, phone, email, state, licence, message, source, ...readAdCookie(request) });
-    if (ctx && ctx.waitUntil) ctx.waitUntil(notifyNewEnquiry(env).catch(() => {}));
-  } catch (err) { /* the email relay below still runs */ }
-
-  // Email relay (Google Apps Script, see dan/gmail-relay-apps-script.js)
-  if (!env.GMAIL_RELAY_URL || !env.GMAIL_RELAY_KEY) {
-    return renderPage(
-      notice('The form is not working right now', `<p>Sorry about that. Please call Dan and he will take your details.</p>`),
-      '/contact-submitted', env, 503
-    );
-  }
-
-  // Enquiry goes to Dan's Google Apps Script, which adds a row to his sheet and emails him
-
-  let sent = false;
-  try {
-    const relay = await fetch(env.GMAIL_RELAY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-      body: JSON.stringify({ key: env.GMAIL_RELAY_KEY, name, phone, email, state, licence, message, source }),
-    });
-    const data = await relay.json();
-    sent = data && data.ok === true;
+    const id = await saveEnquiry(env, { name, phone, email, state, licence, message, source, ...readAdCookie(request) });
+    saved = Boolean(id);
+    if (saved && ctx && ctx.waitUntil) ctx.waitUntil(notifyNewEnquiry(env).catch((err) => console.error('push alert failed', err)));
   } catch (err) {
-    sent = false;
+    console.error('D1 save failed', err);
   }
 
-  if (!sent) {
+  // Email via Google Apps Script (see apps-script/SETUP.md). Adds a row to Dan's sheet and emails him.
+  let emailed = false;
+  if (env.GMAIL_RELAY_URL && env.GMAIL_RELAY_KEY) {
+    try {
+      const relay = await fetch(env.GMAIL_RELAY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify({ key: env.GMAIL_RELAY_KEY, name, phone, email, state, licence, message, source }),
+      });
+      const data = await relay.json();
+      emailed = data && data.ok === true;
+      if (!emailed) console.error('email relay refused', JSON.stringify(data));
+    } catch (err) {
+      console.error('email relay failed', err);
+    }
+  } else {
+    console.error('email relay not configured: set GMAIL_RELAY_URL and GMAIL_RELAY_KEY');
+  }
+
+  if (!saved && !emailed) {
     return renderPage(
       notice('The form is not working right now', `<p>Sorry about that. Please call Dan and he will take your details.</p>`),
       '/contact-submitted', env, 502
