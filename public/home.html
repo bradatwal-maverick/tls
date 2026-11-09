@@ -43,6 +43,7 @@
 
 <header class="site-header" role="banner">
   <nav class="nav" role="navigation" aria-label="Main navigation">
+    <input type="checkbox" id="nav-check" class="nav__check" aria-label="Menu" aria-expanded="false">
     <a href="/" class="nav__logo" aria-label="Trade Licence Solutions — home">
       <img src="/images/logo.png" alt="Trade Licence Solutions" width="78" height="78">
     </a>
@@ -83,11 +84,11 @@
       <a href="tel:+61412767129" class="nav__call" aria-label="Call Dan on 0412 767 129">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
       </a>
-      <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+      <label for="nav-check" class="nav__toggle" title="Menu">
         <span class="nav__toggle-bar"></span>
         <span class="nav__toggle-bar"></span>
         <span class="nav__toggle-bar"></span>
-      </button>
+      </label>
     </div>
   </nav>
 </header>
@@ -259,16 +260,21 @@
 <script>
 (function () {
   var nav = document.querySelector('.nav');
-  var toggle = document.querySelector('.nav__toggle');
-  if (!nav || !toggle) return;
-  function close() { nav.classList.remove('nav--open'); toggle.setAttribute('aria-expanded', 'false'); }
-  toggle.addEventListener('click', function () {
-    var open = nav.classList.toggle('nav--open');
-    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  var check = document.getElementById('nav-check');
+  if (!nav || !check) return;
+  function setOpen(open) {
+    check.checked = open;
+    check.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  check.addEventListener('change', function () { setOpen(check.checked); });
+  nav.querySelectorAll('.nav__links a').forEach(function (a) {
+    a.addEventListener('click', function () { setOpen(false); });
   });
-  nav.querySelectorAll('.nav__links a').forEach(function (a) { a.addEventListener('click', close); });
+  document.addEventListener('click', function (e) {
+    if (check.checked && !nav.contains(e.target)) setOpen(false);
+  });
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && nav.classList.contains('nav--open')) { close(); toggle.focus(); }
+    if (e.key === 'Escape' && check.checked) { setOpen(false); check.focus(); }
   });
   nav.querySelectorAll('.nav__sub-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () {

@@ -144,6 +144,10 @@ strong { font-weight: 600; }
   transition: transform var(--transition), opacity var(--transition);
 }
 
+/* Hidden checkbox drives the phone menu, so it works without JavaScript */
+.nav__check { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; pointer-events: none; }
+.nav__check:focus-visible ~ .nav__actions .nav__toggle { outline: 3px solid var(--navy); outline-offset: 2px; }
+
 /* Dropdown submenus (Services, By state) */
 .nav__item { position: relative; display: flex; align-items: center; }
 .nav__sub-toggle {
@@ -184,7 +188,7 @@ strong { font-weight: 600; }
     max-height: 0; overflow: hidden; visibility: hidden;
     transition: max-height var(--transition), visibility var(--transition);
   }
-  .nav--open .nav__links { max-height: 75vh; overflow: auto; visibility: visible; }
+  .nav__check:checked ~ .nav__links { max-height: 75vh; overflow: auto; visibility: visible; }
   .nav__links li { width: 100%; }
   .nav__links a { display: block; padding: 0.9rem 1.5rem; min-height: 44px; font-size: 1rem; }
   .nav__cta { display: block; margin: 0.5rem 1.5rem; text-align: center; }
@@ -200,9 +204,9 @@ strong { font-weight: 600; }
   }
   .nav__item--open .nav__sub { max-height: 32rem; visibility: visible; }
   .nav__sub a { padding: 0.8rem 2.5rem; font-size: 0.95rem; min-height: 44px; }
-  .nav--open .nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav--open .nav__toggle-bar:nth-child(2) { opacity: 0; }
-  .nav--open .nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav__check:checked ~ .nav__actions .nav__toggle-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav__check:checked ~ .nav__actions .nav__toggle-bar:nth-child(2) { opacity: 0; }
+  .nav__check:checked ~ .nav__actions .nav__toggle-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 }
 
 /* Floating "Ask Dan" -> lead form */
