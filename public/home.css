@@ -108,6 +108,18 @@ details p{margin-top:8px;color:var(--muted);max-width:65ch}
 .callcard .btn-hivis{background:#ffd400;color:#16202b;border-color:#ffd400;justify-self:start}
 .callcard img{display:block;width:100%;max-width:240px;height:auto;border-radius:8px}
 @media(min-width:760px){.callcard{grid-template-columns:240px 1fr;gap:32px;padding:28px}}
+.bio-block{display:grid;grid-template-columns:280px 1fr;gap:2.5rem;align-items:start}
+.bio-block__photo img{width:100%;border-radius:10px;display:block}
+.bio-label{font:700 .8rem var(--body);letter-spacing:.1em;text-transform:uppercase;color:#d4891a;margin:0 0 6px}
+.bio-heading{font-family:var(--display);font-weight:800;font-size:clamp(1.7rem,4vw,2.2rem);text-transform:none;color:var(--steel);line-height:1.1;margin:0 0 14px}
+.bio-block p{color:var(--muted);margin:0 0 14px;max-width:62ch}
+.bio-sig img{display:block;height:auto;max-width:150px;margin-bottom:10px}
+.bio-name{font-weight:700;color:var(--ink)}
+.bio-name span{display:block;font-weight:400;color:var(--muted)}
+.bio-contact{margin-top:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.bio-contact .num{font:800 1.4rem var(--display);letter-spacing:.02em;color:var(--steel)}
+.bio-contact .num a{color:inherit}
+@media(max-width:680px){.bio-block{grid-template-columns:1fr}.bio-block__photo{max-width:260px}}
 .reviews{display:grid;gap:14px}
 @media(min-width:760px){.reviews{grid-template-columns:1fr 1fr}}
 .review{margin:0;background:var(--bg);border:1px solid var(--line);border-top:6px solid var(--hivis);border-radius:6px;padding:20px;display:grid;gap:10px}
