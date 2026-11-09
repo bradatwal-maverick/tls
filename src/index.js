@@ -49,7 +49,7 @@ const OLD_STATE_URLS = { '/nsw': 'new-south-wales', '/qld': 'queensland', '/vic'
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/$/, '') || '/';
     const isGet = request.method === 'GET';
@@ -103,6 +103,11 @@ export default {
     // Contact form submission
     if (request.method === 'POST' && path === '/contact-submitted') {
       return handleContact(request, env);
+    }
+
+    // Live Google reviews for the homepage reviews widget (edge-cached)
+    if (isGet && path === '/api/google-reviews') {
+      return handleGoogleReviews(request, env, ctx);
     }
 
     const page = pages[path] || pages['/404'];
@@ -228,6 +233,54 @@ async function handleContact(request, env) {
   }
 
   return renderPage(pages['/contact-submitted'], '/contact-submitted', env);
+}
+
+// Live Google reviews — pulled from Dan's Google Business Profile via the Places API (New),
+// edge-cached for 24h so we don't burn quota or slow the homepage down.
+// Needs two Worker secrets: GOOGLE_PLACES_API_KEY and GOOGLE_PLACE_ID.
+async function handleGoogleReviews(request, env, ctx) {
+  const cache = caches.default;
+  const cacheKey = new Request(new URL('/api/google-reviews', request.url).toString(), request);
+  const cached = await cache.match(cacheKey);
+  if (cached) return cached;
+
+  const empty = () => jsonResponse({ rating: null, total: 0, reviews: [] }, 200, 300);
+
+  if (!env.GOOGLE_PLACES_API_KEY || !env.GOOGLE_PLACE_ID) return empty();
+
+  try {
+    const apiUrl = `https://places.googleapis.com/v1/places/${env.GOOGLE_PLACE_ID}?fields=rating,userRatingCount,reviews&languageCode=en-AU`;
+    const res = await fetch(apiUrl, {
+      headers: { 'X-Goog-Api-Key': env.GOOGLE_PLACES_API_KEY, 'X-Goog-FieldMask': 'rating,userRatingCount,reviews' },
+    });
+    if (!res.ok) return empty();
+    const data = await res.json();
+    const reviews = (data.reviews || [])
+      .filter((r) => r.text && r.text.text)
+      .map((r) => ({
+        author: (r.authorAttribution && r.authorAttribution.displayName) || 'Google user',
+        rating: r.rating || null,
+        text: r.text.text,
+        relativeTime: r.relativePublishTimeDescription || '',
+      }));
+    const payload = { rating: data.rating || null, total: data.userRatingCount || 0, reviews };
+    const response = jsonResponse(payload, 200, 86400);
+    if (ctx && ctx.waitUntil) ctx.waitUntil(cache.put(cacheKey, response.clone()));
+    return response;
+  } catch (err) {
+    return empty();
+  }
+}
+
+function jsonResponse(data, status, maxAgeSeconds) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+      'Cache-Control': `public, max-age=${maxAgeSeconds}`,
+      ...SECURITY_HEADERS,
+    },
+  });
 }
 
 async function handleReadinessCheck(request, env) {
