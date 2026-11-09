@@ -86,7 +86,7 @@ strong { font-weight: 600; }
 }
 
 .nav__logo img {
-  height: 52px;
+  height: 104px;
   width: auto;
   display: block;
 }

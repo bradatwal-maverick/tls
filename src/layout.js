@@ -84,7 +84,7 @@ export function layout(page, css, ctx = {}) {
 <header class="site-header" role="banner">
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <a href="/" class="nav__logo" aria-label="Trade Licence Solutions — home">
-      <img src="/images/logo.png" alt="Trade Licence Solutions" width="52" height="52">
+      <img src="/images/logo.png" alt="Trade Licence Solutions" width="104" height="104">
     </a>
     <ul id="nav-menu" class="nav__links" role="list">
       <li class="nav__item nav__item--has-sub">
@@ -116,7 +116,6 @@ export function layout(page, css, ctx = {}) {
         </ul>
       </li>
       <li class="nav__item"><a href="/pricing">Pricing</a></li>
-      <li class="nav__item"><a href="/about">About Dan</a></li>
       <li class="nav__item"><a href="/contact" class="nav__cta">Book a free call</a></li>
     </ul>
     <div class="nav__actions">
