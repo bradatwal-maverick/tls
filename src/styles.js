@@ -103,7 +103,7 @@ strong { font-weight: 600; }
 .nav__links a {
   text-decoration: none;
   color: var(--dark-grey);
-  font-size: 0.9rem;
+  font-size: 1.8rem;
   font-weight: 500;
   transition: color var(--transition);
 }
