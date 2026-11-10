@@ -86,34 +86,39 @@ function plainError(err) {
 
 async function fetchSite(env) {
   const token = await accessToken(env);
+  // Google allows at most 5 requests per batch, so each period gets its own batch of 3
+  const url = 'https://analyticsdata.googleapis.com/v1beta/properties/' + propertyId(env) + ':batchRunReports';
+  const batch = async (requests) => {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ requests }),
+    });
+    if (!res.ok) {
+      const detail = (await res.text()).slice(0, 300).replace(/\s+/g, ' ');
+      throw new Error('GA4 ' + res.status + ': ' + detail);
+    }
+    return (await res.json()).reports || [];
+  };
   const reqFor = (days, body) => ({ dateRanges: [{ startDate: days + 'daysAgo', endDate: 'today' }], ...body });
   const days = [7, 30];
-  const requests = [
-    ...days.map((d) => reqFor(d, { metrics: [{ name: 'activeUsers' }, { name: 'sessions' }, { name: 'screenPageViews' }] })),
-    ...days.map((d) => reqFor(d, {
+  const perDay = await Promise.all(days.map((d) => batch([
+    reqFor(d, { metrics: [{ name: 'activeUsers' }, { name: 'sessions' }, { name: 'screenPageViews' }] }),
+    reqFor(d, {
       dimensions: [{ name: 'pagePath' }],
       metrics: [{ name: 'screenPageViews' }],
       orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }],
       limit: 5,
-    })),
-    ...days.map((d) => reqFor(d, {
+    }),
+    reqFor(d, {
       dimensions: [{ name: 'sessionDefaultChannelGroup' }],
       metrics: [{ name: 'sessions' }],
       orderBys: [{ metric: { metricName: 'sessions' }, desc: true }],
       limit: 15,
-    })),
-  ];
-  const url = 'https://analyticsdata.googleapis.com/v1beta/properties/' + propertyId(env) + ':batchRunReports';
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ requests }),
-  });
-  if (!res.ok) {
-    const detail = (await res.text()).slice(0, 300).replace(/\s+/g, ' ');
-    throw new Error('GA4 ' + res.status + ': ' + detail);
-  }
-  const reports = (await res.json()).reports || [];
+    }),
+  ])));
+  // Re-order into the layout the parsing below expects: totals x2, pages x2, channels x2
+  const reports = [perDay[0][0], perDay[1][0], perDay[0][1], perDay[1][1], perDay[0][2], perDay[1][2]];
 
   const out = { updated_at: new Date().toISOString(), periods: {} };
   days.forEach((d, i) => {
