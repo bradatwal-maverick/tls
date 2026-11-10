@@ -229,24 +229,8 @@ async function handleContact(request, env, ctx) {
     console.error('D1 save failed', err);
   }
 
-  // Email via Google Apps Script (see apps-script/SETUP.md). Emails Dan.
-  let emailed = false;
-  if (env.GMAIL_RELAY_URL && env.GMAIL_RELAY_KEY) {
-    try {
-      const relay = await fetch(env.GMAIL_RELAY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
-        body: JSON.stringify({ key: env.GMAIL_RELAY_KEY, name, phone, email, state, licence, message, source }),
-      });
-      const data = await relay.json();
-      emailed = data && data.ok === true;
-      if (!emailed) console.error('email relay refused', JSON.stringify(data));
-    } catch (err) {
-      console.error('email relay failed', err);
-    }
-  } else {
-    console.error('email relay not configured: set GMAIL_RELAY_URL and GMAIL_RELAY_KEY');
-  }
+  // Email Dan through Resend (transactional email API). No per-client Google approval needed.
+  const emailed = await sendEnquiryEmail(env, { name, phone, email, state, licence, message, source });
 
   if (!saved && !emailed) {
     return renderPage(
@@ -435,6 +419,52 @@ function adCookieFor(request) {
   if (!Object.keys(ad).length) return null;
   ad.landing_page = url.pathname.slice(0, 200);
   return `tls_ad=${encodeURIComponent(JSON.stringify(ad))}; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=Lax`;
+}
+
+// Sends one enquiry email to Dan via Resend. Returns true only if Resend accepts it.
+// Worker settings: RESEND_API_KEY (Secret). Optional: EMAIL_FROM (verified sending address), EMAIL_TO (Dan's inbox).
+async function sendEnquiryEmail(env, e) {
+  if (!env.RESEND_API_KEY) {
+    console.error('email not configured: set RESEND_API_KEY');
+    return false;
+  }
+  const from = env.EMAIL_FROM || 'Trade Licence Solutions <enquiries@tradelicencesolutions.com.au>';
+  const to = env.EMAIL_TO || 'dpleaner@gmail.com';
+  const oneLine = (s) => String(s || '').replace(/[\r\n]+/g, ' ').trim();
+  const hasEmail = e.email && e.email.indexOf('@') > 0;
+  const text = [
+    'Name: ' + e.name,
+    'Phone: ' + e.phone,
+    'Email: ' + (e.email || 'not given'),
+    'State: ' + (e.state || 'not given'),
+    'Licence needed: ' + (e.licence || 'not given'),
+    '',
+    e.message || '(no message)',
+    '',
+    'Sent from: ' + (e.source || 'website'),
+    'Reply to this email to answer the customer directly.',
+  ].join('\n');
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + env.RESEND_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: hasEmail ? e.email : undefined,
+        subject: oneLine('New enquiry: ' + e.name + ' (' + (e.state || 'state not given') + ')'),
+        text,
+      }),
+    });
+    if (!res.ok) {
+      console.error('Resend refused', res.status, await res.text());
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error('Resend request failed', err);
+    return false;
+  }
 }
 
 function readAdCookie(request) {
