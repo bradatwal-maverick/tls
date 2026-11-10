@@ -164,22 +164,24 @@ ${callBar}
     <div class="footer-col">
       <h3>Services</h3>
       <ul>
-        <li><a href="/company-licence">Company licences</a></li>
-        <li><a href="/mutual-recognition">Mutual recognition</a></li>
+        <li><a href="/apply">Apply now</a></li>
         <li><a href="/builder-licence">Builder licences</a></li>
-        <li><a href="/trade-contractor">Trade contractor</a></li>
-        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/check-eligibility">Check eligibility</a></li>
+        <li><a href="/company-licence">Company licences</a></li>
         <li><a href="/faq">FAQs</a></li>
+        <li><a href="/mutual-recognition">Mutual recognition</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/trade-contractor">Trade contractor</a></li>
       </ul>
     </div>
     <div class="footer-col">
       <h3>By state</h3>
       <ul>
+        <li><a href="/australian-capital-territory">ACT</a></li>
         <li><a href="/new-south-wales">New South Wales</a></li>
         <li><a href="/queensland">Queensland</a></li>
-        <li><a href="/victoria">Victoria</a></li>
-        <li><a href="/australian-capital-territory">ACT</a></li>
         <li><a href="/south-australia">South Australia</a></li>
+        <li><a href="/victoria">Victoria</a></li>
         <li><a href="/states">All states →</a></li>
       </ul>
     </div>
