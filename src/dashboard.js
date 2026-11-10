@@ -230,8 +230,8 @@ function json(data, status = 200) {
 
 function manifest() {
   return new Response(JSON.stringify({
-    name: 'TLS Enquiries',
-    short_name: 'Enquiries',
+    name: 'TLS Dashboard',
+    short_name: 'TLS Dashboard',
     start_url: '/dashboard',
     scope: '/dashboard',
     display: 'standalone',
@@ -278,7 +278,7 @@ function page(env) {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0b5cad">
-<title>Enquiries | TLS</title>
+<title>TLS Dashboard</title>
 <meta name="vapid-public" content="${esc(vapid)}">
 <link rel="manifest" href="/dashboard/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -353,7 +353,7 @@ dialog li { margin-bottom:8px; }
 <header>
   <div class="brand">
     <img src="/images/logo.png" alt="Trade Licence Solutions" width="44" height="44">
-    <h1>Enquiries</h1>
+    <h1>TLS Dashboard</h1>
   </div>
   <div class="hbtns">
     <button type="button" id="a2hs" class="hbtn">Add to home screen</button>
@@ -396,7 +396,7 @@ dialog li { margin-bottom:8px; }
   <ol>
     <li>Tap the Share button (the square with an arrow) at the bottom of the screen.</li>
     <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
-    <li>Tap <strong>Add</strong>. The Enquiries icon will appear on your home screen.</li>
+    <li>Tap <strong>Add</strong>. The TLS Dashboard icon will appear on your home screen.</li>
   </ol>
   <p><strong>On Android (Chrome):</strong> tap the three dots menu, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</p>
   <div class="btns"><button type="button" id="a2hs-close">Got it</button></div>
