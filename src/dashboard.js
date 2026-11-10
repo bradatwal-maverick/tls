@@ -1,6 +1,6 @@
 /**
  * Enquiry dashboard for Dan: /dashboard
- * Lists enquiries from D1, marks them booked, exports CSV, and sends Web Push alerts.
+ * Lists enquiries from D1, tracks responded and booked status, exports CSV, and sends Web Push alerts.
  * Protect the /dashboard path with Cloudflare Access (see the PR notes).
  */
 
@@ -12,6 +12,11 @@ const NOINDEX = {
 
 const STATES = ['nsw', 'qld', 'vic', 'act', 'sa', 'wa', 'tas', 'nt'];
 const LICENCES = ['builder', 'company', 'mutual', 'trade', 'not sure'];
+
+// Friendly enquiry number shown to the visitor, in Dan's email and on the dashboard, e.g. TLS-0001
+export function enquiryRef(id) {
+  return 'TLS-' + String(id).padStart(4, '0');
+}
 
 // Route entry point. Returns a Response, or null when the path is not a dashboard path.
 export async function handleDashboard(request, env, ctx, path) {
@@ -34,8 +39,11 @@ export async function handleDashboard(request, env, ctx, path) {
   if (method === 'GET' && path === '/dashboard/api/export.csv') return exportCsv(request, env);
   if (method === 'POST' && path === '/dashboard/api/push/subscribe') return subscribePush(request, env);
 
-  const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/booking$/);
-  if (method === 'POST' && m) return setBooking(request, env, Number(m[1]));
+  const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/(booking|responded)$/);
+  if (method === 'POST' && m) {
+    const id = Number(m[1]);
+    return m[2] === 'booking' ? setBooking(request, env, id) : markResponded(env, id);
+  }
 
   return new Response('Not found', { status: 404, headers: NOINDEX });
 }
@@ -83,8 +91,13 @@ function filtersFrom(url) {
   if (p.get('src') === 'other') where.push('is_ad = 0');
   if (p.get('status') === 'booked') where.push('booked = 1');
   if (p.get('status') === 'open') where.push('booked = 0');
+  if (p.get('status') === 'unattended') where.push('responded = 0');
   const q = (p.get('q') || '').trim().slice(0, 100);
-  if (q) {
+  const ref = q.match(/^tls[-\s]?0*(\d+)$/i); // search by enquiry number, e.g. TLS-0001
+  if (ref) {
+    where.push('id = ?');
+    binds.push(Number(ref[1]));
+  } else if (q) {
     where.push('(name LIKE ? OR phone LIKE ? OR email LIKE ? OR message LIKE ?)');
     const like = `%${q}%`;
     binds.push(like, like, like, like);
@@ -97,7 +110,8 @@ async function listEnquiries(request, env) {
   const rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at DESC, id DESC LIMIT 500`)
     .bind(...binds).all();
   const summary = await env.DB.prepare(
-    `SELECT COUNT(*) AS total, SUM(booked) AS booked, COALESCE(SUM(CASE WHEN booked = 1 THEN amount_aud END), 0) AS revenue
+    `SELECT COUNT(*) AS total, SUM(booked) AS booked, COALESCE(SUM(CASE WHEN booked = 1 THEN amount_aud END), 0) AS revenue,
+       COALESCE(SUM(CASE WHEN responded = 0 THEN 1 ELSE 0 END), 0) AS unattended
      FROM enquiries ${sql}`
   ).bind(...binds).first();
   return json({ rows: rows.results || [], summary });
@@ -107,13 +121,13 @@ async function exportCsv(request, env) {
   const url = new URL(request.url);
   const { sql, binds } = filtersFrom(url);
   const rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at ASC, id ASC`).bind(...binds).all();
-  const header = ['Enquiry date (AEST)', 'Name', 'Phone', 'Email', 'State', 'Licence', 'Message', 'Booked', 'Booked date (AEST)', 'Amount (AUD)',
-    'Google Ad', 'Source', 'Medium', 'Campaign', 'Landing page', 'Google click ID'];
+  const header = ['Enquiry number', 'Enquiry date (AEST)', 'Name', 'Phone', 'Email', 'State', 'Licence', 'Message', 'Responded', 'Booked',
+    'Booked date (AEST)', 'Amount (AUD)', 'Google Ad', 'Source', 'Medium', 'Campaign', 'Landing page', 'Google click ID'];
   const lines = [header.map(csvCell).join(',')];
   for (const r of rows.results || []) {
     lines.push([
-      aest(r.created_at), r.name, r.phone, r.email, (r.state || '').toUpperCase(), r.licence, r.message,
-      r.booked ? 'Yes' : 'No', r.booked_at ? aest(r.booked_at) : '', r.amount_aud ?? '',
+      enquiryRef(r.id), aest(r.created_at), r.name, r.phone, r.email, (r.state || '').toUpperCase(), r.licence, r.message,
+      r.responded ? 'Yes' : 'No', r.booked ? 'Yes' : 'No', r.booked_at ? aest(r.booked_at) : '', r.amount_aud ?? '',
       r.is_ad ? 'Yes' : 'No', r.utm_source, r.utm_medium, r.utm_campaign, r.landing_page, r.gclid,
     ].map(csvCell).join(','));
   }
@@ -128,6 +142,7 @@ async function exportCsv(request, env) {
   });
 }
 
+// Any booking also counts as responded.
 async function setBooking(request, env, id) {
   let body = {};
   try { body = await request.json(); } catch (err) { return json({ error: 'bad body' }, 400); }
@@ -137,9 +152,20 @@ async function setBooking(request, env, id) {
     amount = Number(String(body.amount).replace(/[$,\s]/g, ''));
     if (!Number.isFinite(amount) || amount < 0 || amount > 1000000) return json({ error: 'bad amount' }, 400);
   }
-  const bookedAt = booked ? new Date().toISOString() : null;
-  await env.DB.prepare('UPDATE enquiries SET booked = ?, booked_at = ?, amount_aud = ? WHERE id = ?')
-    .bind(booked, bookedAt, booked ? amount : null, id).run();
+  const now = new Date().toISOString();
+  await env.DB.prepare(
+    `UPDATE enquiries SET booked = ?, booked_at = ?, amount_aud = ?,
+       responded = CASE WHEN ? = 1 THEN 1 ELSE responded END,
+       responded_at = CASE WHEN ? = 1 THEN COALESCE(responded_at, ?) ELSE responded_at END
+     WHERE id = ?`
+  ).bind(booked, booked ? now : null, booked ? amount : null, booked, booked, now, id).run();
+  return json({ ok: true });
+}
+
+// Called when Dan taps Call or Email, so the enquiry leaves the Unattended group.
+async function markResponded(env, id) {
+  await env.DB.prepare('UPDATE enquiries SET responded = 1, responded_at = COALESCE(responded_at, ?) WHERE id = ?')
+    .bind(new Date().toISOString(), id).run();
   return json({ ok: true });
 }
 
@@ -257,79 +283,124 @@ function page(env) {
 <link rel="manifest" href="/dashboard/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
-:root { --blue:#0b5cad; --ink:#1b2430; --muted:#5d6b7a; --line:#dfe5ec; --bg:#f4f6f9; --green:#1e7b43; --amber:#b26a00; }
-@media (prefers-color-scheme: dark) { :root { --ink:#e8edf3; --muted:#9fb0c2; --line:#2d3a48; --bg:#111820; } }
+:root { --blue:#0b5cad; --ink:#1b2430; --muted:#5d6b7a; --line:#dfe5ec; --bg:#f4f6f9; --card:#ffffff; --green:#1e7b43; --amber:#b26a00; --amberbg:#fff6e0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ink:#e8edf3; --muted:#9fb0c2; --line:#2d3a48; --bg:#111820; --card:#18222d; --amberbg:#2b2414; } }
 * { box-sizing: border-box; }
 html, body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
 body { padding-bottom: env(safe-area-inset-bottom); min-height:100vh; overscroll-behavior-y: contain; }
-header { position:sticky; top:0; z-index:5; background:var(--blue); color:#fff; padding:14px 16px; padding-top:calc(14px + env(safe-area-inset-top)); }
+header { position:sticky; top:0; z-index:5; background:var(--blue); color:#fff; padding:10px 16px; padding-top:calc(10px + env(safe-area-inset-top)); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 12px; }
+.brand { display:flex; align-items:center; gap:10px; }
+.brand img { width:44px; height:44px; background:#fff; border-radius:10px; padding:3px; }
 header h1 { margin:0; font-size:20px; }
-main { padding:12px 16px 40px; max-width:720px; margin:0 auto; }
+.hbtns { display:flex; flex-wrap:wrap; gap:6px; }
+button.hbtn { font:inherit; font-size:14px; font-weight:600; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,.55); background:rgba(255,255,255,.14); color:#fff; cursor:pointer; }
+button.hbtn.done { background:#fff; color:var(--blue); }
+main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 #ptr { text-align:center; color:var(--muted); font-size:14px; height:0; overflow:hidden; transition:height .2s; }
 #ptr.on { height:40px; }
-.summary { display:flex; gap:10px; margin:6px 0 12px; }
-.tile { flex:1; background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px; }
-@media (prefers-color-scheme: dark) { .tile { background:#18222d; } }
+.summary { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:6px 0 12px; }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:9px 10px; min-width:0; }
 .tile b { display:block; font-size:22px; }
 .tile span { color:var(--muted); font-size:13px; }
-details { background:#fff; border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:12px; }
-@media (prefers-color-scheme: dark) { details { background:#18222d; } }
-summary { font-weight:600; cursor:pointer; }
+.tile.alert { border-color:var(--amber); background:var(--amberbg); }
+.tile.alert b { color:var(--amber); }
+.panel { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 12px; margin-bottom:12px; }
+.panel summary { font-weight:600; cursor:pointer; }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
 .grid .full { grid-column:1 / -1; }
 label { font-size:13px; color:var(--muted); display:block; }
 input, select { width:100%; font:inherit; padding:10px; border:1px solid var(--line); border-radius:8px; background:transparent; color:var(--ink); margin-top:4px; }
 .btns { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
-button, .btn { font:inherit; border:0; border-radius:10px; padding:12px 14px; background:var(--blue); color:#fff; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer; }
+button, .btn { font:inherit; border:0; border-radius:10px; padding:11px 14px; background:var(--blue); color:#fff; font-weight:600; text-decoration:none; display:inline-block; cursor:pointer; }
+button.sm, .btn.sm { padding:9px 12px; font-size:15px; }
 button.ghost, .btn.ghost { background:transparent; color:var(--blue); border:1px solid var(--blue); }
-button.done { background:var(--green); }
-.card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px; }
-@media (prefers-color-scheme: dark) { .card { background:#18222d; } }
-.card h2 { margin:0 0 4px; font-size:18px; }
+button:disabled { opacity:.6; }
+.item { background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:8px; overflow:hidden; }
+.item.unattended { border-left:5px solid var(--amber); background:var(--amberbg); }
+.line { display:flex; flex-wrap:wrap; align-items:center; gap:2px 10px; padding:11px 12px; cursor:pointer; list-style:none; }
+.line::-webkit-details-marker { display:none; }
+.line:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
+.dot { width:9px; height:9px; border-radius:50%; background:var(--amber); flex:0 0 9px; }
+.name { font-weight:700; }
+.ref { font-size:13px; font-weight:700; color:var(--blue); }
 .meta { color:var(--muted); font-size:14px; }
-.msg { margin:8px 0; white-space:pre-wrap; }
-.badge { display:inline-block; font-size:12px; font-weight:700; padding:3px 8px; border-radius:99px; background:#eef2f6; color:var(--muted); }
+.when { margin-left:auto; color:var(--muted); font-size:13px; }
+.detail { padding:0 12px 12px; }
+.label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-top:4px; }
+.msg { margin:4px 0 6px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.msg.muted { color:var(--muted); }
+.badge { display:inline-block; font-size:12px; font-weight:700; padding:4px 9px; border-radius:99px; background:#eef2f6; color:var(--muted); white-space:nowrap; }
+.badge.new { background:#fff0c7; color:var(--amber); }
+.badge.responded { background:#e8f0fe; color:#1a56c4; }
 .badge.booked { background:#e3f4ea; color:var(--green); }
-.badge.new { background:#fff3dc; color:var(--amber); }
 .badge.ad { background:#e8f0fe; color:#1a56c4; }
 .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
 .empty { text-align:center; color:var(--muted); padding:30px 0; }
+dialog { max-width:420px; width:calc(100% - 32px); border:0; border-radius:14px; padding:20px; background:var(--card); color:var(--ink); }
+dialog::backdrop { background:rgba(0,0,0,.45); }
+dialog h2 { margin:0 0 8px; font-size:19px; }
+dialog ol { padding-left:20px; margin:8px 0; }
+dialog li { margin-bottom:8px; }
+@media (max-width:560px) {
+  .summary { grid-template-columns:1fr 1fr; }
+  header h1 { font-size:18px; }
+  .when { margin-left:0; width:100%; }
+  .grid { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
-<header><h1>Enquiries</h1></header>
+<header>
+  <div class="brand">
+    <img src="/images/logo.png" alt="Trade Licence Solutions" width="44" height="44">
+    <h1>Enquiries</h1>
+  </div>
+  <div class="hbtns">
+    <button type="button" id="a2hs" class="hbtn">Add to home screen</button>
+    <button type="button" id="alerts" class="hbtn">Turn on phone alerts</button>
+    <button type="button" id="csv" class="hbtn">Download CSV</button>
+  </div>
+</header>
 <main>
   <div id="ptr">Pull down to refresh…</div>
 
   <div class="summary">
     <div class="tile"><b id="t-count">–</b><span>Enquiries</span></div>
+    <div class="tile" id="tile-unattended"><b id="t-unattended">–</b><span>Unattended</span></div>
     <div class="tile"><b id="t-booked">–</b><span>Booked</span></div>
     <div class="tile"><b id="t-rev">–</b><span>Booked value</span></div>
   </div>
 
-  <details id="filters">
+  <details class="panel" id="filters">
     <summary>Filter enquiries</summary>
     <form id="f" class="grid">
       <div><label>From<input type="date" name="from"></label></div>
       <div><label>To<input type="date" name="to"></label></div>
       <div><label>State<select name="state"><option value="">All states</option>${stateOpts}</select></label></div>
       <div><label>Licence<select name="licence"><option value="">All licences</option>${licenceOpts}</select></label></div>
-      <div><label>Status<select name="status"><option value="">All</option><option value="open">Not booked</option><option value="booked">Booked</option></select></label></div>
+      <div><label>Status<select name="status"><option value="">All</option><option value="unattended">Unattended</option><option value="open">Not booked</option><option value="booked">Booked</option></select></label></div>
       <div><label>Source<select name="src"><option value="">All sources</option><option value="ads">Google Ads only</option><option value="other">Not from ads</option></select></label></div>
-      <div><label>Search<input type="search" name="q" placeholder="Name, phone, email, message"></label></div>
+      <div class="full"><label>Search<input type="search" name="q" placeholder="Name, phone, email, message or TLS-0001"></label></div>
       <div class="full btns">
         <button type="button" id="clear" class="ghost">Clear</button>
-        <button type="button" id="csv">Download CSV</button>
       </div>
     </form>
   </details>
 
-  <div class="btns">
-    <button type="button" id="alerts" class="ghost">Turn on phone alerts</button>
-  </div>
-
-  <div id="list" style="margin-top:12px"></div>
+  <div id="list"></div>
 </main>
+
+<dialog id="a2hs-dialog" aria-labelledby="a2hs-title">
+  <h2 id="a2hs-title">Add to home screen</h2>
+  <p><strong>On iPhone (Safari):</strong></p>
+  <ol>
+    <li>Tap the Share button (the square with an arrow) at the bottom of the screen.</li>
+    <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
+    <li>Tap <strong>Add</strong>. The Enquiries icon will appear on your home screen.</li>
+  </ol>
+  <p><strong>On Android (Chrome):</strong> tap the three dots menu, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</p>
+  <div class="btns"><button type="button" id="a2hs-close">Got it</button></div>
+</dialog>
 
 <script src="/dashboard/app.js"></script>
 </body>
@@ -338,9 +409,15 @@ button.done { background:var(--green); }
 
 // The dashboard's page script, served as a file (not inline) so the site's Content Security Policy can block inline scripts.
 function appScript() {
-  return new Response(`const VAPID_PUBLIC = (document.querySelector('meta[name="vapid-public"]') || {}).content || '';
+  return new Response(APP_JS, { headers: { ...NOINDEX, 'Content-Type': 'application/javascript' } });
+}
+
+// Plain JavaScript for the browser. No backticks or template placeholders in here.
+const APP_JS = `const VAPID_PUBLIC = (document.querySelector('meta[name="vapid-public"]') || {}).content || '';
 const $ = (s) => document.querySelector(s);
 const form = $('#f');
+const openIds = new Set();
+let deferredInstall = null;
 
 function el(tag, attrs, ...kids) {
   const n = document.createElement(tag);
@@ -357,8 +434,9 @@ function query() {
 }
 function money(n) { return '$' + Number(n || 0).toLocaleString('en-AU', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
 function when(iso) {
-  return new Date(iso).toLocaleString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+  return new Date(iso).toLocaleString('en-AU', { timeZone: 'Australia/Sydney', day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 }
+function refOf(id) { return 'TLS-' + String(id).padStart(4, '0'); }
 const LABELS = { builder: 'Builder', company: 'Company', mutual: 'Mutual recognition', trade: 'Trade', 'not sure': 'Not sure' };
 
 async function load() {
@@ -367,9 +445,12 @@ async function load() {
     const res = await fetch('/dashboard/api/enquiries?' + query(), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
-    $('#t-count').textContent = data.summary.total || 0;
-    $('#t-booked').textContent = data.summary.booked || 0;
-    $('#t-rev').textContent = money(data.summary.revenue);
+    const s = data.summary;
+    $('#t-count').textContent = s.total || 0;
+    $('#t-unattended').textContent = s.unattended || 0;
+    $('#tile-unattended').classList.toggle('alert', Number(s.unattended || 0) > 0);
+    $('#t-booked').textContent = s.booked || 0;
+    $('#t-rev').textContent = money(s.revenue);
     list.replaceChildren();
     if (!data.rows.length) list.append(el('div', { class: 'empty' }, 'No enquiries match these filters.'));
     for (const r of data.rows) list.append(card(r));
@@ -378,15 +459,46 @@ async function load() {
   }
 }
 
+function statusOf(r) {
+  if (r.booked) return ['booked', 'Booked' + (r.amount_aud != null ? ' · ' + money(r.amount_aud) : '')];
+  if (r.responded) return ['responded', 'Responded'];
+  return ['new', 'Unattended'];
+}
+
 function card(r) {
-  const badge = r.booked
-    ? el('span', { class: 'badge booked' }, 'Booked' + (r.amount_aud != null ? ' · ' + money(r.amount_aud) : ''))
-    : el('span', { class: 'badge new' }, 'Not booked');
-  const btn = el('button', { type: 'button', class: r.booked ? 'ghost' : '' }, r.booked ? 'Undo booked' : 'Mark booked');
+  const st = statusOf(r);
+  const unattended = st[0] === 'new';
+  const badge = el('span', { class: 'badge ' + st[0] }, st[1]);
+  const phone = String(r.phone || '').replace(/\\s/g, '');
+
+  // Any tap on Call or Email counts as a response: the card leaves the Unattended group.
+  function markResponded() {
+    if (!unattended || badge.dataset.done) return;
+    badge.dataset.done = '1';
+    item.classList.remove('unattended');
+    badge.className = 'badge responded';
+    badge.textContent = 'Responded';
+    const t = $('#t-unattended');
+    t.textContent = Math.max(0, Number(t.textContent) - 1);
+    $('#tile-unattended').classList.toggle('alert', Number(t.textContent) > 0);
+    fetch('/dashboard/api/enquiries/' + r.id + '/responded', { method: 'POST', keepalive: true }).catch(() => {});
+  }
+
+  const call = el('a', { class: 'btn ghost sm', href: 'tel:' + phone }, 'Call ' + (r.phone || ''));
+  call.addEventListener('click', markResponded);
+  const kids = [call];
+  if (r.email) {
+    const mail = el('a', { class: 'btn ghost sm', href: 'mailto:' + r.email }, 'Email');
+    mail.addEventListener('click', markResponded);
+    kids.push(mail);
+  }
+  kids.push(badge);
+
+  const btn = el('button', { type: 'button', class: 'sm' + (r.booked ? ' ghost' : '') }, r.booked ? 'Undo booked' : 'Mark booked');
   btn.addEventListener('click', async () => {
-    let body = { booked: !r.booked };
+    const body = { booked: !r.booked };
     if (!r.booked) {
-      const amt = prompt('Amount for ' + r.name + ' in dollars (leave blank if not known):', '');
+      const amt = prompt('Amount for ' + (r.name || 'this enquiry') + ' in dollars (leave blank if not known):', '');
       if (amt === null) return;
       body.amount = amt;
     }
@@ -396,16 +508,30 @@ function card(r) {
     });
     if (res.ok) load(); else { btn.disabled = false; alert('Could not save. Please try again.'); }
   });
-  const phone = r.phone.replace(/\\s/g, '');
-  return el('div', { class: 'card' },
-    el('h2', {}, r.name || 'No name'),
-    el('div', { class: 'meta' }, when(r.created_at) + ' · ' + ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?')),
-    el('div', { class: 'row' }, el('a', { class: 'btn ghost', href: 'tel:' + phone }, 'Call ' + r.phone),
-      r.email ? el('a', { class: 'btn ghost', href: 'mailto:' + r.email }, 'Email') : '', badge,
-      r.is_ad ? el('span', { class: 'badge ad' }, 'Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '')) : ''),
-    r.message ? el('div', { class: 'msg' }, r.message) : '',
-    el('div', { class: 'row' }, btn)
+  kids.push(btn);
+
+  const head = el('summary', { class: 'line' },
+    unattended ? el('span', { class: 'dot', title: 'Unattended' }) : '',
+    el('span', { class: 'name' }, r.name || 'No name'),
+    el('span', { class: 'ref' }, refOf(r.id)),
+    el('span', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?')),
+    el('span', { class: 'when' }, when(r.created_at))
   );
+
+  const item = el('details', { class: 'item' + (unattended ? ' unattended' : '') },
+    head,
+    el('div', { class: 'detail' },
+      r.is_ad ? el('div', { class: 'meta' }, 'From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '')) : '',
+      el('div', { class: 'label' }, 'Message'),
+      r.message ? el('div', { class: 'msg' }, r.message) : el('div', { class: 'msg muted' }, 'No message given.'),
+      el('div', { class: 'row' }, ...kids)
+    )
+  );
+  if (openIds.has(String(r.id))) item.open = true;
+  item.addEventListener('toggle', () => {
+    if (item.open) openIds.add(String(r.id)); else openIds.delete(String(r.id));
+  });
+  return item;
 }
 
 form.addEventListener('input', debounce(load, 250));
@@ -417,6 +543,22 @@ $('#csv').addEventListener('click', () => {
 });
 
 function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+// Add to home screen: Android uses the install prompt when the browser offers it; iPhone gets the steps popup.
+const isInstalled = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+if (isInstalled) $('#a2hs').hidden = true;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredInstall = e; });
+$('#a2hs').addEventListener('click', async () => {
+  if (deferredInstall) {
+    deferredInstall.prompt();
+    try { await deferredInstall.userChoice; } catch (err) { /* ignore */ }
+    deferredInstall = null;
+    return;
+  }
+  const dlg = $('#a2hs-dialog');
+  if (dlg.showModal) dlg.showModal(); else alert('On iPhone: tap Share, then Add to Home Screen. On Android: tap the three dots menu, then Add to Home screen.');
+});
+$('#a2hs-close').addEventListener('click', () => $('#a2hs-dialog').close());
 
 // Phone alerts
 function b64ToBytes(s) {
@@ -458,8 +600,7 @@ window.addEventListener('touchend', async (e) => {
 }, { passive: true });
 
 load();
-`, { headers: { ...NOINDEX, 'Content-Type': 'application/javascript' } });
-}
+`;
 
 function esc(v) {
   return String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

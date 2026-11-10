@@ -7,7 +7,7 @@
 import { pages } from './pages.js';
 import { getCSS } from './styles.js';
 import { layout } from './layout.js';
-import { handleDashboard, saveEnquiry, notifyNewEnquiry } from './dashboard.js';
+import { handleDashboard, saveEnquiry, notifyNewEnquiry, enquiryRef } from './dashboard.js';
 
 const SITE = 'https://tradelicencesolutions.com.au';
 const PHONE_DISPLAY = '0412 767 129';
@@ -221,16 +221,18 @@ async function handleContact(request, env, ctx) {
   // Each route is tried on its own. The enquiry counts as received if either one works,
   // so a failed email never shows the visitor an error when the enquiry is already saved in D1.
   let saved = false;
+  let ref = '';
   try {
     const id = await saveEnquiry(env, { name, phone, email, state, licence, message, source, ...readAdCookie(request) });
     saved = Boolean(id);
+    if (saved) ref = enquiryRef(id);
     if (saved && ctx && ctx.waitUntil) ctx.waitUntil(notifyNewEnquiry(env).catch((err) => console.error('push alert failed', err)));
   } catch (err) {
     console.error('D1 save failed', err);
   }
 
   // Email Dan through Resend (transactional email API). No per-client Google approval needed.
-  const emailed = await sendEnquiryEmail(env, { name, phone, email, state, licence, message, source });
+  const emailed = await sendEnquiryEmail(env, { name, phone, email, state, licence, message, source, ref });
 
   if (!saved && !emailed) {
     return renderPage(
@@ -239,7 +241,37 @@ async function handleContact(request, env, ctx) {
     );
   }
 
-  return renderPage(pages['/contact-submitted'], '/contact-submitted', env);
+  return renderPage(receivedPage({ name, phone, state, licence, ref }), '/contact-submitted', env);
+}
+
+// Confirmation page after a valid enquiry: enquiry number first, then the phone number Dan will call.
+function receivedPage(e) {
+  const LICENCE_LABELS = { builder: 'Builder', company: 'Company', mutual: 'Mutual recognition', trade: 'Trade', 'not sure': 'Not sure' };
+  const first = esc(String(e.name || '').trim().split(/\s+/)[0] || 'there');
+  const phone = esc(e.phone);
+  const telPhone = esc(String(e.phone).replace(/\s/g, ''));
+  const ref = e.ref ? esc(e.ref) : '';
+  const base = pages['/contact-submitted'];
+  const content = `
+      <section class="hero">
+        <div class="container container--narrow">
+          <h1>Thanks ${first}, we have your enquiry.</h1>
+          <div style="background:#fff;border:1px solid #dfe5ec;border-radius:12px;padding:1rem 1.25rem;margin:1.25rem 0;text-align:left;color:#1b2430;">
+            ${ref ? `<p style="margin:0 0 .4rem;"><strong>Enquiry number:</strong> ${ref}</p>` : ''}
+            <p style="margin:0 0 .4rem;"><strong>Name:</strong> ${esc(e.name)}</p>
+            <p style="margin:0 0 .4rem;"><strong>State:</strong> ${esc((e.state || 'not given').toUpperCase())}</p>
+            <p style="margin:0;"><strong>Licence:</strong> ${esc(LICENCE_LABELS[e.licence] || e.licence || 'not given')}</p>
+          </div>
+          <p style="font-size:1.15rem;"><strong>Dan will call you on <a href="tel:${telPhone}" style="color:var(--orange);">${phone}</a>.</strong></p>
+          <p>${ref ? `Quote ${ref} if you call Dan first. ` : ''}Dan personally calls everyone back. If it's urgent, call him directly on <a href="tel:+61412767129" style="color:var(--orange);">0412 767 129</a>.</p>
+          <div class="hero__ctas">
+            <a href="/" class="btn btn--primary">Back to home</a>
+          </div>
+        </div>
+      </section>
+      <span data-track-form-complete="contact" hidden></span>
+    `;
+  return { ...base, content };
 }
 
 // Live Google reviews — pulled from Dan's Google Business Profile via the Places API (New),
@@ -433,6 +465,7 @@ async function sendEnquiryEmail(env, e) {
   const oneLine = (s) => String(s || '').replace(/[\r\n]+/g, ' ').trim();
   const hasEmail = e.email && e.email.indexOf('@') > 0;
   const text = [
+    'Enquiry number: ' + (e.ref || 'not saved'),
     'Name: ' + e.name,
     'Phone: ' + e.phone,
     'Email: ' + (e.email || 'not given'),
@@ -452,7 +485,7 @@ async function sendEnquiryEmail(env, e) {
         from,
         to: [to],
         reply_to: hasEmail ? e.email : undefined,
-        subject: oneLine('New enquiry: ' + e.name + ' (' + (e.state || 'state not given') + ')'),
+        subject: oneLine('New enquiry' + (e.ref ? ' ' + e.ref : '') + ': ' + e.name + ' (' + (e.state || 'state not given') + ')'),
         text,
       }),
     });
