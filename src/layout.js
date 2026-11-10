@@ -28,6 +28,13 @@ function faqJsonLd(content) {
 }
 
 export function layout(page, css, ctx = {}) {
+  const callBar = ctx.path === '/contact' ? '' : `<div class="call-bar" role="complementary" aria-label="Contact">
+  <div class="call-bar__inner">
+    <p>Ready to get your licence? Dan answers his own phone.</p>
+    <a href="/contact" class="btn btn--navy">Book a Callback</a>
+  </div>
+</div>
+`;
   const path = ctx.path || '/';
   const pageUrl = `${SITE}${path}`;
   const title = esc(page.title);
@@ -117,7 +124,7 @@ export function layout(page, css, ctx = {}) {
         </ul>
       </li>
       <li class="nav__item"><a href="/pricing">Pricing</a></li>
-      <li class="nav__item"><a href="/contact" class="nav__cta">Book a free call</a></li>
+      <li class="nav__item"><a href="/contact" class="nav__cta">Book a Callback</a></li>
     </ul>
     <div class="nav__actions">
       <label for="nav-check" class="nav__toggle" title="Menu">
@@ -143,12 +150,7 @@ export function layout(page, css, ctx = {}) {
 ${page.content}
 </main>
 
-<div class="call-bar" role="complementary" aria-label="Contact">
-  <div class="call-bar__inner">
-    <p>Ready to get your licence? Dan answers his own phone.</p>
-    <a href="/contact" class="btn btn--navy">Book a free call</a>
-  </div>
-</div>
+${callBar}
 
 <footer class="site-footer" role="contentinfo">
   <div class="footer-grid">
@@ -183,13 +185,13 @@ ${page.content}
   </div>
   <div class="footer-bottom">
     <p>© 2026 Trade Licence Solutions · <a href="/privacy" style="color:rgba(255,255,255,0.65);">Privacy &amp; Terms</a></p>
-    <p class="footer-credit">Future proofed by <a href="${credit}" target="_blank" rel="noopener">Maverick Digital</a></p>
+    <p class="footer-credit">Future proofed by <a href="${credit}" target="_blank" rel="noopener">Maverick Digital &amp; AI</a></p>
   </div>
 </footer>
 
 <a href="/contact" class="ask-dan" aria-label="Check Eligibility in 30 Secs">
   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
-  <span>Check Eligibility in 30 Secs</span>
+  <span class="ask-dan__long">Check Eligibility in 30 Secs</span><span class="ask-dan__short">Check in 30 Sec</span>
 </a>
 
 <script src="/nav.js"></script>
