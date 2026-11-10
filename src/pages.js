@@ -25,7 +25,14 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
-          <div class="quick-answer">
+          <h2>Who this page is for</h2>
+          <ul class="who-grid">
+            <li>Pty Ltd company owners who contract, sub-contract or advertise residential building work over $5,000</li>
+            <li>Builders who set up a company after getting their own individual licence</li>
+            <li>Businesses that need to nominate a qualified supervisor</li>
+          </ul>
+
+          <div class="quick-answer" style="margin-top:2rem;">
             <p><strong>In short:</strong> If your Pty Ltd company contracts, sub-contracts or advertises residential building work worth more than $5,000 (incl GST), the company itself must hold a contractor licence — a director's personal licence is not enough. Dan prepares and lodges company contractor licence applications in NSW and QLD <strong>from $550</strong> and follows up with the regulator until it's issued.</p>
           </div>
 
@@ -123,7 +130,14 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
-          <div class="quick-answer">
+          <h2>Who this page is for</h2>
+          <ul class="who-grid">
+            <li>Licensed builders or trade contractors moving to another Australian state</li>
+            <li>Licence holders who are not sure if they can notify or need a full application</li>
+            <li>Business owners who want the paperwork handled for them</li>
+          </ul>
+
+          <div class="quick-answer" style="margin-top:2rem;">
             <p><strong>In short:</strong> If you already hold a trade or builder licence in one Australian state, mutual recognition lets you work in another state without sitting new exams. Under <strong>Automatic Mutual Recognition (AMR)</strong> you notify the regulator rather than re-apply; some states and licence types still need a formal application. Dan confirms which path applies and handles the paperwork <strong>from $550 per state</strong>.</p>
           </div>
 
@@ -215,7 +229,14 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
-          <div class="quick-answer">
+          <h2>Who this page is for</h2>
+          <ul class="who-grid">
+            <li>People who want to contract directly with clients and run their own building work</li>
+            <li>Tradies moving from trade work into building</li>
+            <li>Anyone whose application has stalled on experience or referees</li>
+          </ul>
+
+          <div class="quick-answer" style="margin-top:2rem;">
             <p><strong>In short:</strong> A builder licence lets you contract directly with clients, run your own sites and legally quote for residential work over $5,000. Most applications that stall fail on experience documentation or referees — not qualifications. Dan prepares and lodges your NSW Fair Trading, QBCC or other state application <strong>from $2,000</strong>, built to be approved the first time.</p>
           </div>
 
@@ -299,7 +320,14 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
-          <div class="quick-answer">
+          <h2>Who this page is for</h2>
+          <ul class="who-grid">
+            <li>Carpenters, plumbers, electricians, air conditioning and roof plumbing contractors</li>
+            <li>Trade contractors working in NSW, QLD or another state</li>
+            <li>New licence holders who need to know which licence type fits</li>
+          </ul>
+
+          <div class="quick-answer" style="margin-top:2rem;">
             <p><strong>In short:</strong> A trade contractor licence lets you contract for work in your specific trade — carpentry, plumbing, electrical, air conditioning, roof plumbing and more. The right licence type depends on your trade and your state. Dan checks your qualifications, prepares the application and lodges it <strong>from $495</strong>.</p>
           </div>
 
@@ -380,27 +408,35 @@ export const pages = {
 
       <section class="section">
         <div class="container container--narrow">
-          <div class="quick-answer">
-            <p><strong>In short:</strong> In NSW you need an electrical licence before you do any electrical wiring work, whatever the cost or type of work. Plumbing and drainage has its own licence, which covers plumbing, water plumbing and draining. Both are issued through NSW Fair Trading. Dan checks your qualifications and experience, prepares the application and lodges it for you. <strong>from $1,500</strong>, including document preparation and regulator follow-up.</p>
-          </div>
-
+          <div class="easy">
           <h2>Who this page is for</h2>
-          <ul>
+          <ul class="who-grid">
             <li>Electricians who want to do wiring work in NSW</li>
             <li>Plumbers and drainers who want to run their own plumbing business</li>
             <li>Tradies who are new to licensing and want it explained step by step</li>
           </ul>
 
+          <div class="quick-answer" style="margin-top:2rem;">
+            <p><strong>In short:</strong> In NSW you need an electrical licence before you do any wiring work, whatever the cost or type of job. Plumbing and drainage has its own licence, covering plumbing, water plumbing and draining. Both come from NSW Fair Trading. Dan checks your qualifications and experience, prepares the application and lodges it for you, <strong>from $1,500 ex GST</strong>, including document preparation and regulator follow-up.</p>
+          </div>
+
           <h2 style="margin-top:2rem;">How it works, step by step</h2>
-          <ol>
+          <ol class="step-cards">
             <li><strong>Confirm your licence type.</strong> Electrical and plumbing each have their own licence types in NSW. Dan helps you pick the right one.</li>
             <li><strong>Check your qualifications and experience.</strong> You need approved qualifications and experience before you can apply. For plumbing, a referee statement is also needed for each category.</li>
             <li><strong>Dan prepares and lodges the application</strong> with NSW Fair Trading.</li>
             <li><strong>Dan follows up</strong> until your licence is issued, and explains what to do next.</li>
           </ol>
 
+          <div class="price-card">
+            <p class="price-card__label">Dan's fee</p>
+            <p class="price-card__amount">from $1,500</p>
+            <p class="price-card__note">Ex GST. NSW Fair Trading government fees are separate from Dan's fee.</p>
+            <a href="/contact" class="btn btn--primary">Book a free 15-minute call</a>
+          </div>
+
           <h2 style="margin-top:2rem;">Good to know</h2>
-          <ul>
+          <ul class="check-list">
             <li>Licensed electricians must submit Certificates of Compliance for electrical work (CCEW) through BCNSW eCert.</li>
             <li>The NSW Supervision Practice Standard sets the levels and ratios for supervising electrical apprentices.</li>
             <li>Some electricians licensed in Queensland, Victoria or the ACT can work in NSW under Automatic Mutual Recognition.</li>
@@ -410,6 +446,8 @@ export const pages = {
           <div class="cta-block" style="margin-top:2rem;">
             <a href="tel:+61412767129" class="btn btn--primary">Call Dan on 0412 767 129</a>
             <a href="/contact" class="btn btn--navy">Book a free 15-minute call</a>
+          </div>
+
           </div>
 
           <h2 style="margin-top:2.5rem;">Electrical and plumbing FAQs</h2>
