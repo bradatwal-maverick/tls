@@ -15,7 +15,7 @@ const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 
 export async function ga4Summary(env) {
   const missing = [];
-  if (!env.GA4_PROPERTY_ID) missing.push('GA4_PROPERTY_ID');
+  if (!propertyId(env)) missing.push('GA4_PROPERTY_ID (digits only)');
   if (env.GA_REFRESH_TOKEN) {
     if (!env.GA_CLIENT_ID) missing.push('GA_CLIENT_ID');
     if (!env.GA_CLIENT_SECRET) missing.push('GA_CLIENT_SECRET');
@@ -25,7 +25,7 @@ export async function ga4Summary(env) {
   if (missing.length) return { configured: false, missing };
 
   const cache = caches.default;
-  const key = new Request('https://ga4-cache.internal/' + encodeURIComponent(env.GA4_PROPERTY_ID) + '/v1');
+  const key = new Request('https://ga4-cache.internal/' + propertyId(env) + '/v1');
   let site = null;
   let cached = false;
   try {
@@ -65,16 +65,22 @@ export async function ga4Summary(env) {
 }
 
 // Turns a technical failure into a plain-words reason for the dashboard
+function propertyId(env) {
+  return String(env.GA4_PROPERTY_ID || '').replace(/\D/g, '');
+}
+
 function plainError(err) {
   const m = String(err && err.message || '');
+  const code = (m.match(/^GA4 (\d{3})/) || [])[1];
+  const shown = ' Google said: ' + m.replace(/^GA4 \d{3}: ?/, '');
   if (m.startsWith('token')) {
     return 'Google refused the sign-in token (' + m + '). The Client ID, Client secret or Refresh token in the Worker settings is wrong or was revoked. Make a new refresh token in the OAuth Playground.';
   }
-  if (m === 'GA4 401') return 'Google rejected the sign-in (GA4 401). Make a new refresh token in the OAuth Playground.';
-  if (m === 'GA4 403') return 'The Google account used for sign-in cannot read this property (GA4 403). In Google Analytics, Admin, Property access management, add that account as Viewer.';
-  if (m === 'GA4 404') return 'Google cannot find this property (GA4 404). Check that GA4_PROPERTY_ID is the numeric Property ID.';
-  if (m === 'GA4 400') return 'Google did not accept the request (GA4 400). Check that GA4_PROPERTY_ID is only digits.';
-  if (m === 'GA4 429') return 'Google is limiting requests right now (GA4 429). Try again in a few minutes.';
+  if (code === '401') return 'Google rejected the sign-in (GA4 401).' + shown + ' Make a new refresh token in the OAuth Playground.';
+  if (code === '403') return 'The Google account used for sign-in cannot read this property (GA4 403).' + shown + ' In Google Analytics, Admin, Property access management, add that account as Viewer.';
+  if (code === '404') return 'Google cannot find this property (GA4 404).' + shown + ' Check GA4_PROPERTY_ID is the numeric Property ID.';
+  if (code === '400') return 'Google did not accept the request (GA4 400).' + shown;
+  if (code === '429') return 'Google is limiting requests right now (GA4 429). Try again in a few minutes.';
   return 'Could not load Google Analytics (' + m + '). Try again in a few minutes.';
 }
 
@@ -97,13 +103,16 @@ async function fetchSite(env) {
       limit: 15,
     })),
   ];
-  const url = 'https://analyticsdata.googleapis.com/v1beta/properties/' + encodeURIComponent(env.GA4_PROPERTY_ID) + ':batchRunReports';
+  const url = 'https://analyticsdata.googleapis.com/v1beta/properties/' + propertyId(env) + ':batchRunReports';
   const res = await fetch(url, {
     method: 'POST',
     headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
     body: JSON.stringify({ requests }),
   });
-  if (!res.ok) throw new Error('GA4 ' + res.status);
+  if (!res.ok) {
+    const detail = (await res.text()).slice(0, 300).replace(/\s+/g, ' ');
+    throw new Error('GA4 ' + res.status + ': ' + detail);
+  }
   const reports = (await res.json()).reports || [];
 
   const out = { updated_at: new Date().toISOString(), periods: {} };
