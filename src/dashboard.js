@@ -1,6 +1,6 @@
 /**
  * Enquiry dashboard for Dan: /dashboard
- * Lists enquiries from D1, tracks responded and booked status, exports CSV, and sends Web Push alerts.
+ * Lists enquiries from D1, tracks each enquiry's stage (New, In Contact, Booked, No), exports CSV, and sends Web Push alerts.
  * Protect the /dashboard path with Cloudflare Access (see the PR notes).
  */
 
@@ -12,6 +12,10 @@ const NOINDEX = {
 
 const STATES = ['nsw', 'qld', 'vic', 'act', 'sa', 'wa', 'tas', 'nt'];
 const LICENCES = ['builder', 'company', 'mutual', 'trade', 'not sure'];
+
+// Pipeline stages, in order. The stage is the single source of truth for the dashboard.
+const STAGES = ['new', 'in_contact', 'booked', 'no'];
+const STAGE_LABEL = { new: 'New', in_contact: 'In Contact', booked: 'Booked', no: 'No' };
 
 // Friendly enquiry number shown to the visitor, in Dan's email and on the dashboard, e.g. TLS-0001
 export function enquiryRef(id) {
@@ -39,10 +43,10 @@ export async function handleDashboard(request, env, ctx, path) {
   if (method === 'GET' && path === '/dashboard/api/export.csv') return exportCsv(request, env);
   if (method === 'POST' && path === '/dashboard/api/push/subscribe') return subscribePush(request, env);
 
-  const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/(booking|responded)$/);
+  const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/(stage|responded)$/);
   if (method === 'POST' && m) {
     const id = Number(m[1]);
-    return m[2] === 'booking' ? setBooking(request, env, id) : markResponded(env, id);
+    return m[2] === 'stage' ? setStage(request, env, id) : markResponded(env, id);
   }
 
   return new Response('Not found', { status: 404, headers: NOINDEX });
@@ -77,7 +81,7 @@ export async function notifyNewEnquiry(env) {
 
 // ---------- Pages and API ----------
 
-function filtersFrom(url) {
+function filtersFrom(url, skipStage = false) {
   const p = url.searchParams;
   const where = [];
   const binds = [];
@@ -89,9 +93,7 @@ function filtersFrom(url) {
   if (LICENCES.includes(p.get('licence'))) { where.push('licence = ?'); binds.push(p.get('licence')); }
   if (p.get('src') === 'ads') where.push('is_ad = 1');
   if (p.get('src') === 'other') where.push('is_ad = 0');
-  if (p.get('status') === 'booked') where.push('booked = 1');
-  if (p.get('status') === 'open') where.push('booked = 0');
-  if (p.get('status') === 'unattended') where.push('responded = 0');
+  if (!skipStage && STAGES.includes(p.get('stage'))) { where.push('stage = ?'); binds.push(p.get('stage')); }
   const q = (p.get('q') || '').trim().slice(0, 100);
   const ref = q.match(/^tls[-\s]?0*(\d+)$/i); // search by enquiry number, e.g. TLS-0001
   if (ref) {
@@ -109,11 +111,17 @@ async function listEnquiries(request, env) {
   const { sql, binds } = filtersFrom(new URL(request.url));
   const rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at DESC, id DESC LIMIT 500`)
     .bind(...binds).all();
+  // Stage counts ignore the stage filter, so all four stay visible at once
+  const counts = filtersFrom(new URL(request.url), true);
   const summary = await env.DB.prepare(
-    `SELECT COUNT(*) AS total, SUM(booked) AS booked, COALESCE(SUM(CASE WHEN booked = 1 THEN amount_aud END), 0) AS revenue,
-       COALESCE(SUM(CASE WHEN responded = 0 THEN 1 ELSE 0 END), 0) AS unattended
-     FROM enquiries ${sql}`
-  ).bind(...binds).first();
+    `SELECT COUNT(*) AS total,
+       COALESCE(SUM(CASE WHEN stage = 'new' THEN 1 ELSE 0 END), 0) AS new_count,
+       COALESCE(SUM(CASE WHEN stage = 'in_contact' THEN 1 ELSE 0 END), 0) AS in_contact,
+       COALESCE(SUM(CASE WHEN stage = 'booked' THEN 1 ELSE 0 END), 0) AS booked,
+       COALESCE(SUM(CASE WHEN stage = 'no' THEN 1 ELSE 0 END), 0) AS no_count,
+       COALESCE(SUM(CASE WHEN stage = 'booked' THEN amount_aud END), 0) AS revenue
+     FROM enquiries ${counts.sql}`
+  ).bind(...counts.binds).first();
   return json({ rows: rows.results || [], summary });
 }
 
@@ -121,12 +129,12 @@ async function exportCsv(request, env) {
   const url = new URL(request.url);
   const { sql, binds } = filtersFrom(url);
   const rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at ASC, id ASC`).bind(...binds).all();
-  const header = ['Enquiry number', 'Enquiry date (AEST)', 'Name', 'Phone', 'Email', 'State', 'Licence', 'Message', 'Responded', 'Booked',
+  const header = ['Enquiry number', 'Enquiry date (AEST)', 'Stage', 'Name','Phone', 'Email', 'State', 'Licence', 'Message', 'Responded', 'Booked',
     'Booked date (AEST)', 'Amount (AUD)', 'Google Ad', 'Source', 'Medium', 'Campaign', 'Landing page', 'Google click ID'];
   const lines = [header.map(csvCell).join(',')];
   for (const r of rows.results || []) {
     lines.push([
-      enquiryRef(r.id), aest(r.created_at), r.name, r.phone, r.email, (r.state || '').toUpperCase(), r.licence, r.message,
+      enquiryRef(r.id), aest(r.created_at), STAGE_LABEL[r.stage] || 'New', r.name, r.phone, r.email, (r.state || '').toUpperCase(), r.licence, r.message,
       r.responded ? 'Yes' : 'No', r.booked ? 'Yes' : 'No', r.booked_at ? aest(r.booked_at) : '', r.amount_aud ?? '',
       r.is_ad ? 'Yes' : 'No', r.utm_source, r.utm_medium, r.utm_campaign, r.landing_page, r.gclid,
     ].map(csvCell).join(','));
@@ -142,30 +150,38 @@ async function exportCsv(request, env) {
   });
 }
 
-// Any booking also counts as responded.
-async function setBooking(request, env, id) {
+// Dan picks a stage. The optional amount only applies to Booked; leaving Booked clears it.
+// booked and responded are kept in step with stage so older exports and counts still agree.
+async function setStage(request, env, id) {
   let body = {};
   try { body = await request.json(); } catch (err) { return json({ error: 'bad body' }, 400); }
-  const booked = body.booked ? 1 : 0;
+  const stage = body.stage;
+  if (!STAGES.includes(stage)) return json({ error: 'bad stage' }, 400);
   let amount = null;
   if (body.amount !== undefined && body.amount !== null && body.amount !== '') {
     amount = Number(String(body.amount).replace(/[$,\s]/g, ''));
     if (!Number.isFinite(amount) || amount < 0 || amount > 1000000) return json({ error: 'bad amount' }, 400);
   }
   const now = new Date().toISOString();
+  const booked = stage === 'booked' ? 1 : 0;
+  const responded = stage === 'new' ? 0 : 1;
   await env.DB.prepare(
-    `UPDATE enquiries SET booked = ?, booked_at = ?, amount_aud = ?,
-       responded = CASE WHEN ? = 1 THEN 1 ELSE responded END,
-       responded_at = CASE WHEN ? = 1 THEN COALESCE(responded_at, ?) ELSE responded_at END
+    `UPDATE enquiries SET stage = ?, booked = ?,
+       booked_at = CASE WHEN ? = 1 THEN COALESCE(booked_at, ?) ELSE NULL END,
+       amount_aud = CASE WHEN ? = 1 THEN COALESCE(?, amount_aud) ELSE NULL END,
+       responded = ?,
+       responded_at = CASE WHEN ? = 1 THEN COALESCE(responded_at, ?) ELSE NULL END
      WHERE id = ?`
-  ).bind(booked, booked ? now : null, booked ? amount : null, booked, booked, now, id).run();
+  ).bind(stage, booked, booked, now, booked, amount, responded, responded, now, id).run();
   return json({ ok: true });
 }
 
-// Called when Dan taps Call or Email, so the enquiry leaves the Unattended group.
+// Called when Dan taps Call or Email: a New enquiry moves to In Contact. Other stages are left alone.
 async function markResponded(env, id) {
-  await env.DB.prepare('UPDATE enquiries SET responded = 1, responded_at = COALESCE(responded_at, ?) WHERE id = ?')
-    .bind(new Date().toISOString(), id).run();
+  await env.DB.prepare(
+    `UPDATE enquiries SET stage = 'in_contact', responded = 1, responded_at = COALESCE(responded_at, ?)
+     WHERE id = ? AND stage = 'new'`
+  ).bind(new Date().toISOString(), id).run();
   return json({ ok: true });
 }
 
@@ -286,7 +302,7 @@ function page(env) {
 :root { --blue:#0b5cad; --ink:#1b2430; --muted:#5d6b7a; --line:#dfe5ec; --bg:#f4f6f9; --card:#ffffff; --green:#1e7b43; --amber:#b26a00; --amberbg:#fff6e0; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ink:#e8edf3; --muted:#9fb0c2; --line:#2d3a48; --bg:#111820; --card:#18222d; --amberbg:#2b2414; } }
 * { box-sizing: border-box; }
-html, body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+html, body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.35 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
 body { padding-bottom: env(safe-area-inset-bottom); min-height:100vh; overscroll-behavior-y: contain; }
 header { position:sticky; top:0; z-index:5; background:var(--blue); color:#fff; padding:10px 16px; padding-top:calc(10px + env(safe-area-inset-top)); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 12px; }
 .brand { display:flex; align-items:center; gap:10px; }
@@ -298,9 +314,13 @@ button.hbtn.done { background:#fff; color:var(--blue); }
 main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 #ptr { text-align:center; color:var(--muted); font-size:14px; height:0; overflow:hidden; transition:height .2s; }
 #ptr.on { height:40px; }
-.summary { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:6px 0 12px; }
-.tile { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:9px 10px; min-width:0; }
-.tile b { display:block; font-size:22px; }
+.summary { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:6px 0 10px; }
+.tile { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:7px 8px; min-width:0; }
+.tile b { display:block; font-size:20px; }
+.tile.stage-tile.new b { color:#b42318; }
+.tile.stage-tile.in_contact b { color:#8a5300; }
+.tile.stage-tile.booked b { color:#1e6b3c; }
+.tile.stage-tile.no b { color:#4b5563; }
 .tile span { color:var(--muted); font-size:13px; }
 .tile.alert { border-color:var(--amber); background:var(--amberbg); }
 .tile.alert b { color:var(--amber); }
@@ -315,25 +335,32 @@ button, .btn { font:inherit; border:0; border-radius:10px; padding:11px 14px; ba
 button.sm, .btn.sm { padding:9px 12px; font-size:15px; }
 button.ghost, .btn.ghost { background:transparent; color:var(--blue); border:1px solid var(--blue); }
 button:disabled { opacity:.6; }
-.item { background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:8px; overflow:hidden; }
-.item.unattended { border-left:5px solid var(--amber); background:var(--amberbg); }
-.line { display:flex; flex-wrap:wrap; align-items:center; gap:2px 10px; padding:11px 12px; cursor:pointer; list-style:none; }
-.line::-webkit-details-marker { display:none; }
-.line:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
-.dot { width:9px; height:9px; border-radius:50%; background:var(--amber); flex:0 0 9px; }
-.name { font-weight:700; }
-.ref { font-size:13px; font-weight:700; color:var(--blue); }
-.meta { color:var(--muted); font-size:14px; }
-.when { margin-left:auto; color:var(--muted); font-size:13px; }
-.detail { padding:0 12px 12px; }
-.label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-top:4px; }
-.msg { margin:4px 0 6px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.item { background:var(--card); border:1px solid var(--line); border-left:5px solid var(--line); border-radius:10px; margin-bottom:6px; }
+.item.stage-new { border-left-color:#d92d20; }
+.item.stage-in_contact { border-left-color:#f79009; }
+.item.stage-booked { border-left-color:#1e7b43; }
+.item.stage-no { border-left-color:#667085; }
+.top { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; padding:8px 10px 4px; cursor:pointer; }
+.top:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
+.actions { display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:2px 10px 8px; }
+.name { font-weight:700; font-size:15px; }
+.ref { font-size:12px; font-weight:700; color:var(--blue); }
+.meta { color:var(--muted); font-size:13px; }
+.when { margin-left:auto; color:var(--muted); font-size:12px; }
+.detail { padding:0 10px 10px; }
+.detail[hidden], .picker[hidden] { display:none; }
+.label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-top:4px; }
+.msg { margin:3px 0 5px; white-space:pre-wrap; overflow-wrap:anywhere; }
 .msg.muted { color:var(--muted); }
-.badge { display:inline-block; font-size:12px; font-weight:700; padding:4px 9px; border-radius:99px; background:#eef2f6; color:var(--muted); white-space:nowrap; }
-.badge.new { background:#fff0c7; color:var(--amber); }
-.badge.responded { background:#e8f0fe; color:#1a56c4; }
-.badge.booked { background:#e3f4ea; color:var(--green); }
-.badge.ad { background:#e8f0fe; color:#1a56c4; }
+.pill { font:inherit; font-size:12px; font-weight:700; padding:4px 9px; border-radius:99px; border:1px solid transparent; cursor:pointer; white-space:nowrap; margin:0; }
+.pill.new { background:#fde8e6; color:#b42318; }
+.pill.in_contact { background:#fff1cc; color:#7a4a00; }
+.pill.booked { background:#e3f4ea; color:#1e6b3c; }
+.pill.no { background:#e5e7eb; color:#374151; }
+.pill.current { border-color:currentColor; }
+.picker { display:flex; flex-wrap:wrap; gap:6px; padding:0 10px 8px; }
+.iconbtn { font-size:13px; font-weight:600; padding:5px 10px; border-radius:8px; border:1px solid var(--blue); color:var(--blue); text-decoration:none; background:transparent; }
+.iconbtn:focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
 .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
 .empty { text-align:center; color:var(--muted); padding:30px 0; }
 dialog { max-width:420px; width:calc(100% - 32px); border:0; border-radius:14px; padding:20px; background:var(--card); color:var(--ink); }
@@ -342,7 +369,7 @@ dialog h2 { margin:0 0 8px; font-size:19px; }
 dialog ol { padding-left:20px; margin:8px 0; }
 dialog li { margin-bottom:8px; }
 @media (max-width:560px) {
-  .summary { grid-template-columns:1fr 1fr; }
+  .summary { grid-template-columns:repeat(3,1fr); }
   header h1 { font-size:18px; }
   .when { margin-left:0; width:100%; }
   .grid { grid-template-columns:1fr; }
@@ -366,8 +393,10 @@ dialog li { margin-bottom:8px; }
 
   <div class="summary">
     <div class="tile"><b id="t-count">–</b><span>Enquiries</span></div>
-    <div class="tile" id="tile-unattended"><b id="t-unattended">–</b><span>Unattended</span></div>
-    <div class="tile"><b id="t-booked">–</b><span>Booked</span></div>
+    <div class="tile stage-tile new" id="tile-new"><b id="t-new">–</b><span>New</span></div>
+    <div class="tile stage-tile in_contact"><b id="t-inc">–</b><span>In Contact</span></div>
+    <div class="tile stage-tile booked"><b id="t-booked">–</b><span>Booked</span></div>
+    <div class="tile stage-tile no"><b id="t-no">–</b><span>No</span></div>
     <div class="tile"><b id="t-rev">–</b><span>Booked value</span></div>
   </div>
 
@@ -378,7 +407,7 @@ dialog li { margin-bottom:8px; }
       <div><label>To<input type="date" name="to"></label></div>
       <div><label>State<select name="state"><option value="">All states</option>${stateOpts}</select></label></div>
       <div><label>Licence<select name="licence"><option value="">All licences</option>${licenceOpts}</select></label></div>
-      <div><label>Status<select name="status"><option value="">All</option><option value="unattended">Unattended</option><option value="open">Not booked</option><option value="booked">Booked</option></select></label></div>
+      <div><label>Stage<select name="stage"><option value="">All stages</option><option value="new">New</option><option value="in_contact">In Contact</option><option value="booked">Booked</option><option value="no">No</option></select></label></div>
       <div><label>Source<select name="src"><option value="">All sources</option><option value="ads">Google Ads only</option><option value="other">Not from ads</option></select></label></div>
       <div class="full"><label>Search<input type="search" name="q" placeholder="Name, phone, email, message or TLS-0001"></label></div>
       <div class="full btns">
@@ -447,9 +476,11 @@ async function load() {
     const data = await res.json();
     const s = data.summary;
     $('#t-count').textContent = s.total || 0;
-    $('#t-unattended').textContent = s.unattended || 0;
-    $('#tile-unattended').classList.toggle('alert', Number(s.unattended || 0) > 0);
+    $('#t-new').textContent = s.new_count || 0;
+    $('#tile-new').classList.toggle('alert', Number(s.new_count || 0) > 0);
+    $('#t-inc').textContent = s.in_contact || 0;
     $('#t-booked').textContent = s.booked || 0;
+    $('#t-no').textContent = s.no_count || 0;
     $('#t-rev').textContent = money(s.revenue);
     list.replaceChildren();
     if (!data.rows.length) list.append(el('div', { class: 'empty' }, 'No enquiries match these filters.'));
@@ -459,78 +490,100 @@ async function load() {
   }
 }
 
-function statusOf(r) {
-  if (r.booked) return ['booked', 'Booked' + (r.amount_aud != null ? ' · ' + money(r.amount_aud) : '')];
-  if (r.responded) return ['responded', 'Responded'];
-  return ['new', 'Unattended'];
+const STAGE_NAMES = { new: 'New', in_contact: 'In Contact', booked: 'Booked', no: 'No' };
+const STAGE_ORDER = ['new', 'in_contact', 'booked', 'no'];
+
+function stageOf(r) { return STAGE_NAMES[r.stage] ? r.stage : 'new'; }
+
+function pillText(stage, r) {
+  return STAGE_NAMES[stage] + (stage === 'booked' && r.amount_aud != null ? ' · ' + money(r.amount_aud) : '');
+}
+
+// Moves an enquiry to a stage. Moving into Booked asks for an optional amount first.
+async function moveTo(r, stage) {
+  const body = { stage: stage };
+  if (stage === 'booked' && stageOf(r) !== 'booked') {
+    const amt = prompt('Amount for ' + (r.name || 'this enquiry') + ' in dollars (leave blank if not known):', '');
+    if (amt === null) return;
+    body.amount = amt;
+  }
+  const res = await fetch('/dashboard/api/enquiries/' + r.id + '/stage', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+  });
+  if (res.ok) load(); else alert('Could not save. Please try again.');
 }
 
 function card(r) {
-  const st = statusOf(r);
-  const unattended = st[0] === 'new';
-  const badge = el('span', { class: 'badge ' + st[0] }, st[1]);
+  const stage = stageOf(r);
   const phone = String(r.phone || '').replace(/\\s/g, '');
+  const item = el('div', { class: 'item stage-' + stage });
 
-  // Any tap on Call or Email counts as a response: the card leaves the Unattended group.
+  // Stage pill: one tap opens the picker, one more tap on a stage saves it.
+  const pill = el('button', { type: 'button', class: 'pill ' + stage, 'aria-expanded': 'false' }, pillText(stage, r));
+  const picker = el('div', { class: 'picker', hidden: '' });
+  for (const s of STAGE_ORDER) {
+    const b = el('button', { type: 'button', class: 'pill ' + s + (s === stage ? ' current' : ''), 'aria-pressed': s === stage ? 'true' : 'false' }, STAGE_NAMES[s]);
+    b.addEventListener('click', (e) => {
+      e.stopPropagation();
+      picker.hidden = true;
+      pill.setAttribute('aria-expanded', 'false');
+      if (s !== stage) moveTo(r, s);
+    });
+    picker.append(b);
+  }
+  pill.addEventListener('click', (e) => {
+    e.stopPropagation();
+    picker.hidden = !picker.hidden;
+    pill.setAttribute('aria-expanded', String(!picker.hidden));
+  });
+
+  // Tapping Call or Email on a New enquiry moves it to In Contact straight away.
   function markResponded() {
-    if (!unattended || badge.dataset.done) return;
-    badge.dataset.done = '1';
-    item.classList.remove('unattended');
-    badge.className = 'badge responded';
-    badge.textContent = 'Responded';
-    const t = $('#t-unattended');
-    t.textContent = Math.max(0, Number(t.textContent) - 1);
-    $('#tile-unattended').classList.toggle('alert', Number(t.textContent) > 0);
+    if (!pill.classList.contains('new')) return;
+    pill.className = 'pill in_contact';
+    pill.textContent = 'In Contact';
+    item.className = 'item stage-in_contact';
     fetch('/dashboard/api/enquiries/' + r.id + '/responded', { method: 'POST', keepalive: true }).catch(() => {});
   }
 
-  const call = el('a', { class: 'btn ghost sm', href: 'tel:' + phone }, 'Call ' + (r.phone || ''));
-  call.addEventListener('click', markResponded);
-  const kids = [call];
-  if (r.email) {
-    const mail = el('a', { class: 'btn ghost sm', href: 'mailto:' + r.email }, 'Email');
-    mail.addEventListener('click', markResponded);
-    kids.push(mail);
+  const actions = el('div', { class: 'actions' }, pill);
+  if (phone) {
+    const call = el('a', { class: 'iconbtn', href: 'tel:' + phone }, 'Call');
+    call.addEventListener('click', markResponded);
+    actions.append(call);
   }
-  kids.push(badge);
+  if (r.email) {
+    const mail = el('a', { class: 'iconbtn', href: 'mailto:' + r.email }, 'Email');
+    mail.addEventListener('click', markResponded);
+    actions.append(mail);
+  }
 
-  const btn = el('button', { type: 'button', class: 'sm' + (r.booked ? ' ghost' : '') }, r.booked ? 'Undo booked' : 'Mark booked');
-  btn.addEventListener('click', async () => {
-    const body = { booked: !r.booked };
-    if (!r.booked) {
-      const amt = prompt('Amount for ' + (r.name || 'this enquiry') + ' in dollars (leave blank if not known):', '');
-      if (amt === null) return;
-      body.amount = amt;
-    }
-    btn.disabled = true;
-    const res = await fetch('/dashboard/api/enquiries/' + r.id + '/booking', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-    });
-    if (res.ok) load(); else { btn.disabled = false; alert('Could not save. Please try again.'); }
-  });
-  kids.push(btn);
-
-  const head = el('summary', { class: 'line' },
-    unattended ? el('span', { class: 'dot', title: 'Unattended' }) : '',
-    el('span', { class: 'name' }, r.name || 'No name'),
+  // Basic info stays on the card. Tap the top line to show the details.
+  const top = el('div', { class: 'top', role: 'button', tabindex: '0', 'aria-expanded': 'false' },
     el('span', { class: 'ref' }, refOf(r.id)),
-    el('span', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?')),
+    el('span', { class: 'name' }, r.name || 'No name'),
     el('span', { class: 'when' }, when(r.created_at))
   );
-
-  const item = el('details', { class: 'item' + (unattended ? ' unattended' : '') },
-    head,
-    el('div', { class: 'detail' },
-      r.is_ad ? el('div', { class: 'meta' }, 'From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '')) : '',
-      el('div', { class: 'label' }, 'Message'),
-      r.message ? el('div', { class: 'msg' }, r.message) : el('div', { class: 'msg muted' }, 'No message given.'),
-      el('div', { class: 'row' }, ...kids)
-    )
+  const detail = el('div', { class: 'detail', hidden: '' },
+    el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
+    el('div', { class: 'meta' }, (r.phone || '') + (r.email ? ' · ' + r.email : '')),
+    el('div', { class: 'label' }, 'Message'),
+    r.message ? el('div', { class: 'msg' }, r.message) : el('div', { class: 'msg muted' }, 'No message given.'),
+    stage === 'booked' && r.booked_at ? el('div', { class: 'meta' }, 'Booked ' + when(r.booked_at)) : ''
   );
-  if (openIds.has(String(r.id))) item.open = true;
-  item.addEventListener('toggle', () => {
-    if (item.open) openIds.add(String(r.id)); else openIds.delete(String(r.id));
+
+  function setOpen(open) {
+    detail.hidden = !open;
+    top.setAttribute('aria-expanded', String(open));
+    if (open) openIds.add(String(r.id)); else openIds.delete(String(r.id));
+  }
+  top.addEventListener('click', () => setOpen(detail.hidden));
+  top.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(detail.hidden); }
   });
+
+  item.append(top, actions, picker, detail);
+  if (openIds.has(String(r.id))) setOpen(true);
   return item;
 }
 
