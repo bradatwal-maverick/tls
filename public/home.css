@@ -48,6 +48,7 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
   .tool-hero-card{display:block;grid-column:2;grid-row:1 / 3;align-self:center;width:100%;height:auto;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
   .tool-hero-inner .tool,.tool-hero-inner .tool-note{grid-column:1}
 }
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px}
 .tool-start{display:flex;align-items:center;gap:8px;font:800 1.05rem/1 var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--hivis)}
 .tool-start::after{content:"↓";font-size:1.3rem;line-height:1;animation:tool-start-bounce 1.6s ease-in-out infinite}
 @keyframes tool-start-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
