@@ -479,11 +479,14 @@ function llmsTxt() {
 
 > Trade Licence Solutions is run by Dan Pleaner. Dan helps tradies and builders get builder licences, company licences, mutual recognition and trade contractor licences in all 8 Australian states and territories. Enquiries go through the contact form at ${SITE}/contact.
 
-## Prices (from)
+## Prices (from, all ex GST; government fees are separate)
+- Trade contractor licence: from $495
+- Electrical and plumbing licence: from $1,500
 - Builder licence application: from $2,000
 - Electrical and plumbing licence application: from $1,500
 - Company licence: from $550
 - Mutual recognition: from $550 per state
+- $150 consultation comes off the full fee
 
 ## Key pages
 ${LLMS_LINKS.map(([p, label]) => `- [${label}](${SITE}${p})`).join('\n')}
