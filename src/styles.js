@@ -211,7 +211,7 @@ strong { font-weight: 600; }
 
 /* Floating "Ask Dan" -> lead form */
 .ask-dan {
-  position: fixed; right: 1rem; bottom: 1rem; z-index: 200;
+  position: fixed; right: 1rem; bottom: 1.5rem; z-index: 200;
   display: inline-flex; align-items: center; gap: 0.5rem;
   min-height: 48px; padding: 0.7rem 1.1rem; border-radius: 999px;
   background: var(--orange); color: var(--near-black);
@@ -221,9 +221,10 @@ strong { font-weight: 600; }
 }
 .ask-dan:hover { background: var(--orange-dark); transform: translateY(-2px); }
 .ph-icon { vertical-align: -3px; margin-right: 0.3rem; }
-@media (max-width: 400px) {
-  .ask-dan { gap: 0; padding: 0; width: 52px; height: 52px; border-radius: 50%; justify-content: center; }
-  .ask-dan span { display: none; }
+.ask-dan__short { display: none; }
+@media (max-width: 600px) {
+  .ask-dan__long { display: none; }
+  .ask-dan__short { display: inline; }
 }
 @media print { .ask-dan { display: none; } }
 
@@ -577,7 +578,7 @@ details[open] summary::after { content: '−'; }
 .call-bar a.btn--call:hover { background: var(--near-black); color: var(--white); }
 
 /* ===== FOOTER ===== */
-.site-footer { background: var(--near-black); color: rgba(255,255,255,0.7); padding: 3rem 1.25rem 2rem; }
+.site-footer { background: var(--near-black); color: rgba(255,255,255,0.7); padding: 3rem 1.25rem 5.5rem; }
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;

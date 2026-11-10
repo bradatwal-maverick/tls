@@ -388,7 +388,7 @@ function buildReadinessResult(licenceType, firstName) {
         <div class="container container--narrow">
           ${body}
           <div class="cta-block">
-            <a href="/contact" class="btn btn--primary">Book a free call with Dan</a>
+            <a href="/contact" class="btn btn--primary">Book a Callback with Dan</a>
             <a href="/readiness-check" class="btn btn--ghost">Start over</a>
           </div>
         </div>
