@@ -92,7 +92,7 @@
 
 <main>
 
-  <!-- First screen: state and eligibility in one tool -->
+  <!-- First screen: two clear choices -->
   <section class="tool-hero" aria-labelledby="hero-h">
     <div class="wrap">
       <div class="tool-hero-inner">
@@ -102,10 +102,12 @@
             <li>Takes less than 30 seconds</li>
             <li>No sign-up</li>
           </ul>
-          <p class="tool-start">Start below — pick your state</p>
+          <div class="hero-actions">
+            <a class="btn btn-hivis" href="/check-eligibility">Check eligibility</a>
+            <a class="btn btn-ghost" href="https://pci.jotform.com/form/263016069377057" target="_blank" rel="noopener" onclick="if(window.trackEvent)trackEvent('apply_now_click',{step:'home'})">Apply now</a>
+          </div>
         </div>
         <img class="tool-hero-card" src="/images/contractor-licence-card.webp" alt="Sample NSW contractor licence card" width="820" height="523" loading="eager" fetchpriority="high">
-        <div class="tool" id="tool" aria-live="polite"></div>
         <p class="tool-note">A guide only. Your state regulator makes the final decision on every licence.</p>
       </div>
     </div>
@@ -247,7 +249,6 @@
   </div>
 </footer>
 
-<script src="/tool.js"></script>
 <a href="/contact" class="ask-dan" aria-label="Check Eligibility in 30 Secs">
   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>
   <span class="ask-dan__long">Check Eligibility in 30 Secs</span><span class="ask-dan__short">Check in 30 Sec</span>

@@ -29,6 +29,7 @@ const LLMS_LINKS = [
   ['/mutual-recognition', 'Mutual recognition'],
   ['/trade-contractor', 'Trade contractor licences'],
   ['/states', 'Licences by state'],
+  ['/check-eligibility', 'Check your licence eligibility in 30 seconds'],
   ['/pricing', 'Pricing'],
   ['/services', 'Services'],
   ['/faq', 'FAQs'],
@@ -142,7 +143,16 @@ async function routeRequest(request, env, ctx) {
       return env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}`, request.url), request));
     }
 
-    // Entry page: state selector and eligibility check (approved design)
+    // Standalone eligibility check: clean URL served from public/check-eligibility.html
+    if (isGet && path === '/check-eligibility') {
+      const asset = await env.ASSETS.fetch(new Request(new URL('/check-eligibility', request.url), request));
+      return new Response(asset.body, {
+        status: asset.status,
+        headers: { ...Object.fromEntries(asset.headers), ...SECURITY_HEADERS },
+      });
+    }
+
+    // Entry page: two choices, check eligibility or apply (approved design)
     if (isGet && path === '/') {
       const asset = await env.ASSETS.fetch(new Request(new URL('/home', request.url), request));
       return new Response(asset.body, {
@@ -457,7 +467,7 @@ function sitemapXml() {
   const paths = ['/', ...Object.entries(pages)
     .filter(([p, page]) => !page.noindex && !skip.has(p))
     .map(([p]) => p)];
-  const urls = [...paths, ...STATE_PAGES.map(([slug]) => `/${slug}`)].map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
+  const urls = [...paths, '/check-eligibility', ...STATE_PAGES.map(([slug]) => `/${slug}`)].map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 

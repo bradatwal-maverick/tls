@@ -105,7 +105,7 @@ function clean(v, max) {
 function cleanDetail(d) {
   const out = {};
   if (!d || typeof d !== 'object') return out;
-  for (const k of ['step', 'licence', 'state', 'result']) {
+  for (const k of ['step', 'licence', 'state', 'result', 'page']) {
     if (typeof d[k] === 'string' && d[k]) out[k] = d[k].slice(0, 40);
   }
   return out;
