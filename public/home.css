@@ -49,9 +49,9 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
   .tool-hero-inner .tool,.tool-hero-inner .tool-note{grid-column:1}
 }
 .hero-actions{display:flex;flex-wrap:wrap;gap:16px 20px;align-items:flex-start}
-.hero-action{display:grid;gap:6px;justify-items:start}
+.hero-action{display:grid;gap:6px;justify-items:center}
 .apply-checklist{margin:0;padding-left:1.2em;display:grid;gap:8px;color:#fff;font-size:1.02rem}
-.hero-action p{margin:0;color:#d9e2ea;font-size:.92rem}
+.hero-action p{margin:0;color:#d9e2ea;font-size:.92rem;width:0;white-space:nowrap;display:flex;justify-content:center;text-align:center}
 .tool-start{display:flex;align-items:center;gap:8px;font:800 1.05rem/1 var(--display);text-transform:uppercase;letter-spacing:.04em;color:var(--hivis)}
 .tool-start::after{content:"↓";font-size:1.3rem;line-height:1;animation:tool-start-bounce 1.6s ease-in-out infinite}
 @keyframes tool-start-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
