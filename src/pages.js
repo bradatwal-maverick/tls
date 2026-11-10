@@ -367,7 +367,7 @@ export const pages = {
       description: 'Helping electricians and plumbers get the right licence for their trade and state, including qualification checks, forms and lodgement with the regulator.',
       provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
       areaServed: { '@type': 'Country', name: 'Australia' },
-      offers: { '@type': 'Offer', description: 'Electrical and plumbing licence application — price to be set by Dan' },
+      offers: { '@type': 'Offer', price: '2000', priceCurrency: 'AUD', description: 'Electrical and plumbing licence application — from $2,000' },
     },
     content: `
       <section class="hero hero--inner">
@@ -381,7 +381,7 @@ export const pages = {
       <section class="section">
         <div class="container container--narrow">
           <div class="quick-answer">
-            <p><strong>In short:</strong> In NSW you need an electrical licence before you do any electrical wiring work, whatever the cost or type of work. Plumbing and drainage has its own licence, which covers plumbing, water plumbing and draining. Both are issued through NSW Fair Trading. Dan checks your qualifications and experience, prepares the application and lodges it for you. <strong>Price: [to be set by Dan]</strong>.</p>
+            <p><strong>In short:</strong> In NSW you need an electrical licence before you do any electrical wiring work, whatever the cost or type of work. Plumbing and drainage has its own licence, which covers plumbing, water plumbing and draining. Both are issued through NSW Fair Trading. Dan checks your qualifications and experience, prepares the application and lodges it for you. <strong>from $2,000</strong>, including document preparation and regulator follow-up.</p>
           </div>
 
           <h2>Who this page is for</h2>
@@ -424,7 +424,7 @@ export const pages = {
             </details>
             <details>
               <summary>How much does it cost?</summary>
-              <div class="faq-answer"><p>Dan's fee is [to be set by Dan]. NSW Fair Trading publishes its government fees each year, and they are separate from Dan's fee.</p></div>
+              <div class="faq-answer"><p>Dan's fee starts from $2,000, covering document preparation, lodgement and follow-up with the regulator. NSW Fair Trading publishes its government fees each year, and they are separate from Dan's fee.</p></div>
             </details>
             <details>
               <summary>Can you help with a company licence?</summary>
