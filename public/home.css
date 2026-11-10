@@ -58,6 +58,9 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 @media (prefers-reduced-motion:reduce){.tool-start::after{animation:none}}
 .tool{background:var(--bg);color:var(--ink);border-radius:10px;padding:18px;max-width:720px;width:100%;box-shadow:0 0 0 3px var(--hivis)}
 .tool-note{color:#d9e2ea;font-size:.88rem}
+.tool-hero .tool-note a,.tool-hero a:not(.btn){color:#ffd400;font-weight:700;font-size:1rem;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px}
+.tool-hero .tool-note a:hover,.tool-hero a:not(.btn):hover{color:#fff}
+.tool-hero a:focus-visible{outline:3px solid #ffd400;outline-offset:3px}
 
 .q-progress{display:flex;gap:6px;margin-bottom:14px}
 .q-progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}

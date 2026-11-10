@@ -61,6 +61,8 @@ strong { font-weight: 600; }
 .section--grey { background: var(--off-white); }
 .section--navy { background: var(--navy); color: var(--white); }
 .section--navy h2, .section--navy h3 { color: var(--white); }
+.section--navy a:not(.btn) { color: #ffd400; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.section--navy a:not(.btn):hover { color: #fff; }
 .section--orange-light { background: var(--orange-light); }
 
 /* ===== HEADER ===== */
