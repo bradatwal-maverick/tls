@@ -27,9 +27,10 @@ details p{margin:8px 0 0;color:var(--muted)}
 .cta-box{background:#f2f4f6;padding:16px;border-radius:8px;margin-top:28px}
 body{overflow-x:clip}
 /* Other states: acronym tiles, equal height, no quick links */
-ul.states{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0;margin:12px 0 0;list-style:none}
+ul.states{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;padding:0;margin:12px 0 0;list-style:none}
 ul.states li{display:flex;margin:0}
-ul.states a{flex:1;display:flex;align-items:center;justify-content:center;min-height:52px;padding:12px 4px;border:2px solid var(--line);border-radius:6px;background:#f2f4f6;text-decoration:none;color:var(--ink);font-weight:700;font-size:1.05rem;letter-spacing:.04em}
+ul.states a{flex:1;display:flex;align-items:center;justify-content:center;min-height:44px;padding:10px 2px;border:2px solid var(--line);border-radius:6px;background:#f2f4f6;text-decoration:none;color:var(--ink);font-weight:700;font-size:.9rem;letter-spacing:.02em}
+@media (min-width:620px){ul.states{gap:8px}ul.states a{min-height:52px;padding:12px 4px;font-size:1.05rem;letter-spacing:.04em}}
 ul.states a:hover{border-color:var(--ink)}
 /* Eligibility check: full-width band, so it is the obvious focus */
 .state-test{width:100vw;margin:32px 0 8px calc(50% - 50vw);padding:28px max(16px,calc(50vw - 434px));background:var(--navy);color:#fff}
@@ -46,3 +47,11 @@ footer strong{color:#fff}
 .step-cards{list-style:none;padding:0;counter-reset:step;display:grid;gap:12px}
 .step-cards li{counter-increment:step;position:relative;padding:12px 12px 12px 56px;border:2px solid var(--line);border-radius:8px;margin:0}
 .step-cards li::before{content:counter(step);position:absolute;left:12px;top:12px;width:32px;height:32px;border-radius:50%;background:var(--orange);color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:center}
+
+/* Enquiry form inside the Talk to Dan box (state pages) */
+.state-form{display:grid;gap:12px;margin-top:14px;max-width:520px}
+.state-form label{display:grid;gap:4px;font-weight:700;font-size:16px}
+.state-form input,.state-form textarea{font:inherit;font-size:17px;font-weight:400;width:100%;padding:10px 12px;border:2px solid var(--line);border-radius:6px;background:#fff;color:var(--ink)}
+.state-form textarea{min-height:88px}
+.state-form .btn{width:100%;margin-top:4px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}

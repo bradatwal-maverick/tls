@@ -143,7 +143,8 @@ async function routeRequest(request, env, ctx) {
     // State pages: clean URLs such as /new-south-wales served from /states/<slug>.html.
     // Ask the asset store for the extensionless path: asking for .html makes it answer with a redirect.
     if (isGet && STATE_PAGES.some(([slug]) => slug === path.slice(1))) {
-      return env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}`, request.url), request));
+      const asset = await env.ASSETS.fetch(new Request(new URL(`/states/${path.slice(1)}`, request.url), request));
+      return stateResponse(asset, env);
     }
 
     // Standalone eligibility check: clean URL served from public/check-eligibility.html
@@ -200,6 +201,17 @@ function textResponse(body, type) {
   return new Response(body, {
     headers: { 'Content-Type': type, 'Cache-Control': 'public, max-age=3600' },
   });
+}
+
+// State pages are static files. Swap in the Turnstile widget here, so the site key stays in the Worker settings.
+async function stateResponse(asset, env) {
+  if (!asset.ok || !(asset.headers.get('Content-Type') || '').includes('text/html')) return asset;
+  const html = (await asset.text()).replace('{{TURNSTILE_WIDGET}}', turnstileWidget(env));
+  const headers = new Headers(asset.headers);
+  headers.delete('Content-Length');
+  headers.delete('ETag');
+  Object.entries(SECURITY_HEADERS).forEach(([k, v]) => headers.set(k, v));
+  return new Response(html, { status: asset.status, headers });
 }
 
 function turnstileWidget(env) {
