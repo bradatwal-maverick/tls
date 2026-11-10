@@ -786,6 +786,10 @@ export const pages = {
               <a href="/trade-contractor" class="btn btn--navy">Learn more</a>
             </div>
           </div>
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="/contact" class="btn btn--primary">Book a Callback with Dan</a>
+            <a href="/apply" class="btn btn--outline" onclick="window.trackEvent&&trackEvent('apply_now_click',{step:'services'}); window.trackIntent&&trackIntent('apply_click',{step:'services'})">Apply now</a>
+          </div>
         </div>
       </section>
     `,
