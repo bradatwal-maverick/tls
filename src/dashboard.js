@@ -94,6 +94,15 @@ function filtersFrom(url, skipStage = false) {
   if (p.get('src') === 'ads') where.push('is_ad = 1');
   if (p.get('src') === 'other') where.push('is_ad = 0');
   if (!skipStage && STAGES.includes(p.get('stage'))) { where.push('stage = ?'); binds.push(p.get('stage')); }
+  // Quick filters for Dan. Dates use AEST (+10 hours), the same as the rest of the dashboard.
+  const quick = p.get('quick') || '';
+  const aestNow = new Date(Date.now() + 10 * 3600 * 1000);
+  const today = aestNow.toISOString().slice(0, 10);
+  const monday = new Date(aestNow.getTime() - ((aestNow.getUTCDay() + 6) % 7) * 86400000).toISOString().slice(0, 10);
+  if (quick === 'today') { where.push("date(created_at, '+10 hours') = ?"); binds.push(today); }
+  if (quick === 'week') { where.push("date(created_at, '+10 hours') >= ?"); binds.push(monday); }
+  if (quick === 'ads') where.push('is_ad = 1');
+  if (quick === 'followup') { where.push("stage = 'new' AND created_at < ?"); binds.push(new Date(Date.now() - 86400000).toISOString()); }
   const q = (p.get('q') || '').trim().slice(0, 100);
   const ref = q.match(/^tls[-\s]?0*(\d+)$/i); // search by enquiry number, e.g. TLS-0001
   if (ref) {
@@ -321,6 +330,13 @@ main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 .tile.stage-tile.in_contact b { color:#8a5300; }
 .tile.stage-tile.booked b { color:#1e6b3c; }
 .tile.stage-tile.no b { color:#4b5563; }
+button.tile { font:inherit; color:var(--ink); background:var(--card); border:1px solid var(--line); padding:7px 8px; border-radius:10px; text-align:left; margin:0; cursor:pointer; font-weight:400; }
+button.tile:focus-visible { outline:2px solid var(--blue); outline-offset:2px; }
+.tile.active { outline:2px solid var(--ink); outline-offset:-2px; }
+.chips { display:flex; gap:6px; overflow-x:auto; padding:0 0 8px; margin:0 0 4px; scrollbar-width:none; }
+.chips::-webkit-scrollbar { display:none; }
+.chip { font:inherit; font-size:13px; font-weight:600; white-space:nowrap; padding:6px 11px; border-radius:99px; border:1px solid var(--line); background:var(--card); color:var(--ink); cursor:pointer; margin:0; flex:0 0 auto; }
+.chip.active { background:var(--blue); border-color:var(--blue); color:#fff; }
 .tile span { color:var(--muted); font-size:13px; }
 .tile.alert { border-color:var(--amber); background:var(--amberbg); }
 .tile.alert b { color:var(--amber); }
@@ -393,16 +409,24 @@ dialog li { margin-bottom:8px; }
 
   <div class="summary">
     <div class="tile"><b id="t-count">–</b><span>Enquiries</span></div>
-    <div class="tile stage-tile new" id="tile-new"><b id="t-new">–</b><span>New</span></div>
-    <div class="tile stage-tile in_contact"><b id="t-inc">–</b><span>In Contact</span></div>
-    <div class="tile stage-tile booked"><b id="t-booked">–</b><span>Booked</span></div>
-    <div class="tile stage-tile no"><b id="t-no">–</b><span>No</span></div>
+    <button type="button" class="tile stage-tile new" data-stage="new" id="tile-new"><b id="t-new">–</b><span>New</span></button>
+    <button type="button" class="tile stage-tile in_contact" data-stage="in_contact"><b id="t-inc">–</b><span>In Contact</span></button>
+    <button type="button" class="tile stage-tile booked" data-stage="booked"><b id="t-booked">–</b><span>Booked</span></button>
+    <button type="button" class="tile stage-tile no" data-stage="no"><b id="t-no">–</b><span>No</span></button>
     <div class="tile"><b id="t-rev">–</b><span>Booked value</span></div>
+  </div>
+  <div class="chips" id="chips">
+    <button type="button" class="chip" data-quick="">All</button>
+    <button type="button" class="chip" data-quick="today">Today</button>
+    <button type="button" class="chip" data-quick="week">This week</button>
+    <button type="button" class="chip" data-quick="ads">Google Ads</button>
+    <button type="button" class="chip" data-quick="followup">Needs follow-up</button>
   </div>
 
   <details class="panel" id="filters">
     <summary>Filter enquiries</summary>
     <form id="f" class="grid">
+      <input type="hidden" name="quick">
       <div><label>From<input type="date" name="from"></label></div>
       <div><label>To<input type="date" name="to"></label></div>
       <div><label>State<select name="state"><option value="">All states</option>${stateOpts}</select></label></div>
@@ -468,7 +492,19 @@ function when(iso) {
 function refOf(id) { return 'TLS-' + String(id).padStart(4, '0'); }
 const LABELS = { builder: 'Builder', company: 'Company', mutual: 'Mutual recognition', trade: 'Trade', 'not sure': 'Not sure' };
 
+// Highlights the active stage tile and quick chip so Dan can see what the list is filtered to.
+function syncActive() {
+  const stage = form.elements.stage.value;
+  const quick = form.elements.quick.value;
+  for (const t of document.querySelectorAll('.stage-tile[data-stage]')) t.classList.toggle('active', t.dataset.stage === stage);
+  for (const c of document.querySelectorAll('.chip')) {
+    const q = c.dataset.quick || '';
+    c.classList.toggle('active', q === '' ? !stage && !quick : q === quick);
+  }
+}
+
 async function load() {
+  syncActive();
   const list = $('#list');
   try {
     const res = await fetch('/dashboard/api/enquiries?' + query(), { cache: 'no-store' });
@@ -585,6 +621,27 @@ function card(r) {
   item.append(top, actions, picker, detail);
   if (openIds.has(String(r.id))) setOpen(true);
   return item;
+}
+
+// Tap a stage tile to filter to that stage. Tap it again to clear.
+for (const t of document.querySelectorAll('.stage-tile[data-stage]')) {
+  t.addEventListener('click', () => {
+    const v = t.dataset.stage;
+    form.elements.stage.value = form.elements.stage.value === v ? '' : v;
+    load();
+  });
+}
+// Tap a quick chip to filter. Tap the active one again, or All, to clear.
+for (const c of document.querySelectorAll('.chip')) {
+  c.addEventListener('click', () => {
+    const q = c.dataset.quick || '';
+    if (q === '') {
+      form.reset();
+    } else {
+      form.elements.quick.value = form.elements.quick.value === q ? '' : q;
+    }
+    load();
+  });
 }
 
 form.addEventListener('input', debounce(load, 250));
