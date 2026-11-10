@@ -30,6 +30,7 @@ const LLMS_LINKS = [
   ['/trade-contractor', 'Trade contractor licences'],
   ['/states', 'Licences by state'],
   ['/check-eligibility', 'Check your licence eligibility in 30 seconds'],
+  ['/apply', 'Apply for your trade licence'],
   ['/pricing', 'Pricing'],
   ['/services', 'Services'],
   ['/faq', 'FAQs'],
@@ -144,8 +145,8 @@ async function routeRequest(request, env, ctx) {
     }
 
     // Standalone eligibility check: clean URL served from public/check-eligibility.html
-    if (isGet && path === '/check-eligibility') {
-      const asset = await env.ASSETS.fetch(new Request(new URL('/check-eligibility', request.url), request));
+    if (isGet && (path === '/check-eligibility' || path === '/apply')) {
+      const asset = await env.ASSETS.fetch(new Request(new URL(path, request.url), request));
       return new Response(asset.body, {
         status: asset.status,
         headers: { ...Object.fromEntries(asset.headers), ...SECURITY_HEADERS },
@@ -467,7 +468,7 @@ function sitemapXml() {
   const paths = ['/', ...Object.entries(pages)
     .filter(([p, page]) => !page.noindex && !skip.has(p))
     .map(([p]) => p)];
-  const urls = [...paths, '/check-eligibility', ...STATE_PAGES.map(([slug]) => `/${slug}`)].map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
+  const urls = [...paths, '/check-eligibility', '/apply', ...STATE_PAGES.map(([slug]) => `/${slug}`)].map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
