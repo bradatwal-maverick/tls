@@ -248,7 +248,7 @@
 
   function showUnverified(){
     var s = STATES[st];
-    tool.innerHTML = progress(2) + '<div class="result grey"><span class="badge">Rules not yet checked</span><h3>We haven\'t verified '+s.name+' yet</h3><p>We don\'t want to give you wrong steps. Call Dan and he\'ll walk you through the exact rules for '+s.name+'.</p><div class="result actions" style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-hivis" href="tel:+61412767129">Call 0412 767 129</a><a class="btn btn-ghost" href="'+s.page+'">'+s.name+' page</a></div></div>' + backBtn();
+    tool.innerHTML = progress(2) + '<div class="result grey"><span class="badge">Rules not yet checked</span><h3>We haven\'t verified '+s.name+' yet</h3><p>We don\'t want to give you wrong steps. Send Dan an enquiry and he\'ll walk you through the exact rules for '+s.name+'.</p><div class="result actions" style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-ghost" href="'+s.page+'">'+s.name+' page</a></div></div>' + backBtn();
     bind();
   }
 
@@ -265,7 +265,7 @@
       '<span class="ready-meta">'+s.name+' &middot; Ref '+refCode+' &middot; '+today+'</span></div>';
     var html = progress(5) + '<div class="result '+r.k+'"><span class="badge">'+label+'</span><h3>'+r.head+'</h3><ul>';
     r.pts.forEach(function(p){ html += '<li>'+p+'</li>'; });
-    html += '</ul>'+rules+cert+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a><a class="btn btn-ghost" href="tel:+61412767129">Call</a></div></div>';
+    html += '</ul>'+rules+cert+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a></div></div>';
     html += '<button type="button" class="q-back" id="q-again">Start again</button>';
     tool.innerHTML = html;
     bindJargon();

@@ -150,7 +150,7 @@ function turnstileWidget(env) {
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>`;
 }
 
-function notice(title, bodyHtml) {
+function notice(title, bodyHtml, showPhone = false) {
   return {
     title: `${title} — Trade Licence Solutions`,
     description: title,
@@ -160,9 +160,7 @@ function notice(title, bodyHtml) {
       <section class="section">
         <div class="container container--narrow">
           ${bodyHtml}
-          <div class="cta-block">
-            <a href="tel:+61412767129" class="btn btn--primary">Call Dan on ${PHONE_DISPLAY}</a>
-          </div>
+          ${showPhone ? `<div class="cta-block"><a href="tel:+61412767129" class="btn btn--primary">Call Dan on ${PHONE_DISPLAY}</a></div>` : ''}
         </div>
       </section>
     `,
@@ -202,13 +200,13 @@ async function handleContact(request, env, ctx) {
       const result = await verify.json();
       if (!result.success) {
         return renderPage(
-          notice('Security check did not pass', `<p>Please go back and try again, or call Dan directly.</p>`),
+          notice('Security check did not pass', `<p>Please go back and try again.</p>`),
           '/contact-submitted', env, 403
         );
       }
     } catch (err) {
       return renderPage(
-        notice('Something went wrong', `<p>Please call Dan directly and he will take it from there.</p>`),
+        $1, true),
         '/contact-submitted', env, 502
       );
     }
@@ -234,7 +232,7 @@ async function handleContact(request, env, ctx) {
 
   if (!saved && !emailed) {
     return renderPage(
-      notice('The form is not working right now', `<p>Sorry about that. Please call Dan and he will take your details.</p>`),
+      $1, true),
       '/contact-submitted', env, 502
     );
   }
@@ -389,7 +387,7 @@ function sitemapXml() {
 function llmsTxt() {
   return `# Trade Licence Solutions
 
-> Trade Licence Solutions is run by Dan Pleaner. Dan helps tradies and builders get builder licences, company licences, mutual recognition and trade contractor licences in all 8 Australian states and territories. Dan answers his own phone: ${PHONE_DISPLAY}.
+> Trade Licence Solutions is run by Dan Pleaner. Dan helps tradies and builders get builder licences, company licences, mutual recognition and trade contractor licences in all 8 Australian states and territories. Enquiries go through the contact form at ${SITE}/contact.
 
 ## Prices (from)
 - Builder licence application: from $2,000

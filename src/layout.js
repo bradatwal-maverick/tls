@@ -120,9 +120,6 @@ export function layout(page, css, ctx = {}) {
       <li class="nav__item"><a href="/contact" class="nav__cta">Book a free call</a></li>
     </ul>
     <div class="nav__actions">
-      <a href="tel:+61412767129" class="nav__call" aria-label="Call Dan on 0412 767 129">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
-      </a>
       <label for="nav-check" class="nav__toggle" title="Menu">
         <span class="nav__toggle-bar"></span>
         <span class="nav__toggle-bar"></span>
@@ -149,7 +146,6 @@ ${page.content}
 <div class="call-bar" role="complementary" aria-label="Contact">
   <div class="call-bar__inner">
     <p>Ready to get your licence? Dan answers his own phone.</p>
-    <a href="tel:+61412767129" class="btn btn--call" aria-label="Call Dan on 0412 767 129"><svg class="ph-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg> 0412 767 129</a>
     <a href="/contact" class="btn btn--navy">Book a free call</a>
   </div>
 </div>
@@ -161,7 +157,6 @@ ${page.content}
         <img src="/images/logo.png" alt="Trade Licence Solutions">
       </div>
       <p class="footer-tagline">Trade licence specialist for builders and trade contractors across Australia. Builder, company, mutual recognition and trade contractor licences in all 8 states and territories, with clear, step-by-step help from Dan.</p>
-      <a class="footer-phone" href="tel:+61412767129" aria-label="Call Dan on 0412 767 129"><span class="footer-phone__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg></span><span>0412 767 129</span></a>
     </div>
     <div class="footer-col">
       <h3>Services</h3>
