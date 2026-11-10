@@ -332,6 +332,8 @@ main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 #ptr { text-align:center; color:var(--muted); font-size:14px; height:0; overflow:hidden; transition:height .2s; }
 #ptr.on { height:40px; }
 .summary { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:6px 0 10px; }
+.tabs { display:flex; gap:6px; margin:8px 0 0; }
+.tabs button { flex:1; font-weight:600; }
 .ga-card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 10px; margin:6px 0 10px; }
 .ga-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px; }
 .ga-head b { font-size:14px; }
@@ -423,15 +425,19 @@ dialog li { margin-bottom:8px; }
   </div>
 </header>
 <main>
+  <nav class="ga-seg tabs"><button type="button" data-tab="enq" class="on">Enquiries</button> <button type="button" data-tab="ga">Analytics</button></nav>
   <div id="ptr">Pull down to refresh…</div>
 
+  <div id="view-ga" hidden>
   <section class="ga-card" id="ga" aria-label="Website analytics">
     <div class="ga-head"><b>Website (Google Analytics)</b>
       <div class="ga-seg"><button type="button" data-gp="7" class="on">7 days</button> <button type="button" data-gp="30">30 days</button></div>
     </div>
     <div id="ga-body" class="ga-sub">Loading…</div>
   </section>
+  </div>
 
+  <div id="view-enq">
   <div class="summary">
     <div class="tile"><b id="t-count">–</b><span>Enquiries</span></div>
     <button type="button" class="tile stage-tile new" data-stage="new" id="tile-new"><b id="t-new">–</b><span>New</span></button>
@@ -466,6 +472,7 @@ dialog li { margin-bottom:8px; }
   </details>
 
   <div id="list"></div>
+  </div>
 </main>
 
 <dialog id="a2hs-dialog" aria-labelledby="a2hs-title">
@@ -555,6 +562,13 @@ async function loadGa() {
   gaRender();
 }
 document.querySelectorAll('[data-gp]').forEach((b) => b.addEventListener('click', () => { gaPeriod = b.dataset.gp; gaRender(); }));
+function showTab(t) {
+  $('#view-enq').hidden = t !== 'enq';
+  $('#view-ga').hidden = t !== 'ga';
+  document.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
+  if (t === 'ga') loadGa();
+}
+document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
 
 async function load() {
   syncActive();
