@@ -270,7 +270,8 @@
       '<span class="ready-meta">'+s.name+' &middot; Ref '+refCode+' &middot; '+today+'</span></div>';
     var html = progress(5) + '<div class="result '+r.k+'"><span class="badge">'+label+'</span><h3>'+r.head+'</h3><ul>';
     r.pts.forEach(function(p){ html += '<li>'+p+'</li>'; });
-    html += '</ul>'+rules+cert+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a></div></div>';
+    html += '</ul>'+rules+cert+'<div class="actions"><a class="btn btn-hivis" href="'+s.page+'">'+s.name+' details</a><a class="btn btn-ghost" href="/contact?state='+st+'&amp;licence='+encodeURIComponent(TYPE_LABELS[type])+'">Send to Dan</a></div>'+
+      (r.k === 'green' ? '<div class="actions"><a class="btn btn-ghost" href="https://pci.jotform.com/form/263016069377057" target="_blank" rel="noopener" onclick="if(window.trackEvent)trackEvent(\'apply_now_click\',{step:\'eligibility\',licence:\''+(type||'')+'\'});if(window.trackIntent)trackIntent(\'apply_click\',{step:\'eligibility\',licence:\''+(type||'')+'\'})">Apply now</a></div>' : '') + '</div>';
     html += '<button type="button" class="q-back" id="q-again">Start again</button>';
     tool.innerHTML = html;
     bindJargon();

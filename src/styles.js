@@ -355,6 +355,13 @@ strong { font-weight: 600; }
 }
 .btn--navy:hover { background: var(--navy-mid); border-color: var(--navy-mid); color: var(--white); }
 
+.btn--outline {
+  background: transparent;
+  color: var(--navy);
+  border-color: var(--navy);
+}
+.btn--outline:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
 .btn--call {
   background: var(--white);
   color: var(--navy);
