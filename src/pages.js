@@ -971,20 +971,16 @@ export const pages = {
                   <option value="not sure">Not sure yet</option>
                 </select>
               </div>
-              <details class="form-more" style="margin:0 0 16px;">
-                <summary>Add an email or a message (optional)</summary>
-                <div class="form-group" style="margin-top:12px;">
-                  <label for="c_email">Email</label>
-                  <input type="email" id="c_email" name="email" placeholder="your@email.com" autocomplete="email">
-                </div>
-                <div class="form-group">
-                  <label for="c_message">What do you need help with?</label>
-                  <textarea id="c_message" name="message" placeholder="e.g. I need a company licence in NSW…"></textarea>
-                </div>
-              </details>
+              <div class="form-group">
+                <label for="c_email">Email (optional)</label>
+                <input type="email" id="c_email" name="email" placeholder="your@email.com" autocomplete="email">
+              </div>
+              <div class="form-group">
+                <label for="c_message">What do you need help with? (optional)</label>
+                <textarea id="c_message" name="message" placeholder="e.g. I need a company licence in NSW…"></textarea>
+              </div>
               <div class="hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
               {{TURNSTILE_WIDGET}}
-              <script>(function(){try{var p=new URLSearchParams(location.search);var s=p.get('state'),l=p.get('licence');if(s&&document.getElementById('c_state'))document.getElementById('c_state').value=s;if(l&&document.getElementById('c_licence'))document.getElementById('c_licence').value=l;}catch(e){}})();</script>
               <button type="submit" class="btn btn--primary" style="width:100%;">Send message →</button>
             </form>
           </div>

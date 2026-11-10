@@ -33,4 +33,14 @@
       trackEvent('book_call_click', { link_text: (a.textContent || '').trim(), page_path: location.pathname });
     }
   });
+
+  // Contact page: prefill state/licence from the query string, if those fields are on the page.
+  try {
+    var p = new URLSearchParams(location.search);
+    var s = p.get('state'), l = p.get('licence');
+    var stateEl = document.getElementById('c_state');
+    var licenceEl = document.getElementById('c_licence');
+    if (s && stateEl) stateEl.value = s;
+    if (l && licenceEl) licenceEl.value = l;
+  } catch (e) {}
 })();
