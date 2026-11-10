@@ -206,7 +206,7 @@ async function handleContact(request, env, ctx) {
       }
     } catch (err) {
       return renderPage(
-        $1, true),
+        notice('Something went wrong', `<p>Please call Dan directly and he will take it from there.</p>`, true),
         '/contact-submitted', env, 502
       );
     }
@@ -232,7 +232,7 @@ async function handleContact(request, env, ctx) {
 
   if (!saved && !emailed) {
     return renderPage(
-      $1, true),
+      notice('The form is not working right now', `<p>Sorry about that. Please call Dan and he will take your details.</p>`, true),
       '/contact-submitted', env, 502
     );
   }
