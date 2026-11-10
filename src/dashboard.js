@@ -376,9 +376,12 @@ button:disabled { opacity:.6; }
 .item.stage-in_contact { border-left-color:#f79009; }
 .item.stage-booked { border-left-color:#1e7b43; }
 .item.stage-no { border-left-color:#667085; }
-.top { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; padding:8px 10px 4px; cursor:pointer; }
-.top:focus-visible { outline:2px solid var(--blue); outline-offset:-2px; }
-.actions { display:flex; flex-wrap:wrap; align-items:center; gap:6px; padding:2px 10px 8px; }
+.item { display:grid; grid-template-columns:minmax(0,1fr) auto; }
+.top { grid-column:1; grid-row:1; display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; padding:8px 10px 4px; }
+.actions { grid-column:2; grid-row:1; display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; padding:6px 10px 4px 0; }
+.picker, .detail { grid-column:1 / -1; }
+.facts { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; }
+.facts .meta { min-width:0; overflow-wrap:anywhere; }
 .name { font-weight:700; font-size:15px; }
 .ref { font-size:12px; font-weight:700; color:var(--blue); }
 .meta { color:var(--muted); font-size:13px; }
@@ -409,6 +412,9 @@ dialog li { margin-bottom:8px; }
   header h1 { font-size:18px; }
   .when { margin-left:0; width:100%; }
   .grid { grid-template-columns:1fr; }
+  .item { grid-template-columns:1fr; }
+  .actions { grid-column:1; grid-row:auto; justify-content:flex-start; padding:0 10px 6px; }
+  .facts { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -501,7 +507,6 @@ function appScript() {
 const APP_JS = `const VAPID_PUBLIC = (document.querySelector('meta[name="vapid-public"]') || {}).content || '';
 const $ = (s) => document.querySelector(s);
 const form = $('#f');
-const openIds = new Set();
 let deferredInstall = null;
 
 function el(tag, attrs, ...kids) {
@@ -662,32 +667,23 @@ function card(r) {
     actions.append(mail);
   }
 
-  // Basic info stays on the card. Tap the top line to show the details.
-  const top = el('div', { class: 'top', role: 'button', tabindex: '0', 'aria-expanded': 'false' },
+  // Header (ref, name, date) sits left, buttons sit right. Everything else is shown, no tap needed.
+  const top = el('div', { class: 'top' },
     el('span', { class: 'ref' }, refOf(r.id)),
     el('span', { class: 'name' }, r.name || 'No name'),
     el('span', { class: 'when' }, when(r.created_at))
   );
-  const detail = el('div', { class: 'detail', hidden: '' },
-    el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
-    el('div', { class: 'meta' }, (r.phone || '') + (r.email ? ' · ' + r.email : '')),
+  const detail = el('div', { class: 'detail' },
+    el('div', { class: 'facts' },
+      el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
+      el('div', { class: 'meta' }, (r.phone || '') + (r.email ? ' · ' + r.email : ''))
+    ),
     el('div', { class: 'label' }, 'Message'),
     r.message ? el('div', { class: 'msg' }, r.message) : el('div', { class: 'msg muted' }, 'No message given.'),
     stage === 'booked' && r.booked_at ? el('div', { class: 'meta' }, 'Booked ' + when(r.booked_at)) : ''
   );
 
-  function setOpen(open) {
-    detail.hidden = !open;
-    top.setAttribute('aria-expanded', String(open));
-    if (open) openIds.add(String(r.id)); else openIds.delete(String(r.id));
-  }
-  top.addEventListener('click', () => setOpen(detail.hidden));
-  top.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(detail.hidden); }
-  });
-
   item.append(top, actions, picker, detail);
-  if (openIds.has(String(r.id))) setOpen(true);
   return item;
 }
 
