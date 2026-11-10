@@ -481,6 +481,7 @@ function llmsTxt() {
 
 ## Prices (from)
 - Builder licence application: from $2,000
+- Electrical and plumbing licence application: from $1,500
 - Company licence: from $550
 - Mutual recognition: from $550 per state
 
