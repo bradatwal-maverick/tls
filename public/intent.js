@@ -45,6 +45,15 @@
 
   send('pageview');
 
+  // Enquiry form sent: record the page it was sent from (a hidden "page" field, path only)
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (!f || f.getAttribute('action') !== '/contact-submitted') return;
+    var h = f.querySelector('input[name="page"]');
+    if (!h) { h = document.createElement('input'); h.type = 'hidden'; h.name = 'page'; f.appendChild(h); }
+    h.value = location.pathname.slice(0, 200);
+  }, true);
+
   // Contact form started: the first field the visitor touches
   document.addEventListener('focusin', function (e) {
     var f = e.target && e.target.form;
