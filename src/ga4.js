@@ -3,7 +3,10 @@
  * Reads the GA4 Data API with a read-only Google service account (Viewer on the GA4 property).
  * Worker settings (set once per client, no code changes needed):
  *   GA4_PROPERTY_ID      (Text)   the numeric property ID, e.g. 123456789 (not the G- measurement ID)
- *   GA4_SERVICE_ACCOUNT  (Secret) the full JSON key file for the service account
+ *   GA_CLIENT_ID         (Text)   OAuth client ID for the sign-in app (preferred)
+ *   GA_CLIENT_SECRET     (Secret) OAuth client secret for the sign-in app
+ *   GA_REFRESH_TOKEN     (Secret) long-lived token from a one-time sign-in with analytics.readonly
+ *   GA4_SERVICE_ACCOUNT  (Secret) alternative: the full JSON key file for a service account
  * Results are cached for one hour. Enquiry counts come straight from D1 so they are always current.
  */
 
@@ -11,7 +14,7 @@ const CACHE_SECONDS = 3600;
 const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 
 export async function ga4Summary(env) {
-  if (!env.GA4_PROPERTY_ID || !env.GA4_SERVICE_ACCOUNT) return { configured: false };
+  if (!env.GA4_PROPERTY_ID || !(env.GA_REFRESH_TOKEN || env.GA4_SERVICE_ACCOUNT)) return { configured: false };
 
   const cache = caches.default;
   const key = new Request('https://ga4-cache.internal/' + encodeURIComponent(env.GA4_PROPERTY_ID) + '/v1');
@@ -106,8 +109,27 @@ async function fetchSite(env) {
   return out;
 }
 
-// Exchange a signed JWT for a short-lived access token (standard Google service account flow)
+// Short-lived access token. Uses the sign-in refresh token when set, otherwise the service account key.
 async function accessToken(env) {
+  if (env.GA_REFRESH_TOKEN) {
+    const res = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: env.GA_CLIENT_ID,
+        client_secret: env.GA_CLIENT_SECRET,
+        refresh_token: env.GA_REFRESH_TOKEN,
+        grant_type: 'refresh_token',
+      }),
+    });
+    if (!res.ok) throw new Error('token ' + res.status);
+    return (await res.json()).access_token;
+  }
+  return serviceAccountToken(env);
+}
+
+// Exchange a signed JWT for a short-lived access token (service account flow)
+async function serviceAccountToken(env) {
   const sa = JSON.parse(env.GA4_SERVICE_ACCOUNT);
   const now = Math.floor(Date.now() / 1000);
   const input = b64url(JSON.stringify({ alg: 'RS256', typ: 'JWT' })) + '.' + b64url(JSON.stringify({
