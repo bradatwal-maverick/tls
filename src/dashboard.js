@@ -403,14 +403,15 @@ button:disabled { opacity:.6; }
 .item.stage-no { border-left-color:#667085; }
 .item { display:grid; grid-template-columns:minmax(0,1fr) auto; }
 .top { grid-column:1; grid-row:1; display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; padding:8px 10px 4px; }
-.actions { grid-column:2; grid-row:1; display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; padding:6px 10px 4px 0; }
-.picker, .detail { grid-column:1 / -1; }
-.facts { display:grid; grid-template-columns:1fr 1fr; gap:0 14px; }
-.facts .meta { min-width:0; overflow-wrap:anywhere; }
+.side { grid-column:2; grid-row:1 / span 2; display:flex; flex-direction:column; align-items:flex-end; gap:6px; padding:6px 10px 4px 0; min-width:0; }
+.info { display:flex; flex-direction:column; align-items:flex-end; text-align:right; min-width:0; }
+.info .meta { overflow-wrap:anywhere; text-align:right; }
+.actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; }
+.picker, .detail { grid-column:1; align-self:start; }
 .name { font-weight:700; font-size:15px; }
 .ref { font-size:12px; font-weight:700; color:var(--blue); }
 .meta { color:var(--muted); font-size:13px; }
-.when { margin-left:auto; color:var(--muted); font-size:12px; }
+.when { white-space:nowrap; color:var(--muted); font-size:12px; }
 .detail { padding:0 10px 10px; }
 .detail[hidden], .picker[hidden] { display:none; }
 .label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-top:4px; }
@@ -435,11 +436,15 @@ dialog li { margin-bottom:8px; }
 @media (max-width:560px) {
   .summary { grid-template-columns:repeat(3,1fr); }
   header h1 { font-size:18px; }
-  .when { margin-left:0; width:100%; }
   .grid { grid-template-columns:1fr; }
   .item { grid-template-columns:1fr; }
-  .actions { grid-column:1; grid-row:auto; justify-content:flex-start; padding:0 10px 6px; }
-  .facts { grid-template-columns:1fr; }
+  .top { grid-column:1; grid-row:auto; order:1; }
+  .detail { order:2; }
+  .side { grid-column:1; grid-row:auto; order:3; align-items:flex-start; padding:0 10px 6px; }
+  .info { align-items:flex-start; text-align:left; }
+  .info .meta { text-align:left; }
+  .actions { justify-content:flex-start; }
+  .picker { order:4; }
 }
 </style>
 </head>
@@ -578,14 +583,15 @@ function gaTile(label, value) { return el('div', { class: 'tile' }, el('b', {}, 
 function gaRender() {
   const body = $('#ga-body');
   if (!gaData) return;
-  if (!gaData.configured) { body.textContent = 'Google Analytics is not connected yet.'; return; }
-  if (gaData.error) { body.textContent = 'Website stats are unavailable right now. Pull down to try again.'; return; }
+  if (!gaData.configured) { body.textContent = 'Google Analytics is not connected yet. Missing settings: ' + (gaData.missing || []).join(', ') + '.'; return; }
+  if (gaData.error) { body.textContent = gaData.message || 'Website stats are unavailable right now.'; return; }
   const p = gaData.periods[gaPeriod];
   document.querySelectorAll('[data-gp]').forEach((b) => b.classList.toggle('on', b.dataset.gp === gaPeriod));
   body.replaceChildren(
     el('div', { class: 'ga-grid' }, gaTile('Visitors', p.visitors), gaTile('Page views', p.page_views), gaTile('Enquiries', p.enquiries), gaTile('Enquiry rate', p.conversion_pct + '%')),
     el('div', { class: 'ga-sub' }, 'Traffic: Google Ads ' + p.sources.google_ads + '% · Organic ' + p.sources.organic + '% · Direct ' + p.sources.direct + '% · Other ' + p.sources.other + '%'),
-    el('ul', { class: 'ga-pages' }, ...p.top_pages.map((t) => el('li', {}, t.path + ' (' + t.views + ')')))
+    el('ul', { class: 'ga-pages' }, ...p.top_pages.map((t) => el('li', {}, t.path + ' (' + t.views + ')'))),
+    el('div', { class: 'ga-sub' }, gaData.note || '')
   );
 }
 async function loadGa() {
@@ -742,24 +748,26 @@ function card(r) {
     actions.append(mail);
   }
 
-  // Header (ref, name, date) sits left, buttons sit right. Everything else is shown, no tap needed.
+  // Name sits top left. On the right, date, phone and email are stacked above the buttons. Details sit under the name.
   const top = el('div', { class: 'top' },
     el('span', { class: 'ref' }, refOf(r.id)),
-    el('span', { class: 'name' }, r.name || 'No name'),
-    el('span', { class: 'when' }, when(r.created_at))
+    el('span', { class: 'name' }, r.name || 'No name')
   );
+  const info = el('div', { class: 'info' },
+    el('span', { class: 'when' }, when(r.created_at)),
+    r.phone ? el('span', { class: 'meta' }, r.phone) : '',
+    r.email ? el('span', { class: 'meta' }, r.email) : ''
+  );
+  const side = el('div', { class: 'side' }, info, actions);
   const detail = el('div', { class: 'detail' },
-    el('div', { class: 'facts' },
-      el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
-      el('div', { class: 'meta' }, (r.phone || '') + (r.email ? ' · ' + r.email : '')),
-      journeyOf(r) ? el('div', { class: 'meta journey' }, journeyOf(r)) : ''
-    ),
+    el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
+    journeyOf(r) ? el('div', { class: 'meta journey' }, journeyOf(r)) : '',
     el('div', { class: 'label' }, 'Message'),
     r.message ? el('div', { class: 'msg' }, r.message) : el('div', { class: 'msg muted' }, 'No message given.'),
     stage === 'booked' && r.booked_at ? el('div', { class: 'meta' }, 'Booked ' + when(r.booked_at)) : ''
   );
 
-  item.append(top, actions, picker, detail);
+  item.append(top, side, picker, detail);
   return item;
 }
 
