@@ -355,6 +355,76 @@ export const pages = {
     `,
   },
 
+  // ===== ELECTRICAL AND PLUMBING =====
+  '/electrical-plumbing-licence': {
+    title: 'Electrical and Plumbing Licence Help — Step by Step | Trade Licence Solutions',
+    description: 'Electrical and plumbing licences explained in plain English. Dan Pleaner helps electricians and plumbers get the right licence for their state, from first step to licence in hand.',
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: 'Electrical and plumbing licence application',
+      serviceType: 'Electrical and plumbing licence application',
+      description: 'Helping electricians and plumbers get the right licence for their trade and state, including qualification checks, forms and lodgement with the regulator.',
+      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      areaServed: { '@type': 'Country', name: 'Australia' },
+      offers: { '@type': 'Offer', description: 'Electrical and plumbing licence — price to be confirmed by Dan (to verify)' },
+    },
+    content: `
+      <section class="hero hero--inner">
+        <div class="container">
+          <p class="breadcrumb">Services</p>
+          <h1>Electrical and plumbing licences</h1>
+          <p style="color:rgba(255,255,255,0.85);max-width:580px;margin-top:0.5rem;">Electrical and plumbing work is some of the most hands-on licensed trade work there is. Dan takes the paperwork off your plate so you can get back to the job.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container container--narrow">
+          <div class="quick-answer">
+            <p><strong>In short:</strong> Electrical and plumbing licences are separate from a general contractor licence. Each state has its own rules, its own licence types and its own regulator (to verify for each state). Dan checks what you need, prepares the application and lodges it for you. <strong>Price: [to be set by Dan]</strong>.</p>
+          </div>
+
+          <h2>Who this page is for</h2>
+          <ul>
+            <li>Electricians who want to run their own electrical business</li>
+            <li>Plumbers and drainers who want to run their own plumbing business</li>
+            <li>Tradies who are new to licensing and want it explained step by step</li>
+          </ul>
+
+          <h2 style="margin-top:2rem;">How it works, step by step</h2>
+          <ol>
+            <li><strong>Check your state.</strong> Each state sets its own rules for electrical and plumbing licences (to verify).</li>
+            <li><strong>Check your qualifications.</strong> Dan looks at your trade certificates and experience against the requirements (to verify for each licence type).</li>
+            <li><strong>Choose the right licence type.</strong> For example, an individual licence or a company licence (to verify for each state).</li>
+            <li><strong>Dan prepares and lodges the application.</strong> He fills in the forms and sends them to the regulator.</li>
+            <li><strong>Dan follows up</strong> until your licence is issued, and explains what to do next.</li>
+          </ol>
+
+          <div class="cta-block" style="margin-top:2rem;">
+            <a href="tel:+61412767129" class="btn btn--primary">Call Dan on 0412 767 129</a>
+            <a href="/contact" class="btn btn--navy">Book a free 15-minute call</a>
+          </div>
+
+          <h2 style="margin-top:2.5rem;">Electrical and plumbing FAQs</h2>
+          <div class="faq-list">
+            <details>
+              <summary>Do I need a separate licence for electrical or plumbing work?</summary>
+              <div class="faq-answer"><p>Usually yes. Electrical and plumbing work often has its own licence, separate from a general contractor licence (to verify for your state). A free 15-minute call will confirm what applies to you.</p></div>
+            </details>
+            <details>
+              <summary>How much does it cost?</summary>
+              <div class="faq-answer"><p>Dan's fee is [to be set by Dan]. Government lodgement fees are separate and vary by state (to verify).</p></div>
+            </details>
+            <details>
+              <summary>Can you help with a company licence?</summary>
+              <div class="faq-answer"><p>Where your state has a company licence for electrical or plumbing work, Dan can prepare it (to verify for each state).</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+    `,
+  },
+
   // ===== PRICING =====
   '/pricing': {
     title: 'Pricing — Trade Licence Solutions',
