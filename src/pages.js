@@ -806,6 +806,68 @@ export const pages = {
         <div class="container container--narrow">
           <div class="faq-list">
             <details>
+              <summary>How do I apply?</summary>
+              <div class="faq-answer">
+                <p>Start online on the <a href="/apply">apply page</a>. Check the documents you need first, then fill in the application. Not sure you're ready? <a href="/check-eligibility">Check your eligibility</a> first, or <a href="/contact">book a free 15-minute call</a> with Dan.</p>
+              </div>
+            </details>
+            <details>
+              <summary>How do I check my eligibility?</summary>
+              <div class="faq-answer">
+                <p>Use the <a href="/check-eligibility">eligibility check</a>. It takes about 30 seconds and shows which licence you are likely to need. Dan confirms the details on your free call.</p>
+              </div>
+            </details>
+            <details>
+              <summary>I'm a builder. What licence do I need?</summary>
+              <div class="faq-answer">
+                <p>You need a builder licence to contract directly with clients and take on residential building work. In NSW, that includes residential work over $5,000 (incl GST). Dan's fee starts from $2,000 ex GST. See <a href="/builder-licence">builder licences</a>, or <a href="/check-eligibility">check your eligibility</a>.</p>
+              </div>
+            </details>
+            <details>
+              <summary>I'm a carpenter or other trade. What licence do I need?</summary>
+              <div class="faq-answer">
+                <p>Most carpenters and other trades need a trade contractor licence for their specific trade. Dan's fee starts from $495 ex GST. The right licence depends on your trade and your state, so see <a href="/trade-contractor">trade contractor licences</a> or <a href="/check-eligibility">check your eligibility</a>.</p>
+              </div>
+            </details>
+            <details>
+              <summary>I'm a plumber. What licence do I need?</summary>
+              <div class="faq-answer">
+                <p>In NSW, plumbing and drainage has its own licence, separate from a builder or trade contractor licence. Dan's fee for electrical and plumbing licences starts from $1,500 ex GST. See <a href="/electrical-plumbing-licence">electrical and plumbing licences</a>. Rules differ by state, so <a href="/check-eligibility">check your eligibility</a> or <a href="/contact">book a call with Dan</a>.</p>
+              </div>
+            </details>
+            <details>
+              <summary>I'm an electrician. What licence do I need?</summary>
+              <div class="faq-answer">
+                <p>In NSW, you need an electrical licence before you do any electrical wiring work, whatever the type or cost of the job. Dan's fee for electrical and plumbing licences starts from $1,500 ex GST. See <a href="/electrical-plumbing-licence">electrical and plumbing licences</a>. Rules differ by state, so <a href="/check-eligibility">check your eligibility</a> or <a href="/contact">book a call with Dan</a>.</p>
+              </div>
+            </details>
+            <details>
+              <summary>I'm moving from another state. Do I need new exams?</summary>
+              <div class="faq-answer">
+                <p>Often not. Under Automatic Mutual Recognition (AMR), most licensed builders and trade contractors can notify the regulator and start working straight away. Some licence types still need a formal application. Dan's fee starts from $550 per state ex GST. See <a href="/mutual-recognition">mutual recognition</a> or <a href="/check-eligibility">check your eligibility</a>.</p>
+              </div>
+            </details>
+            <details>
+              <summary>I'm starting a company. Does the company need its own licence?</summary>
+              <div class="faq-answer">
+                <p>In NSW, if your Pty Ltd company contracts for residential building work over $5,000 (incl GST), the company itself must hold a contractor licence, even if a director holds a personal licence. Dan's fee for company licences starts from $550 ex GST. See <a href="/company-licence">company licences</a> or <a href="/check-eligibility">check your eligibility</a>.</p>
+              </div>
+            </details>
+            <details>
+              <summary>What are the prices?</summary>
+              <div class="faq-answer">
+                <p>All prices are ex GST and start from these amounts. Government lodgement fees are separate.</p>
+                <ul>
+                  <li><a href="/trade-contractor">Trade contractor licence</a>: from $495</li>
+                  <li><a href="/electrical-plumbing-licence">Electrical and plumbing licence</a>: from $1,500</li>
+                  <li><a href="/company-licence">Company licence</a>: from $550</li>
+                  <li><a href="/mutual-recognition">Mutual recognition</a>: from $550 per state</li>
+                  <li><a href="/builder-licence">Builder licence</a>: from $2,000</li>
+                </ul>
+                <p>The $150 consultation comes off the full fee if you go ahead. See <a href="/pricing">full pricing</a>.</p>
+              </div>
+            </details>
+            <details>
               <summary>Which licences can Dan assist with?</summary>
               <div class="faq-answer">
                 <p>Dan assists with the majority of licences across the construction industry, including: QBCC licences in Queensland, NSW Fair Trading licences, Building Commission VIC licences, Consumer and Business Services (CBS) licences in SA, CBOS Tasmania, and Access Canberra ACT licences. He generally cannot assist with forklift and warehouse licences, white cards, or rigging in most states.</p>
@@ -857,12 +919,6 @@ export const pages = {
               <summary>How long does the application take?</summary>
               <div class="faq-answer">
                 <p>Timeframes vary significantly by state, licence type and the regulator's current workload. Dan gives you a realistic timeline in your free call. Dan works to keep your application from getting stuck in a back-and-forth with the regulator, which is typically how timelines blow out.</p>
-              </div>
-            </details>
-            <details>
-              <summary>How much does it cost?</summary>
-              <div class="faq-answer">
-                <p>Company licences and mutual recognition start from $550. Individual builder licence applications start from $2,000. Final pricing depends on the state and the complexity of your application and is confirmed in your free 15-minute call. <a href="/pricing">See full pricing →</a></p>
               </div>
             </details>
           </div>
