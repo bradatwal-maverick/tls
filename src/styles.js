@@ -1,3 +1,4 @@
+import { CTA_CSS } from './cta.js';
 export function getCSS() {
   return `
 /* ===== TRADE LICENCE SOLUTIONS — MAVERICK DIGITAL BUILD ===== */
@@ -637,5 +638,6 @@ details[open] summary::after { content: '−'; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: stretch; }
 @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  ${CTA_CSS}
   `;
 }

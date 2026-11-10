@@ -1,3 +1,4 @@
+import { ctaBlock } from './cta.js';
 const SITE = 'https://tradelicencesolutions.com.au';
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -149,6 +150,7 @@ export function layout(page, css, ctx = {}) {
 
 <main id="main" tabindex="-1">
 ${page.content}
+${['/contact','/contact-submitted','/readiness-check','/404','/privacy','/future-proofed'].includes(ctx.path || '/') ? '' : ctaBlock()}
 </main>
 
 ${callBar}

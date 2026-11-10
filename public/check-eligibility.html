@@ -47,6 +47,7 @@
 </script>
 <link rel="stylesheet" href="/tool.css">
 <link rel="stylesheet" href="/home.css">
+<link rel="stylesheet" href="/cta.css">
 </head>
 <body>
 
@@ -119,6 +120,24 @@
     </div>
   </section>
 
+<section class="cta-standard" aria-label="Next steps">
+  <div class="wrap">
+    <div class="cta-standard__grid">
+      <div class="cta-item">
+        <a class="cta-btn cta-btn--apply" href="/apply" onclick="if(window.trackEvent){trackEvent('apply_now_click',{step:'cta'})}if(window.trackIntent){trackIntent('cta_click',{step:'cta_apply'})}">Apply now</a>
+        <p>Apply now if you're ready.</p>
+      </div>
+      <div class="cta-item">
+        <a class="cta-btn cta-btn--call" href="/contact" onclick="if(window.trackEvent){trackEvent('cta_click',{cta:'call'})}if(window.trackIntent){trackIntent('cta_click',{step:'cta_call'})}">Book a call</a>
+        <p>Free 15-minute call with Dan.</p>
+      </div>
+      <div class="cta-item">
+        <a class="cta-btn cta-btn--check" href="/check-eligibility" onclick="if(window.trackEvent){trackEvent('cta_click',{cta:'eligibility'})}if(window.trackIntent){trackIntent('cta_click',{step:'cta_eligibility'})}">Check eligibility</a>
+        <p>Eligibility check takes 30 seconds.</p>
+      </div>
+    </div>
+  </div>
+</section>
 </main>
 
 <footer class="site-footer" role="contentinfo">
