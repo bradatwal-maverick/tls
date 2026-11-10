@@ -4,6 +4,8 @@
  * Protect the /dashboard path with Cloudflare Access (see the PR notes).
  */
 
+import { ga4Summary } from './ga4.js';
+
 const NOINDEX = {
   'X-Robots-Tag': 'noindex, nofollow',
   'Cache-Control': 'no-store',
@@ -41,6 +43,7 @@ export async function handleDashboard(request, env, ctx, path) {
   if (method === 'GET' && path === '/dashboard/app.js') return appScript();
   if (method === 'GET' && path === '/dashboard/api/enquiries') return listEnquiries(request, env);
   if (method === 'GET' && path === '/dashboard/api/export.csv') return exportCsv(request, env);
+  if (method === 'GET' && path === '/dashboard/api/analytics') return analyticsSummary(env);
   if (method === 'POST' && path === '/dashboard/api/push/subscribe') return subscribePush(request, env);
 
   const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/(stage|responded)$/);
@@ -114,6 +117,11 @@ function filtersFrom(url, skipStage = false) {
     binds.push(like, like, like, like);
   }
   return { sql: where.length ? `WHERE ${where.join(' AND ')}` : '', binds };
+}
+
+// Website numbers from Google Analytics (cached 1 hour in ga4.js). Returns configured:false until the Worker settings are added.
+async function analyticsSummary(env) {
+  return json(await ga4Summary(env));
 }
 
 async function listEnquiries(request, env) {
@@ -324,6 +332,16 @@ main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 #ptr { text-align:center; color:var(--muted); font-size:14px; height:0; overflow:hidden; transition:height .2s; }
 #ptr.on { height:40px; }
 .summary { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:6px 0 10px; }
+.ga-card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 10px; margin:6px 0 10px; }
+.ga-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px; }
+.ga-head b { font-size:14px; }
+.ga-seg button { font:inherit; font-size:13px; padding:4px 9px; border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:6px; cursor:pointer; }
+.ga-seg button.on { background:var(--blue); color:#fff; border-color:var(--blue); }
+.ga-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:8px 0 4px; }
+.ga-grid .tile b { font-size:18px; }
+.ga-sub { color:var(--muted); font-size:13px; margin-top:4px; }
+.ga-pages { margin:6px 0 0; padding-left:18px; font-size:13px; color:var(--muted); }
+@media (max-width:480px) { .ga-grid { grid-template-columns:repeat(2,1fr); } }
 .tile { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:7px 8px; min-width:0; }
 .tile b { display:block; font-size:20px; }
 .tile.stage-tile.new b { color:#b42318; }
@@ -406,6 +424,13 @@ dialog li { margin-bottom:8px; }
 </header>
 <main>
   <div id="ptr">Pull down to refresh…</div>
+
+  <section class="ga-card" id="ga" aria-label="Website analytics">
+    <div class="ga-head"><b>Website (Google Analytics)</b>
+      <div class="ga-seg"><button type="button" data-gp="7" class="on">7 days</button> <button type="button" data-gp="30">30 days</button></div>
+    </div>
+    <div id="ga-body" class="ga-sub">Loading…</div>
+  </section>
 
   <div class="summary">
     <div class="tile"><b id="t-count">–</b><span>Enquiries</span></div>
@@ -503,8 +528,37 @@ function syncActive() {
   }
 }
 
+let gaData = null;
+let gaPeriod = '7';
+function gaTile(label, value) { return el('div', { class: 'tile' }, el('b', {}, String(value)), el('span', {}, label)); }
+function gaRender() {
+  const body = $('#ga-body');
+  if (!gaData) return;
+  if (!gaData.configured) { body.textContent = 'Google Analytics is not connected yet.'; return; }
+  if (gaData.error) { body.textContent = 'Website stats are unavailable right now. Pull down to try again.'; return; }
+  const p = gaData.periods[gaPeriod];
+  document.querySelectorAll('[data-gp]').forEach((b) => b.classList.toggle('on', b.dataset.gp === gaPeriod));
+  body.replaceChildren(
+    el('div', { class: 'ga-grid' }, gaTile('Visitors', p.visitors), gaTile('Page views', p.page_views), gaTile('Enquiries', p.enquiries), gaTile('Enquiry rate', p.conversion_pct + '%')),
+    el('div', { class: 'ga-sub' }, 'Traffic: Google Ads ' + p.sources.google_ads + '% · Organic ' + p.sources.organic + '% · Direct ' + p.sources.direct + '% · Other ' + p.sources.other + '%'),
+    el('ul', { class: 'ga-pages' }, ...p.top_pages.map((t) => el('li', {}, t.path + ' (' + t.views + ')')))
+  );
+}
+async function loadGa() {
+  try {
+    const res = await fetch('/dashboard/api/analytics', { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    gaData = await res.json();
+  } catch (err) {
+    gaData = { configured: true, error: true };
+  }
+  gaRender();
+}
+document.querySelectorAll('[data-gp]').forEach((b) => b.addEventListener('click', () => { gaPeriod = b.dataset.gp; gaRender(); }));
+
 async function load() {
   syncActive();
+  loadGa();
   const list = $('#list');
   try {
     const res = await fetch('/dashboard/api/enquiries?' + query(), { cache: 'no-store' });
