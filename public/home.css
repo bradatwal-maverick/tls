@@ -132,7 +132,7 @@ details p{margin-top:8px;color:var(--muted);max-width:65ch}
 .reviews{display:grid;gap:14px}
 @media(min-width:760px){.reviews{grid-template-columns:1fr 1fr}}
 .review{margin:0;background:var(--bg);border:1px solid var(--line);border-top:6px solid var(--hivis);border-radius:6px;padding:20px;display:grid;gap:10px}
-.review blockquote{margin:0;font:600 1.1rem/1.45 var(--body)}
+.review blockquote{margin:0;font:400 1.1rem/1.45 var(--body)}
 .review blockquote::before{content:"\201C"}
 .review blockquote::after{content:"\201D"}
 .review figcaption{color:var(--muted);font-weight:600}
