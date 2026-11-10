@@ -27,6 +27,56 @@ function faqJsonLd(content) {
   return `\n  <script type="application/ld+json">${json}</script>`;
 }
 
+const AU_STATES = ['Australian Capital Territory', 'New South Wales', 'Northern Territory', 'Queensland', 'South Australia', 'Tasmania', 'Victoria', 'Western Australia'];
+
+function jsonLd(data) {
+  return `\n  <script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
+}
+
+// Business details shared by every page (the state pages refer to this same @id)
+function organizationJsonLd() {
+  return jsonLd({
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${SITE}/#organization`,
+    name: 'Trade Licence Solutions',
+    url: SITE,
+    telephone: '+61412767129',
+    description: 'Trade licence specialist helping tradies and builders get builder, company, mutual recognition and trade contractor licences in all 8 Australian states and territories. Dan Pleaner answers his own phone.',
+    areaServed: AU_STATES.map((name) => ({ '@type': 'AdministrativeArea', name, containedInPlace: { '@type': 'Country', name: 'Australia' } })),
+    founder: { '@type': 'Person', name: 'Dan Pleaner' },
+  });
+}
+
+// WebPage and BreadcrumbList for every page built by layout()
+function pageJsonLd(page, pageUrl) {
+  if (page.noindex) return '';
+  const name = page.title.split(/ — | \| /)[0];
+  const webpage = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name,
+    description: page.description,
+    isPartOf: { '@type': 'WebSite', name: 'Trade Licence Solutions', url: SITE },
+    about: { '@id': `${SITE}/#organization` },
+  };
+  const crumbs = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name, item: pageUrl },
+    ],
+  };
+  return jsonLd(webpage) + jsonLd(crumbs);
+}
+
+export function plainText(html) {
+  return plain(html);
+}
+
 export function layout(page, css, ctx = {}) {
   const callBar = ctx.path === '/contact' ? '' : `<div class="call-bar" role="complementary" aria-label="Contact">
   <div class="call-bar__inner">
@@ -70,19 +120,7 @@ export function layout(page, css, ctx = {}) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <style>${css}</style>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    "name": "Trade Licence Solutions",
-    "url": "${SITE}",
-    "telephone": "+61412767129",
-    "description": "Trade licence specialist helping tradies and builders get builder, company, mutual recognition and trade contractor licences in all 8 Australian states and territories. Dan Pleaner answers his own phone.",
-    "areaServed": "AU",
-    "priceRange": "$$",
-    "founder": { "@type": "Person", "name": "Dan Pleaner" }
-  }
-  </script>${faqJsonLd(page.content || '')}${page.schema ? `\n  <script type="application/ld+json">${JSON.stringify(page.schema).replace(/</g, '\\u003c')}</script>` : ''}
+${organizationJsonLd()}${faqJsonLd(page.content || '')}${page.schema ? `\n  <script type="application/ld+json">${JSON.stringify(page.schema).replace(/</g, '\\u003c')}</script>` : ''}${pageJsonLd(page, pageUrl)}
 </head>
 <body>
 

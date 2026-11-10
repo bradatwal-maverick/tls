@@ -6,13 +6,14 @@
 
 import { pages } from './pages.js';
 import { getCSS } from './styles.js';
-import { layout } from './layout.js';
+import { layout, plainText } from './layout.js';
 import { handleDashboard, saveEnquiry, notifyNewEnquiry, enquiryRef } from './dashboard.js';
 import { handleTrack, readVisitorId } from './intent.js';
 
 const SITE = 'https://tradelicencesolutions.com.au';
 const PHONE_DISPLAY = '0412 767 129';
-const LASTMOD = new Date().toISOString().slice(0, 10);
+// Sitemap lastmod: the date the site content last changed (bump it when pages change)
+const LAST_UPDATED = '2026-11-10';
 
 const SECURITY_HEADERS = {
   'X-Content-Type-Options': 'nosniff',
@@ -23,20 +24,20 @@ const SECURITY_HEADERS = {
 };
 
 const LLMS_LINKS = [
-  ['/', 'Home: check your licence in 60 seconds'],
-  ['/builder-licence', 'Builder licences'],
-  ['/company-licence', 'Company licences'],
-  ['/mutual-recognition', 'Mutual recognition'],
-  ['/trade-contractor', 'Trade contractor licences'],
-  ['/electrical-plumbing-licence', 'Electrical and plumbing licences'],
-  ['/states', 'Licences by state'],
-  ['/check-eligibility', 'Check your licence eligibility in 30 seconds'],
-  ['/apply', 'Apply for your trade licence'],
-  ['/pricing', 'Pricing'],
-  ['/services', 'Services'],
-  ['/faq', 'FAQs'],
-  ['/about', 'About Dan'],
-  ['/contact', 'Book a free 15-minute call'],
+  ['/', 'Home', 'start here: check eligibility or apply for a trade licence'],
+  ['/check-eligibility', 'Check eligibility', 'check which licence you need in about 30 seconds'],
+  ['/apply', 'Apply', 'start your licence application online'],
+  ['/builder-licence', 'Builder licences', 'builder licence application help, from $2,000'],
+  ['/company-licence', 'Company licences', 'company or partnership contractor licences, from $550'],
+  ['/mutual-recognition', 'Mutual recognition', 'work in another state with your existing licence, from $550 per state'],
+  ['/trade-contractor', 'Trade contractor licences', 'licences for specific trades, from $495'],
+  ['/electrical-plumbing-licence', 'Electrical and plumbing licences', 'NSW electrical and plumbing licence help, from $1,500'],
+  ['/states', 'Licences by state', 'all 8 states and territories, with a page for each'],
+  ['/pricing', 'Pricing', 'all prices, ex GST and government fees'],
+  ['/services', 'Services', 'overview of every licence service'],
+  ['/faq', 'FAQs', 'answers on licences, prices, eligibility and applying'],
+  ['/about', 'About Dan Pleaner', 'founder of Trade Licence Solutions'],
+  ['/contact', 'Contact and book a call', 'book a free 15-minute call with Dan'],
 ];
 
 const STATE_PAGES = [
@@ -123,6 +124,7 @@ async function routeRequest(request, env, ctx) {
     if (isGet && path === '/robots.txt') return textResponse(robotsTxt(), 'text/plain; charset=UTF-8');
     if (isGet && path === '/sitemap.xml') return textResponse(sitemapXml(), 'application/xml; charset=UTF-8');
     if (isGet && path === '/llms.txt') return textResponse(llmsTxt(), 'text/plain; charset=UTF-8');
+    if (isGet && path === '/llms-full.txt') return textResponse(await llmsFullTxt(request, env), 'text/plain; charset=UTF-8');
 
     // One home page only: old /home and /entry.html addresses go to /
     if (path === '/home' || path === '/home.html' || path === '/entry.html') {
@@ -486,35 +488,79 @@ Sitemap: ${SITE}/sitemap.xml
 `;
 }
 
-function sitemapXml() {
+// Every public page: the list the sitemap and the llms files are built from (noindex pages and the form result pages are left out)
+function indexablePaths() {
   const skip = new Set(['/404', '/readiness-check', '/contact-submitted', '/home', ...Object.keys(OLD_STATE_URLS)]);
-  const paths = ['/', ...Object.entries(pages)
-    .filter(([p, page]) => !page.noindex && !skip.has(p))
-    .map(([p]) => p)];
-  const urls = [...paths, '/check-eligibility', '/apply', ...STATE_PAGES.map(([slug]) => `/${slug}`)].map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LASTMOD}</lastmod></url>`).join('\n');
+  return [
+    '/',
+    ...Object.entries(pages).filter(([p, page]) => !page.noindex && !skip.has(p)).map(([p]) => p),
+    '/check-eligibility',
+    '/apply',
+    ...STATE_PAGES.map(([slug]) => `/${slug}`),
+  ];
+}
+
+function sitemapXml() {
+  const urls = indexablePaths().map((p) => `  <url><loc>${SITE}${p}</loc><lastmod>${LAST_UPDATED}</lastmod></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
 function llmsTxt() {
+  const services = [
+    ['/builder-licence', 'Builder licence', 'application help from $2,000'],
+    ['/company-licence', 'Company or partnership licence', 'from $550'],
+    ['/mutual-recognition', 'Mutual recognition', 'from $550 per state'],
+    ['/trade-contractor', 'Trade contractor licence', 'from $495'],
+    ['/electrical-plumbing-licence', 'Electrical and plumbing licence', 'NSW, from $1,500'],
+  ];
   return `# Trade Licence Solutions
 
-> Trade Licence Solutions is run by Dan Pleaner. Dan helps tradies and builders get builder licences, company licences, mutual recognition and trade contractor licences in all 8 Australian states and territories. Enquiries go through the contact form at ${SITE}/contact.
+> Trade Licence Solutions is run by Dan Pleaner. Dan helps tradies and builders get builder, company, mutual recognition, trade contractor and electrical and plumbing licences in all 8 Australian states and territories. Dan answers his own phone: 0412 767 129. Callback form: ${SITE}/contact.
 
-## Prices (from, all ex GST; government fees are separate)
-- Trade contractor licence: from $495
-- Electrical and plumbing licence: from $1,500
-- Builder licence application: from $2,000
-- Electrical and plumbing licence application: from $1,500
-- Company licence: from $550
-- Mutual recognition: from $550 per state
-- $150 consultation comes off the full fee
+Prices are ex GST and government fees. Dan's $150 consultation is credited to the full fee.
+
+## Services and prices
+${services.map(([p, name, price]) => `- [${name}](${SITE}${p}): ${price}`).join('\n')}
 
 ## Key pages
-${LLMS_LINKS.map(([p, label]) => `- [${label}](${SITE}${p})`).join('\n')}
+${LLMS_LINKS.map(([p, label, desc]) => `- [${label}](${SITE}${p}): ${desc}`).join('\n')}
 
-## State pages
-${STATE_PAGES.map(([slug, name]) => `- [${name} Licence Solutions](${SITE}/${slug})`).join('\n')}
+## States and territories
+${STATE_PAGES.map(([slug, name]) => `- [${name}](${SITE}/${slug}): builder and trade licences in ${name}`).join('\n')}
+
+## Full text
+- [llms-full.txt](${SITE}/llms-full.txt): the text of every public page in one file
 `;
+}
+
+// Text of a static page (the homepage and state pages are files in /public, not in pages.js)
+async function staticPageText(request, env, assetPath) {
+  const res = await env.ASSETS.fetch(new Request(new URL(assetPath, request.url), request));
+  if (!res.ok) return null;
+  const html = await res.text();
+  const title = (html.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+  const main = (html.match(/<main[\s\S]*?<\/main>/i) || [html])[0]
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ');
+  return { title, text: plainText(main) };
+}
+
+async function llmsFullTxt(request, env) {
+  const sections = [`# Trade Licence Solutions: full text of every public page
+
+Site: ${SITE}. Prices are ex GST and government fees. Dan's $150 consultation is credited to the full fee. Phone: 0412 767 129.`];
+  for (const p of indexablePaths()) {
+    const url = `${SITE}${p}`;
+    if (pages[p]) {
+      sections.push(`## ${pages[p].title}\nURL: ${url}\n\n${plainText(pages[p].content || '')}`);
+      continue;
+    }
+    const isState = STATE_PAGES.some(([slug]) => `/${slug}` === p);
+    const assetPath = p === '/' ? '/home' : isState ? `/states${p}` : p;
+    const doc = await staticPageText(request, env, assetPath);
+    if (doc) sections.push(`## ${doc.title}\nURL: ${url}\n\n${doc.text}`);
+  }
+  return sections.join('\n\n') + '\n';
 }
 
 // ---------- Google Ad tracking ----------

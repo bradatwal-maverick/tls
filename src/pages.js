@@ -1,3 +1,14 @@
+const SITE = 'https://tradelicencesolutions.com.au';
+
+// Offer with a "from" price in AUD, marked as excluding GST (the pages say "ex GST")
+const offer = (price, description) => ({
+  '@type': 'Offer',
+  price: String(price),
+  priceCurrency: 'AUD',
+  description,
+  priceSpecification: { '@type': 'PriceSpecification', minPrice: price, priceCurrency: 'AUD', valueAddedTaxIncluded: false },
+});
+
 export const pages = {
 
   // ===== COMPANY LICENCE =====
@@ -10,9 +21,9 @@ export const pages = {
       name: 'Company contractor licence application',
       serviceType: 'Company contractor licence application',
       description: 'Preparation and lodgement of company (Pty Ltd) contractor licence applications in NSW and QLD, including supervisor nomination and compliance advice.',
-      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      provider: { '@id': 'https://tradelicencesolutions.com.au/#organization' },
       areaServed: { '@type': 'Country', name: 'Australia' },
-      offers: { '@type': 'Offer', price: '550', priceCurrency: 'AUD', description: 'Company contractor licence — from $550' },
+      offers: offer(550, 'Company contractor licence — from $550'),
     },
     content: `
       <section class="hero hero--inner">
@@ -115,9 +126,9 @@ export const pages = {
       name: 'Mutual recognition — interstate licence transfer',
       serviceType: 'Mutual recognition licence application',
       description: 'Transferring a trade or builder licence from one Australian state to another through Automatic Mutual Recognition (AMR) or standard mutual recognition.',
-      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      provider: { '@id': 'https://tradelicencesolutions.com.au/#organization' },
       areaServed: { '@type': 'Country', name: 'Australia' },
-      offers: { '@type': 'Offer', price: '550', priceCurrency: 'AUD', description: 'Mutual recognition — from $550 per state' },
+      offers: offer(550, 'Mutual recognition — from $550 per state'),
     },
     content: `
       <section class="hero hero--inner">
@@ -214,9 +225,9 @@ export const pages = {
       name: 'Builder licence application',
       serviceType: 'Builder licence application',
       description: 'Preparation and lodgement of individual builder licence applications with NSW Fair Trading, QBCC and other state regulators, including referee and experience documentation.',
-      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      provider: { '@id': 'https://tradelicencesolutions.com.au/#organization' },
       areaServed: { '@type': 'Country', name: 'Australia' },
-      offers: { '@type': 'Offer', price: '2000', priceCurrency: 'AUD', description: 'Builder licence application — from $2,000' },
+      offers: offer(2000, 'Builder licence application — from $2,000'),
     },
     content: `
       <section class="hero hero--inner">
@@ -305,9 +316,9 @@ export const pages = {
       name: 'Trade contractor licence application',
       serviceType: 'Trade contractor licence application',
       description: 'Helping trade contractors — carpentry, plumbing, electrical, air conditioning, roof plumbing and more — get the right licence for their trade and state.',
-      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      provider: { '@id': 'https://tradelicencesolutions.com.au/#organization' },
       areaServed: { '@type': 'Country', name: 'Australia' },
-      offers: { '@type': 'Offer', price: '495', priceCurrency: 'AUD', description: 'Trade contractor licence — from $495' },
+      offers: offer(495, 'Trade contractor licence — from $495'),
     },
     content: `
       <section class="hero hero--inner">
@@ -393,9 +404,9 @@ export const pages = {
       name: 'Electrical and plumbing licence application',
       serviceType: 'Electrical and plumbing licence application',
       description: 'Helping electricians and plumbers get the right licence for their trade and state, including qualification checks, forms and lodgement with the regulator.',
-      provider: { '@type': 'ProfessionalService', name: 'Trade Licence Solutions', telephone: '+61412767129', url: 'https://tradelicencesolutions.com.au' },
+      provider: { '@id': 'https://tradelicencesolutions.com.au/#organization' },
       areaServed: { '@type': 'Country', name: 'Australia' },
-      offers: { '@type': 'Offer', price: '1500', priceCurrency: 'AUD', description: 'Electrical and plumbing licence application — from $1,500' },
+      offers: offer(1500, 'Electrical and plumbing licence application — from $1,500'),
     },
     content: `
       <section class="hero hero--inner">
@@ -971,6 +982,16 @@ export const pages = {
 
   // ===== ABOUT =====
   '/about': {
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      '@id': 'https://tradelicencesolutions.com.au/about#dan-pleaner',
+      name: 'Dan Pleaner',
+      alternateName: 'Daniel Pleaner',
+      jobTitle: 'Founder',
+      worksFor: { '@id': 'https://tradelicencesolutions.com.au/#organization' },
+      url: 'https://tradelicencesolutions.com.au/about',
+    },
     title: 'About Dan Pleaner — Trade Licence Solutions',
     description: 'Dan Pleaner founded Trade Licence Solutions to help tradies and builders get licensed first time. Expert guidance, personal support and honest advice across Australia.',
     content: `
