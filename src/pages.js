@@ -1004,7 +1004,7 @@ export const pages = {
           </div>
         </div>
       </section>
-      <script>if (window.trackEvent) trackEvent('form_complete', { form: 'contact' });</script>
+      <span data-track-form-complete="contact" hidden></span>
     `,
   },
 

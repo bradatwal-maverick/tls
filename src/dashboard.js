@@ -29,6 +29,7 @@ export async function handleDashboard(request, env, ctx, path) {
   if (method === 'GET' && path === '/dashboard') return page(env);
   if (method === 'GET' && path === '/dashboard/manifest.webmanifest') return manifest();
   if (method === 'GET' && path === '/dashboard/sw.js') return serviceWorker();
+  if (method === 'GET' && path === '/dashboard/app.js') return appScript();
   if (method === 'GET' && path === '/dashboard/api/enquiries') return listEnquiries(request, env);
   if (method === 'GET' && path === '/dashboard/api/export.csv') return exportCsv(request, env);
   if (method === 'POST' && path === '/dashboard/api/push/subscribe') return subscribePush(request, env);
@@ -252,6 +253,7 @@ function page(env) {
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#0b5cad">
 <title>Enquiries | TLS</title>
+<meta name="vapid-public" content="${esc(vapid)}">
 <link rel="manifest" href="/dashboard/manifest.webmanifest">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <style>
@@ -329,8 +331,14 @@ button.done { background:var(--green); }
   <div id="list" style="margin-top:12px"></div>
 </main>
 
-<script>
-const VAPID_PUBLIC = ${JSON.stringify(vapid)};
+<script src="/dashboard/app.js"></script>
+</body>
+</html>`, { headers: { ...NOINDEX, 'Content-Type': 'text/html;charset=UTF-8' } });
+}
+
+// The dashboard's page script, served as a file (not inline) so the site's Content Security Policy can block inline scripts.
+function appScript() {
+  return new Response(`const VAPID_PUBLIC = (document.querySelector('meta[name="vapid-public"]') || {}).content || '';
 const $ = (s) => document.querySelector(s);
 const form = $('#f');
 
@@ -450,7 +458,9 @@ window.addEventListener('touchend', async (e) => {
 }, { passive: true });
 
 load();
-</script>
-</body>
-</html>`, { headers: { ...NOINDEX, 'Content-Type': 'text/html;charset=UTF-8' } });
+`, { headers: { ...NOINDEX, 'Content-Type': 'application/javascript' } });
+}
+
+function esc(v) {
+  return String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }

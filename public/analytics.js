@@ -34,13 +34,23 @@
     }
   });
 
+  // Thank-you page: record the completed form (marker element instead of an inline script, for the CSP).
+  // analytics.js loads in <head>, so wait for the page body before looking for the marker.
+  function afterLoad(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn); else fn();
+  }
+  afterLoad(function () {
+    var done = document.querySelector('[data-track-form-complete]');
+    if (done) trackEvent('form_complete', { form: done.getAttribute('data-track-form-complete') });
+  });
+
   // Contact page: prefill state/licence from the query string, if those fields are on the page.
-  try {
+  afterLoad(function () { try {
     var p = new URLSearchParams(location.search);
     var s = p.get('state'), l = p.get('licence');
     var stateEl = document.getElementById('c_state');
     var licenceEl = document.getElementById('c_licence');
     if (s && stateEl) stateEl.value = s;
     if (l && licenceEl) licenceEl.value = l;
-  } catch (e) {}
+  } catch (e) {} });
 })();
