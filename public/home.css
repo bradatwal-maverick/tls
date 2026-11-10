@@ -90,7 +90,12 @@ header.top .btn{min-height:46px;font-size:1rem;padding:0 1em}
 .trust-strip{background:var(--surface);padding-block:20px;border-bottom:1px solid var(--line)}
 .trust-strip-inner{display:grid;gap:14px}
 @media(min-width:760px){.trust-strip-inner{grid-template-columns:repeat(3,1fr)}}
-.trust-strip-inner p{display:grid;gap:2px}
+.trust-strip-inner p{display:grid;grid-template-columns:22px 1fr;column-gap:10px;gap:2px;align-items:start}
+.trust-strip-inner .tick{grid-row:1 / span 2;width:22px;height:22px;margin-top:3px;color:var(--steel);overflow:visible}
+.trust-strip-inner .tick circle{fill:currentColor}
+.trust-strip-inner .tick path{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .trust-strip-inner .tick{color:var(--hivis)}:root:not([data-theme="light"]) .trust-strip-inner .tick path{stroke:#16202b}}
+:root[data-theme="dark"] .trust-strip-inner .tick{color:var(--hivis)}:root[data-theme="dark"] .trust-strip-inner .tick path{stroke:#16202b}
 .trust-strip-inner strong{font:700 1.05rem var(--body);color:var(--ink)}
 .trust-strip-inner span{color:var(--muted);font-size:.9rem}
 
