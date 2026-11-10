@@ -31,3 +31,10 @@ ul.states a{display:block;padding:12px;border:1px solid var(--line);border-radiu
 footer{background:#1f3346;color:#d9e2ea;margin-top:40px;font-size:15px}
 footer .wrap{padding-top:24px;padding-bottom:24px;display:grid;gap:8px}
 footer strong{color:#fff}
+/* Easy-read template: who it is for cards and numbered steps */
+.who-grid{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0 20px}
+.who-grid li{display:flex;gap:10px;align-items:flex-start;background:#f2f4f6;border:1px solid var(--line);border-radius:8px;padding:12px;margin:0}
+.who-grid li::before{content:"✓";flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-cards{list-style:none;padding:0;counter-reset:step;display:grid;gap:12px}
+.step-cards li{counter-increment:step;position:relative;padding:12px 12px 12px 56px;border:2px solid var(--line);border-radius:8px;margin:0}
+.step-cards li::before{content:counter(step);position:absolute;left:12px;top:12px;width:32px;height:32px;border-radius:50%;background:var(--orange);color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:center}
