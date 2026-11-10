@@ -390,7 +390,7 @@ export const pages = {
                   <li>NSW and QLD covered</li>
                 </ul>
                 <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a Callback</a>
-                <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.75rem;" onclick="window.trackIntent&&trackIntent('apply_click',{step:'pricing',licence:'builder'})">Apply now</a>
+                <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.75rem;" onclick="window.trackEvent&&trackEvent('apply_now_click',{step:'pricing',licence:'builder'}); window.trackIntent&&trackIntent('apply_click',{step:'pricing',licence:'builder'})">Apply now</a>
               </div>
             </div>
 
@@ -409,7 +409,7 @@ export const pages = {
                   <li>NSW and QLD covered</li>
                 </ul>
                 <a href="/contact" class="btn btn--primary" style="display:block;text-align:center;">Book a Callback</a>
-                <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.75rem;" onclick="window.trackIntent&&trackIntent('apply_click',{step:'pricing',licence:'company'})">Apply now</a>
+                <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.75rem;" onclick="window.trackEvent&&trackEvent('apply_now_click',{step:'pricing',licence:'company'}); window.trackIntent&&trackIntent('apply_click',{step:'pricing',licence:'company'})">Apply now</a>
               </div>
             </div>
 
@@ -428,7 +428,7 @@ export const pages = {
                   <li>All 8 states and territories</li>
                 </ul>
                 <a href="/contact" class="btn btn--navy" style="display:block;text-align:center;">Book a Callback</a>
-                <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.75rem;" onclick="window.trackIntent&&trackIntent('apply_click',{step:'pricing',licence:'mutual-recognition'})">Apply now</a>
+                <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.75rem;" onclick="window.trackEvent&&trackEvent('apply_now_click',{step:'pricing',licence:'mutual-recognition'}); window.trackIntent&&trackIntent('apply_click',{step:'pricing',licence:'mutual-recognition'})">Apply now</a>
               </div>
             </div>
           </div>
@@ -787,7 +787,7 @@ export const pages = {
           </div>
           <div class="cta-block" style="margin-top:2rem;">
             <a href="/contact" class="btn btn--primary">Book a Callback with Dan</a>
-            <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" onclick="window.trackIntent&&trackIntent('apply_click',{step:'services'})">Apply now</a>
+            <a href="https://pci.jotform.com/form/263016069377057" class="btn btn--outline" target="_blank" rel="noopener" onclick="window.trackEvent&&trackEvent('apply_now_click',{step:'services'}); window.trackIntent&&trackIntent('apply_click',{step:'services'})">Apply now</a>
           </div>
         </div>
       </section>
