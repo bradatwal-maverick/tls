@@ -140,5 +140,16 @@ export async function intentSummary(env) {
     tool: { started: tool.results[0].started, completed: tool.results[0].completed },
     licences: licences.results,
     form: { started: form.results[0].n, submitted: enquiries.results[0].n, not_submitted: notSubmitted.results[0].n },
+    form_pages: await formPages(env, since),
   };
+}
+
+// Enquiries by the page the form was sent from. Empty until migration 0006 has run.
+async function formPages(env, since) {
+  try {
+    const rows = await env.DB.prepare("SELECT form_page AS path, COUNT(*) AS n FROM enquiries WHERE form_page IS NOT NULL AND form_page != '' AND created_at >= ? GROUP BY form_page ORDER BY n DESC LIMIT 10").bind(since).all();
+    return rows.results || [];
+  } catch (err) {
+    return [];
+  }
 }

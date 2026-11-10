@@ -41,7 +41,7 @@
   }
   afterLoad(function () {
     var done = document.querySelector('[data-track-form-complete]');
-    if (done) trackEvent('form_complete', { form: done.getAttribute('data-track-form-complete') });
+    if (done) trackEvent('form_complete', { form: done.getAttribute('data-track-form-complete'), form_page: done.getAttribute('data-form-page') || '' });
   });
 
   // Contact page: prefill state/licence from the query string, if those fields are on the page.

@@ -283,15 +283,18 @@ async function handleContact(request, env, ctx) {
   }
 
   // Save to the enquiry dashboard (D1) and alert Dan's phones. Runs even if the email relay is off.
-  const referer = request.headers.get('Referer') || '';
-  let source = '/contact';
-  try { source = new URL(referer).pathname || '/contact'; } catch (err) { /* no referer */ }
+  // The page the visitor sent the form from: the hidden "page" field (set by public/intent.js),
+  // falling back to the Referer header. Stored as a path only, never the full URL or query string.
+  let refererPage = '';
+  try { refererPage = cleanPagePath(new URL(request.headers.get('Referer') || '').pathname); } catch (err) { /* no referer */ }
+  const formPage = cleanPagePath(field('page')) || refererPage;
+  const source = formPage || '/contact';
   // Each route is tried on its own. The enquiry counts as received if either one works,
   // so a failed email never shows the visitor an error when the enquiry is already saved in D1.
   let saved = false;
   let ref = '';
   try {
-    const id = await saveEnquiry(env, { name, phone, email, state, licence, message, source, visitorId: readVisitorId(request), ...readAdCookie(request) });
+    const id = await saveEnquiry(env, { name, phone, email, state, licence, message, source, formPage, visitorId: readVisitorId(request), ...readAdCookie(request) });
     saved = Boolean(id);
     if (saved) ref = enquiryRef(id);
     if (saved && ctx && ctx.waitUntil) ctx.waitUntil(notifyNewEnquiry(env).catch((err) => console.error('push alert failed', err)));
@@ -309,7 +312,13 @@ async function handleContact(request, env, ctx) {
     );
   }
 
-  return renderPage(receivedPage({ name, phone, state, licence, ref }), '/contact-submitted', env);
+  return renderPage(receivedPage({ name, phone, state, licence, ref, formPage }), '/contact-submitted', env);
+}
+
+// Keeps only a plain site path such as /states/new-south-wales (max 200 characters). Anything else returns ''.
+function cleanPagePath(value) {
+  const v = String(value || '').slice(0, 200);
+  return /^\/[A-Za-z0-9/_.-]*$/.test(v) ? v : '';
 }
 
 // Confirmation page after a valid enquiry: enquiry number first, then the phone number Dan will call.
@@ -337,7 +346,7 @@ function receivedPage(e) {
           </div>
         </div>
       </section>
-      <span data-track-form-complete="contact" hidden></span>
+      <span data-track-form-complete="contact" data-form-page="${esc(e.formPage || '')}" hidden></span>
     `;
   return { ...base, content };
 }

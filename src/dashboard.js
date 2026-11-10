@@ -70,6 +70,10 @@ export async function saveEnquiry(env, e) {
     e.gclid || '', e.utm_source || '', e.utm_medium || '', e.utm_campaign || '', e.landing_page || '', isAd)
     .run();
   const id = result.meta && result.meta.last_row_id;
+  // Records the page the form was sent from. Skipped quietly until migration 0006 has run.
+  if (id && e.formPage) {
+    try { await env.DB.prepare('UPDATE enquiries SET form_page = ? WHERE id = ?').bind(e.formPage, id).run(); } catch (err) { console.error('form page skipped', err); }
+  }
   if (id && e.visitorId) {
     // Links the enquiry to the visitor's anonymous ID. Skipped quietly until migration 0005 has run.
     try { await env.DB.prepare('UPDATE enquiries SET visitor_id = ? WHERE id = ?').bind(e.visitorId, id).run(); } catch (err) { console.error('visitor link skipped', err); }
@@ -172,13 +176,13 @@ async function exportCsv(request, env) {
   const { sql, binds } = filtersFrom(url);
   const rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at ASC, id ASC`).bind(...binds).all();
   const header = ['Enquiry number', 'Enquiry date (AEST)', 'Stage', 'Name','Phone', 'Email', 'State', 'Licence', 'Message', 'Responded', 'Booked',
-    'Booked date (AEST)', 'Amount (AUD)', 'Google Ad', 'Source', 'Medium', 'Campaign', 'Landing page', 'Google click ID'];
+    'Booked date (AEST)', 'Amount (AUD)', 'Google Ad', 'Source', 'Medium', 'Campaign', 'Landing page', 'Google click ID', 'Form page'];
   const lines = [header.map(csvCell).join(',')];
   for (const r of rows.results || []) {
     lines.push([
       enquiryRef(r.id), aest(r.created_at), STAGE_LABEL[r.stage] || 'New', r.name, r.phone, r.email, (r.state || '').toUpperCase(), r.licence, r.message,
       r.responded ? 'Yes' : 'No', r.booked ? 'Yes' : 'No', r.booked_at ? aest(r.booked_at) : '', r.amount_aud ?? '',
-      r.is_ad ? 'Yes' : 'No', r.utm_source, r.utm_medium, r.utm_campaign, r.landing_page, r.gclid,
+      r.is_ad ? 'Yes' : 'No', r.utm_source, r.utm_medium, r.utm_campaign, r.landing_page, r.gclid, r.form_page || '',
     ].map(csvCell).join(','));
   }
   const stamp = new Date().toISOString().slice(0, 10);
@@ -618,8 +622,10 @@ document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click
 // Visitor journey line on each enquiry, e.g. "Viewed 4 pages · used eligibility tool · from Google · 2nd visit"
 function ordinal(n) { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
 function journeyOf(r) {
-  if (r.journey_visits == null) return '';
-  const parts = ['Viewed ' + (r.journey_pages || 0) + ' page' + (r.journey_pages === 1 ? '' : 's')];
+  const parts = [];
+  if (r.form_page) parts.push('Form sent from ' + r.form_page);
+  if (r.journey_visits == null) return parts.join(' · ');
+  parts.push('Viewed ' + (r.journey_pages || 0) + ' page' + (r.journey_pages === 1 ? '' : 's'));
   if (r.journey_tool > 0) parts.push('used eligibility tool');
   parts.push('from ' + (r.journey_source || 'Direct'));
   parts.push(ordinal(Number(r.journey_visits)) + ' visit');
@@ -648,6 +654,7 @@ async function loadIntent() {
         intentTile('Form started', f.started), intentTile('Enquiries', f.submitted), intentTile('Started, not sent', f.not_submitted)),
       intentList('Where they came from', d.sources.map((s) => el('li', {}, s.label + ' (' + s.n + ')'))),
       intentList('Pages they read', d.pages.map((p) => el('li', {}, p.path + ' (' + p.views + ')'))),
+      intentList('Enquiries sent from', (d.form_pages || []).map((p) => el('li', {}, p.path + ' (' + p.n + ')'))),
       intentList('Licences checked in the tool', d.licences.map((l) => el('li', {}, (LABELS[l.licence] || l.licence) + ' (' + l.n + ')')))
     );
     intentLoaded = true;
