@@ -62,10 +62,49 @@ export default {
   },
 };
 
+// Old NSW domain: every address moves to the matching new page (301), or to the home page if there is no match
+const OLD_DOMAIN = 'tradelicencesolutionsnsw.com.au';
+const OLD_DOMAIN_RULES = [
+  [/new-south-wales|nsw/, '/new-south-wales'],
+  [/queensland|qld/, '/queensland'],
+  [/victoria|\bvic\b/, '/victoria'],
+  [/australian-capital|\bact\b/, '/australian-capital-territory'],
+  [/south-australia|\bsa\b/, '/south-australia'],
+  [/western-australia|\bwa\b/, '/western-australia'],
+  [/tasmania|\btas\b/, '/tasmania'],
+  [/northern-territory|\bnt\b/, '/northern-territory'],
+  [/price|pricing|cost|fee/, '/pricing'],
+  [/faq|question/, '/faq'],
+  [/contact|enquir|book/, '/contact'],
+  [/about|story/, '/about'],
+  [/privacy/, '/privacy'],
+  [/mutual/, '/mutual-recognition'],
+  [/company|partnership/, '/company-licence'],
+  [/builder/, '/builder-licence'],
+  [/trade|contractor|licence|license/, '/trade-contractor'],
+  [/service/, '/services'],
+  [/guide|blog|state/, '/states'],
+];
+
+function oldDomainTarget(url) {
+  const path = url.pathname.replace(/\/$/, '') || '/';
+  const realPages = Object.keys(pages).filter((p) => !['/404', '/readiness-check', '/contact-submitted'].includes(p));
+  const newPaths = new Set(['/', ...realPages, ...STATE_PAGES.map(([slug]) => `/${slug}`)]);
+  if (newPaths.has(path)) return path;
+  const lower = path.toLowerCase();
+  const rule = OLD_DOMAIN_RULES.find(([re]) => re.test(lower));
+  return rule ? rule[1] : '/';
+}
+
 async function routeRequest(request, env, ctx) {
     const url = new URL(request.url);
     const path = url.pathname.replace(/\/$/, '') || '/';
     const isGet = request.method === 'GET';
+
+    // Old domain (and its www) sends visitors to the matching new page, keeping any query string
+    if (url.hostname === OLD_DOMAIN || url.hostname === `www.${OLD_DOMAIN}`) {
+      return Response.redirect(`${SITE}${oldDomainTarget(url)}${url.search}`, 301);
+    }
 
     // Enquiry dashboard (Cloudflare Access protected, see src/dashboard.js)
     const dash = await handleDashboard(request, env, ctx, path);
