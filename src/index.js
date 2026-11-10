@@ -8,6 +8,7 @@ import { pages } from './pages.js';
 import { getCSS } from './styles.js';
 import { layout } from './layout.js';
 import { handleDashboard, saveEnquiry, notifyNewEnquiry, enquiryRef } from './dashboard.js';
+import { handleTrack, readVisitorId } from './intent.js';
 
 const SITE = 'https://tradelicencesolutions.com.au';
 const PHONE_DISPLAY = '0412 767 129';
@@ -116,6 +117,11 @@ async function routeRequest(request, env, ctx) {
       return handleReadinessCheck(request, env);
     }
 
+    // Anonymous visit tracking from public/intent.js (see src/intent.js)
+    if (request.method === 'POST' && path === '/track') {
+      return handleTrack(request, env, ctx);
+    }
+
     // Contact form submission
     if (request.method === 'POST' && path === '/contact-submitted') {
       return handleContact(request, env, ctx);
@@ -221,7 +227,7 @@ async function handleContact(request, env, ctx) {
   let saved = false;
   let ref = '';
   try {
-    const id = await saveEnquiry(env, { name, phone, email, state, licence, message, source, ...readAdCookie(request) });
+    const id = await saveEnquiry(env, { name, phone, email, state, licence, message, source, visitorId: readVisitorId(request), ...readAdCookie(request) });
     saved = Boolean(id);
     if (saved) ref = enquiryRef(id);
     if (saved && ctx && ctx.waitUntil) ctx.waitUntil(notifyNewEnquiry(env).catch((err) => console.error('push alert failed', err)));

@@ -191,6 +191,7 @@
   var history = [];   // screen functions, so Back can redo the last one
   var st = null, type = null, score = 0;
 
+  function track(type, detail){ if (window.trackIntent) trackIntent(type, detail); }
   function go(fn){ history.push(fn); fn(); }
   function back(){ history.pop(); var prev = history.pop(); go(prev || showState); }
   function progress(n){
@@ -206,6 +207,7 @@
   }
 
   function showState(){
+    track('tool_step', { step: 'state' });
     st = null; type = null; score = 0;
     var h = progress(1) + '<p class="q-question">Which state are you licensing in?</p><div class="q-opts states">';
     STATE_ORDER.forEach(function(k){ h += '<button type="button" class="q-opt" data-st="'+k+'" aria-label="'+STATES[k].name+'" title="'+STATES[k].name+'">'+ABBR[k]+'</button>'; });
@@ -217,6 +219,7 @@
   }
 
   function showType(){
+    track('tool_step', { step: 'type' });
     var h = progress(2) + '<p class="q-question">What licence do you need?</p><div class="q-opts">';
     [["builder","Builder licence","Run your own building jobs"],["company","Company licence","Your business is a company"],["mutual","Mutual recognition","Licensed in another state or NZ"],["trade","Trade licence","Carpentry, painting, bricklaying and more"]].forEach(function(t){
       h += '<button type="button" class="q-opt" data-t="'+t[0]+'">'+t[1]+'<small>'+t[2]+'</small></button>';
@@ -229,6 +232,7 @@
   }
 
   function showQ(key){
+    track('tool_step', { step: 'question', licence: type || '' });
     var node = getNode(key);
     var step = (key===type) ? 3 : 4;
     var h = progress(step) + '<p class="q-question">'+node.q+'</p><div class="q-opts">';
@@ -247,6 +251,7 @@
   }
 
   function showUnverified(){
+    track('tool_step', { step: 'unverified', licence: type || '', state: st || '' });
     var s = STATES[st];
     tool.innerHTML = progress(2) + '<div class="result grey"><span class="badge">Rules not yet checked</span><h3>We haven\'t verified '+s.name+' yet</h3><p>We don\'t want to give you wrong steps. Send Dan an enquiry and he\'ll walk you through the exact rules for '+s.name+'.</p><div class="result actions" style="display:flex;flex-wrap:wrap;gap:10px"><a class="btn btn-ghost" href="'+s.page+'">'+s.name+' page</a></div></div>' + backBtn();
     bind();
@@ -270,6 +275,7 @@
     tool.innerHTML = html;
     bindJargon();
     if (window.trackEvent) trackEvent('tool_complete', { licence_type: type, state: st, result: r.k });
+    track('tool_result', { licence: type || '', state: st || '', result: r.k });
     document.getElementById("q-again").addEventListener("click", function(){ history = []; go(LOCKED && STATES[LOCKED] ? showType : showState); });
   }
 

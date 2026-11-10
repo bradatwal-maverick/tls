@@ -1005,7 +1005,7 @@ export const pages = {
     description: 'Privacy policy and terms of use for Trade Licence Solutions — how your information is collected and used, and the terms for using this website.',
     noindex: true,
     content: `
-      <section class="hero hero--inner"><div class="container"><h1>Privacy &amp; terms</h1><p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">Last updated: 6 November 2026</p></div></section>
+      <section class="hero hero--inner"><div class="container"><h1>Privacy &amp; terms</h1><p style="color:rgba(255,255,255,0.85);margin-top:0.5rem;">Last updated: 10 November 2026</p></div></section>
       <section class="section"><div class="container container--narrow">
 
         <h2>Privacy policy</h2>
@@ -1023,6 +1023,7 @@ export const pages = {
           <li><strong>Cloudflare Web Analytics</strong> — a privacy-friendly analytics tool that doesn't use cookies or track you individually. It just gives us aggregate numbers like how many people visited and which pages were popular.</li>
           <li><strong>Google Analytics</strong> — measures site traffic and how people navigate the site. It may use cookies and collect your approximate location, device and browser type, the pages you view, and a small number of actions such as completing the licence check tool, submitting the contact form, clicking to call, or clicking through to book a call. It does not collect your name, phone number or email unless you submit the contact form separately.</li>
         </ul>
+        <p><strong>Anonymous visit tracking</strong> is this site's own, first-party tracking. A random visitor ID is kept in a cookie on your device. It records the pages you view, the steps you take in the licence check tool, and where you came from (for example, Google). It doesn't store your name, phone number, email or IP address, and records are kept for 90 days. If you send an enquiry, it is linked to this ID so Dan can see how you found the site.</p>
         <p>No advertising pixels (such as Meta/Facebook) are used on this site.</p>
 
         <h3 style="margin-top:1.5rem;">Security and retention</h3>

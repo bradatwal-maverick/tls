@@ -5,6 +5,7 @@
  */
 
 import { ga4Summary } from './ga4.js';
+import { intentSummary, JOURNEY_SQL } from './intent.js';
 
 const NOINDEX = {
   'X-Robots-Tag': 'noindex, nofollow',
@@ -44,6 +45,7 @@ export async function handleDashboard(request, env, ctx, path) {
   if (method === 'GET' && path === '/dashboard/api/enquiries') return listEnquiries(request, env);
   if (method === 'GET' && path === '/dashboard/api/export.csv') return exportCsv(request, env);
   if (method === 'GET' && path === '/dashboard/api/analytics') return analyticsSummary(env);
+  if (method === 'GET' && path === '/dashboard/api/intent') return intentApi(env);
   if (method === 'POST' && path === '/dashboard/api/push/subscribe') return subscribePush(request, env);
 
   const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/(stage|responded)$/);
@@ -67,7 +69,12 @@ export async function saveEnquiry(env, e) {
   ).bind(new Date().toISOString(), e.name, e.phone, e.email || '', e.state || '', e.licence || '', e.message || '', e.source || '',
     e.gclid || '', e.utm_source || '', e.utm_medium || '', e.utm_campaign || '', e.landing_page || '', isAd)
     .run();
-  return result.meta && result.meta.last_row_id;
+  const id = result.meta && result.meta.last_row_id;
+  if (id && e.visitorId) {
+    // Links the enquiry to the visitor's anonymous ID. Skipped quietly until migration 0005 has run.
+    try { await env.DB.prepare('UPDATE enquiries SET visitor_id = ? WHERE id = ?').bind(e.visitorId, id).run(); } catch (err) { console.error('visitor link skipped', err); }
+  }
+  return id;
 }
 
 export async function notifyNewEnquiry(env) {
@@ -124,10 +131,28 @@ async function analyticsSummary(env) {
   return json(await ga4Summary(env));
 }
 
+// Intent tab data (visitor sources, pages, eligibility tool, form starts). Errors show a message on the tab.
+async function intentApi(env) {
+  try {
+    return json(await intentSummary(env));
+  } catch (err) {
+    console.error('intent summary failed', err);
+    return json({ error: true }, 500);
+  }
+}
+
 async function listEnquiries(request, env) {
   const { sql, binds } = filtersFrom(new URL(request.url));
-  const rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at DESC, id DESC LIMIT 500`)
-    .bind(...binds).all();
+  let rows;
+  try {
+    // Each enquiry gets its visitor journey (pages, tool use, source, visits) for the card
+    rows = await env.DB.prepare(`SELECT e.*${JOURNEY_SQL} FROM enquiries e ${sql} ORDER BY e.created_at DESC, e.id DESC LIMIT 500`)
+      .bind(...binds).all();
+  } catch (err) {
+    // Until migration 0005 has run, the list still loads, just without the journey line
+    rows = await env.DB.prepare(`SELECT * FROM enquiries ${sql} ORDER BY created_at DESC, id DESC LIMIT 500`)
+      .bind(...binds).all();
+  }
   // Stage counts ignore the stage filter, so all four stay visible at once
   const counts = filtersFrom(new URL(request.url), true);
   const summary = await env.DB.prepare(
@@ -431,7 +456,7 @@ dialog li { margin-bottom:8px; }
   </div>
 </header>
 <main>
-  <nav class="ga-seg tabs"><button type="button" data-tab="enq" class="on">Enquiries</button> <button type="button" data-tab="ga">Analytics</button></nav>
+  <nav class="ga-seg tabs"><button type="button" data-tab="enq" class="on">Enquiries</button> <button type="button" data-tab="ga">Analytics</button> <button type="button" data-tab="intent">Intent</button></nav>
   <div id="ptr">Pull down to refresh…</div>
 
   <div id="view-ga" hidden>
@@ -440,6 +465,13 @@ dialog li { margin-bottom:8px; }
       <div class="ga-seg"><button type="button" data-gp="7" class="on">7 days</button> <button type="button" data-gp="30">30 days</button></div>
     </div>
     <div id="ga-body" class="ga-sub">Loading…</div>
+  </section>
+  </div>
+
+  <div id="view-intent" hidden>
+  <section class="ga-card" id="intent" aria-label="Visitor intent">
+    <div class="ga-head"><b>Visitor intent (last 30 days)</b></div>
+    <div id="intent-body" class="ga-sub">Loading…</div>
   </section>
   </div>
 
@@ -570,10 +602,53 @@ document.querySelectorAll('[data-gp]').forEach((b) => b.addEventListener('click'
 function showTab(t) {
   $('#view-enq').hidden = t !== 'enq';
   $('#view-ga').hidden = t !== 'ga';
+  $('#view-intent').hidden = t !== 'intent';
   document.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
   if (t === 'ga') loadGa();
+  if (t === 'intent') loadIntent();
 }
 document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+// Visitor journey line on each enquiry, e.g. "Viewed 4 pages · used eligibility tool · from Google · 2nd visit"
+function ordinal(n) { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
+function journeyOf(r) {
+  if (r.journey_visits == null) return '';
+  const parts = ['Viewed ' + (r.journey_pages || 0) + ' page' + (r.journey_pages === 1 ? '' : 's')];
+  if (r.journey_tool > 0) parts.push('used eligibility tool');
+  parts.push('from ' + (r.journey_source || 'Direct'));
+  parts.push(ordinal(Number(r.journey_visits)) + ' visit');
+  return parts.join(' · ');
+}
+
+// Intent tab: where visitors come from, what they read, and how far they get
+let intentLoaded = false;
+function intentTile(label, value) { return el('div', { class: 'tile' }, el('b', {}, String(value)), el('span', {}, label)); }
+function intentList(title, items) {
+  return el('div', { class: 'ga-sub' }, el('b', {}, title), items.length ? el('ul', { class: 'ga-pages' }, ...items) : el('div', {}, 'No data yet.'));
+}
+async function loadIntent() {
+  const body = $('#intent-body');
+  if (intentLoaded) return;
+  try {
+    const res = await fetch('/dashboard/api/intent', { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    const d = await res.json();
+    const pct = d.visitors ? Math.round(100 * d.returning / d.visitors) : 0;
+    const f = d.form;
+    body.replaceChildren(
+      el('div', { class: 'ga-grid' },
+        intentTile('Visitors', d.visitors), intentTile('Returning', d.returning + ' (' + pct + '%)'),
+        intentTile('Tool started', d.tool.started), intentTile('Tool finished', d.tool.completed),
+        intentTile('Form started', f.started), intentTile('Enquiries', f.submitted), intentTile('Started, not sent', f.not_submitted)),
+      intentList('Where they came from', d.sources.map((s) => el('li', {}, s.label + ' (' + s.n + ')'))),
+      intentList('Pages they read', d.pages.map((p) => el('li', {}, p.path + ' (' + p.views + ')'))),
+      intentList('Licences checked in the tool', d.licences.map((l) => el('li', {}, (LABELS[l.licence] || l.licence) + ' (' + l.n + ')')))
+    );
+    intentLoaded = true;
+  } catch (err) {
+    body.textContent = 'Visitor intent is not available yet. Pull down to try again.';
+  }
+}
 
 async function load() {
   syncActive();
@@ -676,7 +751,8 @@ function card(r) {
   const detail = el('div', { class: 'detail' },
     el('div', { class: 'facts' },
       el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
-      el('div', { class: 'meta' }, (r.phone || '') + (r.email ? ' · ' + r.email : ''))
+      el('div', { class: 'meta' }, (r.phone || '') + (r.email ? ' · ' + r.email : '')),
+      journeyOf(r) ? el('div', { class: 'meta journey' }, journeyOf(r)) : ''
     ),
     el('div', { class: 'label' }, 'Message'),
     r.message ? el('div', { class: 'msg' }, r.message) : el('div', { class: 'msg muted' }, 'No message given.'),
