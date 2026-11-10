@@ -385,7 +385,7 @@ button:disabled { opacity:.6; }
 .name { font-weight:700; font-size:15px; }
 .ref { font-size:12px; font-weight:700; color:var(--blue); }
 .meta { color:var(--muted); font-size:13px; }
-.when { margin-left:auto; color:var(--muted); font-size:12px; }
+.when { margin-left:8px; white-space:nowrap; color:var(--muted); font-size:12px; }
 .detail { padding:0 10px 10px; }
 .detail[hidden], .picker[hidden] { display:none; }
 .label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-top:4px; }
@@ -410,10 +410,13 @@ dialog li { margin-bottom:8px; }
 @media (max-width:560px) {
   .summary { grid-template-columns:repeat(3,1fr); }
   header h1 { font-size:18px; }
-  .when { margin-left:0; width:100%; }
   .grid { grid-template-columns:1fr; }
   .item { grid-template-columns:1fr; }
-  .actions { grid-column:1; grid-row:auto; justify-content:flex-start; padding:0 10px 6px; }
+  .top { grid-column:1; grid-row:auto; order:1; }
+  .detail { order:2; }
+  .actions { grid-column:1; grid-row:auto; order:3; justify-content:flex-start; padding:0 10px 6px; }
+  .picker { order:4; }
+  .when { margin-left:auto; }
   .facts { grid-template-columns:1fr; }
 }
 </style>
@@ -668,12 +671,12 @@ function card(r) {
     actions.append(mail);
   }
 
-  // Header (ref, name, date) sits left, buttons sit right. Everything else is shown, no tap needed.
+  // Name sits top left, with the stage pill, Call, Email and date on the right. Details sit directly under the name.
   const top = el('div', { class: 'top' },
     el('span', { class: 'ref' }, refOf(r.id)),
-    el('span', { class: 'name' }, r.name || 'No name'),
-    el('span', { class: 'when' }, when(r.created_at))
+    el('span', { class: 'name' }, r.name || 'No name')
   );
+  actions.append(el('span', { class: 'when' }, when(r.created_at)));
   const detail = el('div', { class: 'detail' },
     el('div', { class: 'facts' },
       el('div', { class: 'meta' }, ((r.state || '').toUpperCase() || 'State ?') + ' · ' + (LABELS[r.licence] || r.licence || 'Licence ?') + (r.is_ad ? ' · From Google Ad' + (r.utm_campaign ? ' · ' + r.utm_campaign : '') : '')),
