@@ -378,11 +378,11 @@ button:disabled { opacity:.6; }
 .item.stage-no { border-left-color:#667085; }
 .item { display:grid; grid-template-columns:minmax(0,1fr) auto; }
 .top { grid-column:1; grid-row:1; display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 8px; padding:8px 10px 4px; }
-.side { grid-column:2; grid-row:1; display:flex; flex-direction:column; align-items:flex-end; gap:6px; padding:6px 10px 4px 0; min-width:0; }
+.side { grid-column:2; grid-row:1 / span 2; display:flex; flex-direction:column; align-items:flex-end; gap:6px; padding:6px 10px 4px 0; min-width:0; }
 .info { display:flex; flex-direction:column; align-items:flex-end; text-align:right; min-width:0; }
 .info .meta { overflow-wrap:anywhere; text-align:right; }
 .actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:6px; }
-.picker, .detail { grid-column:1 / -1; }
+.picker, .detail { grid-column:1; align-self:start; }
 .name { font-weight:700; font-size:15px; }
 .ref { font-size:12px; font-weight:700; color:var(--blue); }
 .meta { color:var(--muted); font-size:13px; }
