@@ -109,7 +109,17 @@
 
     <section class="cta-box" aria-labelledby="talk-h">
       <h2 id="talk-h">Talk to Dan</h2>
-      <p>Dan handles your Northern Territory application from first call to approval. <a href="/contact">Send an enquiry</a>.</p>
+      <p>Dan handles your Northern Territory application from first call to approval.</p>
+      <form class="state-form" method="POST" action="/contact-submitted">
+        <label>Your name<input type="text" name="name" required autocomplete="name"></label>
+        <label>Best phone number<input type="tel" name="phone" required autocomplete="tel" placeholder="e.g. 0400 000 000"></label>
+        <label>Email (optional)<input type="email" name="email" autocomplete="email"></label>
+        <label>What do you need help with? (optional)<textarea name="message" rows="3"></textarea></label>
+        <input type="hidden" name="state" value="nt">
+        <div class="hp" aria-hidden="true"><label>Leave this field empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        {{TURNSTILE_WIDGET}}
+        <button type="submit" class="btn">Send enquiry</button>
+      </form>
     </section>
 
     <section aria-labelledby="other-h">
