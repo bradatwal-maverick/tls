@@ -651,5 +651,53 @@ details[open] summary::after { content: '−'; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: stretch; }
 @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; gap: 2rem; } }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ===== EASY-READ SUB PAGE TEMPLATE (shared by all service pages) ===== */
+/* Order on every sub page: hero, who it's for, in short, steps, price, good to know, CTA, FAQs */
+.container--narrow p, .container--narrow li { font-size: 1.1rem; line-height: 1.7; }
+.easy { font-size: 1.1rem; line-height: 1.7; }
+.easy p, .easy li { font-size: 1.1rem; }
+.easy h2 { font-size: 1.7rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+.easy li { margin-bottom: 0.6rem; }
+.easy .quick-answer { padding: 1.4rem 1.5rem; }
+.easy .quick-answer p { font-size: 1.15rem; line-height: 1.7; }
+.who-grid, .check-list, .step-cards { list-style: none; padding: 0; }
+.who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin: 1rem 0 0; }
+.who-grid li, .check-list li {
+  display: flex; gap: 0.75rem; align-items: flex-start; margin: 0;
+  background: var(--off-white); border: 1px solid var(--light-grey); border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+}
+.check-list { display: grid; gap: 0.75rem; margin: 1rem 0 0; }
+.who-grid li::before, .check-list li::before {
+  content: '✓'; flex: 0 0 auto; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--navy); color: var(--white); font-weight: 700;
+  display: flex; align-items: center; justify-content: center; line-height: 1;
+}
+.step-cards { counter-reset: step; display: grid; gap: 1rem; margin: 1rem 0 0; }
+.step-cards li {
+  counter-increment: step; position: relative; margin: 0;
+  background: var(--white); border: 2px solid var(--light-grey); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 1rem 1.1rem 1rem 4.4rem;
+}
+.step-cards li::before {
+  content: counter(step); position: absolute; left: 1rem; top: 1rem;
+  width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  background: var(--orange); color: var(--near-black); font-family: var(--font-heading); font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-cards strong { display: block; color: var(--navy); font-size: 1.15rem; margin-bottom: 0.25rem; }
+.price-card {
+  border: 2px solid var(--orange); border-radius: var(--radius); box-shadow: var(--shadow);
+  background: var(--white); text-align: center; padding: 1.5rem; margin: 2rem 0;
+}
+.price-card__label { margin: 0; font-size: 1rem; color: var(--dark-grey); }
+.price-card__amount { font-family: var(--font-heading); font-weight: 700; font-size: 2.6rem; line-height: 1.1; color: var(--navy); margin: 0.35rem 0 0.5rem; }
+.price-card__note { margin: 0 0 1rem; font-size: 1rem; color: var(--dark-grey); }
+@media (max-width: 600px) {
+  .easy { font-size: 1.05rem; }
+  .easy p, .easy li { font-size: 1.05rem; }
+  .step-cards li { padding-left: 4rem; }
+}
   `;
 }
