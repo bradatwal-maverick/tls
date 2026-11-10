@@ -25,9 +25,17 @@ details{border-bottom:1px solid var(--line);padding:12px 0}
 summary{cursor:pointer;font-weight:700;font-size:1.05rem}
 details p{margin:8px 0 0;color:var(--muted)}
 .cta-box{background:#f2f4f6;padding:16px;border-radius:8px;margin-top:28px}
-ul.states{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0;list-style:none}
-@media(min-width:640px){ul.states{grid-template-columns:repeat(4,1fr)}}
-ul.states a{display:block;padding:12px;border:1px solid var(--line);border-radius:6px;text-decoration:none;color:var(--ink);font-weight:600}
+body{overflow-x:clip}
+/* Other states: acronym tiles, equal height, no quick links */
+ul.states{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0;margin:12px 0 0;list-style:none}
+ul.states li{display:flex;margin:0}
+ul.states a{flex:1;display:flex;align-items:center;justify-content:center;min-height:52px;padding:12px 4px;border:2px solid var(--line);border-radius:6px;background:#f2f4f6;text-decoration:none;color:var(--ink);font-weight:700;font-size:1.05rem;letter-spacing:.04em}
+ul.states a:hover{border-color:var(--ink)}
+/* Eligibility check: full-width band, so it is the obvious focus */
+.state-test{width:100vw;margin:32px 0 8px calc(50% - 50vw);padding:28px max(16px,calc(50vw - 434px));background:var(--navy);color:#fff}
+.state-test h2{color:#fff;margin:0 0 14px}
+.state-test .tool{box-shadow:0 0 0 3px var(--hivis)}
+.state-test .tool-note{color:#d9e2ea;font-size:.9rem;margin:12px 0 0;max-width:720px}
 footer{background:#1f3346;color:#d9e2ea;margin-top:40px;font-size:15px}
 footer .wrap{padding-top:24px;padding-bottom:24px;display:grid;gap:8px}
 footer strong{color:#fff}
