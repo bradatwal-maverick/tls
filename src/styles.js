@@ -230,28 +230,40 @@ strong { font-weight: 600; }
 }
 @media print { .ask-dan { display: none; } }
 
-/* ===== TRUST BAR ===== */
+/* ===== TRUST BAR (under sticky header, kept compact) ===== */
 .trust-bar {
   background: var(--navy);
-  color: rgba(255,255,255,0.9);
-  text-align: center;
-  padding: 0.9rem 1.25rem;
-  font-size: 0.88rem;
+  color: rgba(255,255,255,0.95);
+  padding: 0.45rem 0.9rem;
+  font-size: 0.8rem;
+  line-height: 1.25;
 }
 .trust-bar__items {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.25rem 0.9rem;
   list-style: none;
   padding: 0;
   margin: 0;
-  font-weight: 500;
+  font-weight: 600;
+  max-width: 1100px;
+  margin-inline: auto;
+}
+.trust-bar__items li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.35rem;
 }
 .trust-bar__items li::before {
-  content: '✓ ';
+  content: '✓';
+  flex: 0 0 auto;
   color: var(--orange);
   font-weight: 700;
+}
+@media (min-width: 900px) {
+  .trust-bar { padding: 0.5rem 1.25rem; font-size: 0.88rem; }
+  .trust-bar__items { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.4rem 1.25rem; }
+  .trust-bar__items li { white-space: nowrap; }
 }
 
 /* ===== HERO ===== */

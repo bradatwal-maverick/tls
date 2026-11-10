@@ -140,10 +140,10 @@ export function layout(page, css, ctx = {}) {
 
 <div class="trust-bar" role="complementary" aria-label="Key points">
   <ul class="trust-bar__items">
-    <li>Builder, company and mutual recognition</li>
-    <li>Step-by-step, one-on-one help</li>
-    <li>All 8 states and territories</li>
-    <li>Dan answers his own phone</li>
+    <li>Australia-wide licence help</li>
+    <li>Former HIA licensing advisor</li>
+    <li>Straight advice, even when it's bad news</li>
+    <li>Talk to Dan, not a call centre</li>
   </ul>
 </div>
 </div>
