@@ -5,7 +5,7 @@
  * Tables: visitors, visit_events (migration 0005). Records are kept for 90 days.
  */
 
-const EVENT_TYPES = ['pageview', 'tool_step', 'tool_result', 'form_start'];
+const EVENT_TYPES = ['pageview', 'tool_step', 'tool_result', 'form_start', 'apply_click'];
 const BOT = /bot|crawl|spider|slurp|headless|lighthouse|preview|monitor|uptime|curl|wget|python|go-http|java\/|facebookexternalhit/i;
 const VISIT_GAP_MS = 30 * 60 * 1000;
 const KEEP_DAYS = 90;
