@@ -546,14 +546,15 @@ function gaTile(label, value) { return el('div', { class: 'tile' }, el('b', {}, 
 function gaRender() {
   const body = $('#ga-body');
   if (!gaData) return;
-  if (!gaData.configured) { body.textContent = 'Google Analytics is not connected yet.'; return; }
-  if (gaData.error) { body.textContent = 'Website stats are unavailable right now. Pull down to try again.'; return; }
+  if (!gaData.configured) { body.textContent = 'Google Analytics is not connected yet. Missing settings: ' + (gaData.missing || []).join(', ') + '.'; return; }
+  if (gaData.error) { body.textContent = gaData.message || 'Website stats are unavailable right now.'; return; }
   const p = gaData.periods[gaPeriod];
   document.querySelectorAll('[data-gp]').forEach((b) => b.classList.toggle('on', b.dataset.gp === gaPeriod));
   body.replaceChildren(
     el('div', { class: 'ga-grid' }, gaTile('Visitors', p.visitors), gaTile('Page views', p.page_views), gaTile('Enquiries', p.enquiries), gaTile('Enquiry rate', p.conversion_pct + '%')),
     el('div', { class: 'ga-sub' }, 'Traffic: Google Ads ' + p.sources.google_ads + '% · Organic ' + p.sources.organic + '% · Direct ' + p.sources.direct + '% · Other ' + p.sources.other + '%'),
-    el('ul', { class: 'ga-pages' }, ...p.top_pages.map((t) => el('li', {}, t.path + ' (' + t.views + ')')))
+    el('ul', { class: 'ga-pages' }, ...p.top_pages.map((t) => el('li', {}, t.path + ' (' + t.views + ')'))),
+    el('div', { class: 'ga-sub' }, gaData.note || '')
   );
 }
 async function loadGa() {

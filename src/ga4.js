@@ -14,21 +14,34 @@ const CACHE_SECONDS = 3600;
 const SCOPE = 'https://www.googleapis.com/auth/analytics.readonly';
 
 export async function ga4Summary(env) {
-  if (!env.GA4_PROPERTY_ID || !(env.GA_REFRESH_TOKEN || env.GA4_SERVICE_ACCOUNT)) return { configured: false };
+  const missing = [];
+  if (!env.GA4_PROPERTY_ID) missing.push('GA4_PROPERTY_ID');
+  if (env.GA_REFRESH_TOKEN) {
+    if (!env.GA_CLIENT_ID) missing.push('GA_CLIENT_ID');
+    if (!env.GA_CLIENT_SECRET) missing.push('GA_CLIENT_SECRET');
+  } else if (!env.GA4_SERVICE_ACCOUNT) {
+    missing.push('GA_REFRESH_TOKEN');
+  }
+  if (missing.length) return { configured: false, missing };
 
   const cache = caches.default;
   const key = new Request('https://ga4-cache.internal/' + encodeURIComponent(env.GA4_PROPERTY_ID) + '/v1');
   let site = null;
-  const hit = await cache.match(key);
-  if (hit) {
-    site = await hit.json();
-  } else {
+  let cached = false;
+  try {
+    const hit = await cache.match(key);
+    if (hit) { site = await hit.json(); cached = true; }
+  } catch (err) { /* cache is optional */ }
+
+  if (!site) {
     try {
       site = await fetchSite(env);
-      await cache.put(key, new Response(JSON.stringify(site), { headers: { 'Cache-Control': 'public, max-age=' + CACHE_SECONDS } }));
     } catch (err) {
-      return { configured: true, error: true };
+      return { configured: true, error: true, message: plainError(err) };
     }
+    try {
+      await cache.put(key, new Response(JSON.stringify(site), { headers: { 'Cache-Control': 'public, max-age=' + CACHE_SECONDS } }));
+    } catch (err) { /* cache is optional */ }
   }
 
   // Enquiries per period, live from D1
@@ -45,7 +58,24 @@ export async function ga4Summary(env) {
       conversion_pct: visitors ? Math.round((enquiries / visitors) * 1000) / 10 : 0,
     };
   }
-  return { configured: true, updated_at: site.updated_at, cached: !!hit, periods };
+  const note = site.periods['30'].visitors === 0
+    ? 'Connected to Google Analytics, but no visits are recorded in the last 30 days yet. New GA4 properties can take up to 48 hours to show the first visits.'
+    : '';
+  return { configured: true, updated_at: site.updated_at, cached, note, periods };
+}
+
+// Turns a technical failure into a plain-words reason for the dashboard
+function plainError(err) {
+  const m = String(err && err.message || '');
+  if (m.startsWith('token')) {
+    return 'Google refused the sign-in token (' + m + '). The Client ID, Client secret or Refresh token in the Worker settings is wrong or was revoked. Make a new refresh token in the OAuth Playground.';
+  }
+  if (m === 'GA4 401') return 'Google rejected the sign-in (GA4 401). Make a new refresh token in the OAuth Playground.';
+  if (m === 'GA4 403') return 'The Google account used for sign-in cannot read this property (GA4 403). In Google Analytics, Admin, Property access management, add that account as Viewer.';
+  if (m === 'GA4 404') return 'Google cannot find this property (GA4 404). Check that GA4_PROPERTY_ID is the numeric Property ID.';
+  if (m === 'GA4 400') return 'Google did not accept the request (GA4 400). Check that GA4_PROPERTY_ID is only digits.';
+  if (m === 'GA4 429') return 'Google is limiting requests right now (GA4 429). Try again in a few minutes.';
+  return 'Could not load Google Analytics (' + m + '). Try again in a few minutes.';
 }
 
 async function fetchSite(env) {
