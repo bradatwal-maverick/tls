@@ -179,8 +179,8 @@ ${organizationJsonLd()}${faqJsonLd(page.content || '')}${page.schema ? `\n  <scr
 <div class="trust-bar" role="complementary" aria-label="Key points">
   <ul class="trust-bar__items">
     <li>Australia-wide licence help</li>
-    <li>Former HIA licensing advisor</li>
-    <li>Straight advice, even when it's bad news</li>
+    <li>10 years experience</li>
+    <li>Affordably priced for new businesses</li>
     <li>Talk to Dan, not a call centre</li>
   </ul>
 </div>
