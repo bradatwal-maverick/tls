@@ -206,9 +206,12 @@ function textResponse(body, type) {
 }
 
 // State pages are static files. Swap in the Turnstile widget here, so the site key stays in the Worker settings.
+// The visit tracker (public/intent.js) is added too, so state page visits and enquiries record the right page.
 async function stateResponse(asset, env) {
   if (!asset.ok || !(asset.headers.get('Content-Type') || '').includes('text/html')) return asset;
-  const html = (await asset.text()).replace('{{TURNSTILE_WIDGET}}', turnstileWidget(env));
+  const html = (await asset.text())
+    .replace('{{TURNSTILE_WIDGET}}', turnstileWidget(env))
+    .replace('</body>', '<script src="/intent.js" defer></script>\n</body>');
   const headers = new Headers(asset.headers);
   headers.delete('Content-Length');
   headers.delete('ETag');
