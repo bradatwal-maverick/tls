@@ -465,24 +465,7 @@ dialog li { margin-bottom:8px; }
   </div>
 </header>
 <main>
-  <nav class="ga-seg tabs"><button type="button" data-tab="enq" class="on">Enquiries</button> <button type="button" data-tab="ga">Analytics</button> <button type="button" data-tab="intent">Intent</button></nav>
   <div id="ptr">Pull down to refresh…</div>
-
-  <div id="view-ga" hidden>
-  <section class="ga-card" id="ga" aria-label="Website analytics">
-    <div class="ga-head"><b>Website (Google Analytics)</b>
-      <div class="ga-seg"><button type="button" data-gp="7" class="on">7 days</button> <button type="button" data-gp="30">30 days</button></div>
-    </div>
-    <div id="ga-body" class="ga-sub">Loading…</div>
-  </section>
-  </div>
-
-  <div id="view-intent" hidden>
-  <section class="ga-card" id="intent" aria-label="Visitor intent">
-    <div class="ga-head"><b>Visitor intent (last 30 days)</b></div>
-    <div id="intent-body" class="ga-sub">Loading…</div>
-  </section>
-  </div>
 
   <div id="view-enq">
   <div class="summary">
@@ -497,7 +480,6 @@ dialog li { margin-bottom:8px; }
     <button type="button" class="chip" data-quick="">All</button>
     <button type="button" class="chip" data-quick="today">Today</button>
     <button type="button" class="chip" data-quick="week">This week</button>
-    <button type="button" class="chip" data-quick="ads">Google Ads</button>
     <button type="button" class="chip" data-quick="followup">Needs follow-up</button>
   </div>
 
@@ -510,7 +492,6 @@ dialog li { margin-bottom:8px; }
       <div><label>State<select name="state"><option value="">All states</option>${stateOpts}</select></label></div>
       <div><label>Licence<select name="licence"><option value="">All licences</option>${licenceOpts}</select></label></div>
       <div><label>Stage<select name="stage"><option value="">All stages</option><option value="new">New</option><option value="in_contact">In Contact</option><option value="booked">Booked</option><option value="no">No</option></select></label></div>
-      <div><label>Source<select name="src"><option value="">All sources</option><option value="ads">Google Ads only</option><option value="other">Not from ads</option></select></label></div>
       <div class="full"><label>Search<input type="search" name="q" placeholder="Name, phone, email, message or TLS-0001"></label></div>
       <div class="full btns">
         <button type="button" id="clear" class="ghost">Clear</button>
@@ -609,15 +590,6 @@ async function loadGa() {
   gaRender();
 }
 document.querySelectorAll('[data-gp]').forEach((b) => b.addEventListener('click', () => { gaPeriod = b.dataset.gp; gaRender(); }));
-function showTab(t) {
-  $('#view-enq').hidden = t !== 'enq';
-  $('#view-ga').hidden = t !== 'ga';
-  $('#view-intent').hidden = t !== 'intent';
-  document.querySelectorAll('[data-tab]').forEach((b) => b.classList.toggle('on', b.dataset.tab === t));
-  if (t === 'ga') loadGa();
-  if (t === 'intent') loadIntent();
-}
-document.querySelectorAll('[data-tab]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
 
 // Visitor journey line on each enquiry, e.g. "Viewed 4 pages · used eligibility tool · from Google · 2nd visit"
 function ordinal(n) { const s = ['th', 'st', 'nd', 'rd'], v = n % 100; return n + (s[(v - 20) % 10] || s[v] || s[0]); }
@@ -665,7 +637,6 @@ async function loadIntent() {
 
 async function load() {
   syncActive();
-  loadGa();
   const list = $('#list');
   try {
     const res = await fetch('/dashboard/api/enquiries?' + query(), { cache: 'no-store' });
