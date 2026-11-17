@@ -394,9 +394,10 @@ main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 .set-err[hidden] { display:none; }
 .set-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; color:var(--muted); font-size:13px; min-height:36px; }
 .set-meta button[hidden] { display:none; }
-.set-status { margin:8px 0; font-weight:600; }
-.set-status.ok { color:var(--green); }
-.set-status.bad { color:#d92d20; }
+.set-status { flex:1 1 100%; margin:0; font-weight:700; font-size:16px; border-radius:10px; padding:10px 12px; background:var(--card); border:1px solid var(--line); }
+.set-status:empty { display:none; }
+.set-status.ok { background:#e3f4ea; border-color:#1e7b43; color:#1e6b3c; }
+.set-status.bad { background:#fde8e6; border-color:#d92d20; color:#b42318; }
 .savebar { position:sticky; bottom:0; display:flex; gap:8px; flex-wrap:wrap; background:var(--bg); border-top:1px solid var(--line); padding:10px 0 calc(10px + env(safe-area-inset-bottom)); margin-top:8px; }
 .savebar button, .savebar .btn { flex:1; font-size:17px; padding:14px; }
 .ga-card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 10px; margin:6px 0 10px; }
@@ -545,9 +546,9 @@ dialog li { margin-bottom:8px; }
 
   <div id="view-set" hidden>
     <p class="set-intro">Change prices, your phone number and some wording. Tap Save and the live website updates straight away.</p>
-    <div id="set-status" class="set-status" role="status"></div>
     <div id="set-form"></div>
     <div class="savebar">
+      <div id="set-status" class="set-status" role="status" aria-live="polite"></div>
       <button type="button" id="set-save">Save changes</button>
       <a class="btn ghost" href="/" target="_blank" rel="noopener" style="text-align:center">View live site</a>
     </div>
@@ -702,7 +703,14 @@ for (const b of document.querySelectorAll('.tabs button')) b.addEventListener('c
 // Site settings tab: prices, phone and wording Dan can change himself
 let setFields = [];
 const setInputs = {};
-function setStatus(msg, kind) { const s = $('#set-status'); s.textContent = msg || ''; s.className = 'set-status' + (kind ? ' ' + kind : ''); }
+let setStatusTimer = null;
+function setStatus(msg, kind) {
+  const s = $('#set-status');
+  clearTimeout(setStatusTimer);
+  s.textContent = msg || '';
+  s.className = 'set-status' + (kind ? ' ' + kind : '');
+  if (kind === 'ok') setStatusTimer = setTimeout(() => setStatus(''), 6000);
+}
 function setChanged() {
   const out = {};
   for (const f of setFields) if (setInputs[f.key] && setInputs[f.key].value.trim() !== f.value) out[f.key] = setInputs[f.key].value;
@@ -775,7 +783,7 @@ $('#set-save').addEventListener('click', async () => {
     if (res.ok) {
       setFields = data.fields;
       renderSettings();
-      setStatus('Saved. The live website is updated.', 'ok');
+      setStatus('\u2713 Changes saved. The live website is updated.', 'ok');
     } else if (data.errors) {
       renderSettings(data.errors);
       for (const f of setFields) if (values[f.key] !== undefined) setInputs[f.key].value = values[f.key];
