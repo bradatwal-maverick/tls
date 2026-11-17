@@ -6,6 +6,7 @@
 
 import { ga4Summary } from './ga4.js';
 import { intentSummary, JOURNEY_SQL } from './intent.js';
+import { settingsForDashboard, saveSettings } from './settings.js';
 
 const NOINDEX = {
   'X-Robots-Tag': 'noindex, nofollow',
@@ -46,6 +47,8 @@ export async function handleDashboard(request, env, ctx, path) {
   if (method === 'GET' && path === '/dashboard/api/export.csv') return exportCsv(request, env);
   if (method === 'GET' && path === '/dashboard/api/analytics') return analyticsSummary(env);
   if (method === 'GET' && path === '/dashboard/api/intent') return intentApi(env);
+  if (method === 'GET' && path === '/dashboard/api/settings') return json(await settingsForDashboard(env));
+  if (method === 'POST' && path === '/dashboard/api/settings') return postSettings(request, env);
   if (method === 'POST' && path === '/dashboard/api/push/subscribe') return subscribePush(request, env);
 
   const m = path.match(/^\/dashboard\/api\/enquiries\/(\d+)\/(stage|responded)$/);
@@ -90,6 +93,20 @@ export async function notifyNewEnquiry(env) {
     if (res === 404 || res === 410) {
       await env.DB.prepare('DELETE FROM push_subscriptions WHERE endpoint = ?').bind(row.endpoint).run();
     }
+  }
+}
+
+// Saves Dan's site settings (prices, phone, wording). JSON only, so another website cannot post here.
+async function postSettings(request, env) {
+  if (!(request.headers.get('Content-Type') || '').includes('application/json')) return json({ error: 'JSON only.' }, 415);
+  let body;
+  try { body = await request.json(); } catch (err) { return json({ error: 'Bad request.' }, 400); }
+  try {
+    const r = await saveSettings(env, body, request.headers.get('Cf-Access-Authenticated-User-Email'));
+    return json(r.data, r.status);
+  } catch (err) {
+    console.error('settings save failed', err);
+    return json({ error: 'Could not save. The settings table may not be set up yet.' }, 500);
   }
 }
 
@@ -361,8 +378,27 @@ main { padding:12px 16px 40px; max-width:760px; margin:0 auto; }
 #ptr { text-align:center; color:var(--muted); font-size:14px; height:0; overflow:hidden; transition:height .2s; }
 #ptr.on { height:40px; }
 .summary { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:6px 0 10px; }
-.tabs { display:flex; gap:6px; margin:8px 0 0; }
-.tabs button { flex:1; font-weight:600; }
+.tabs { display:flex; gap:6px; margin:8px 0 10px; }
+.tabs button { flex:1; font-weight:600; background:var(--card); color:var(--ink); border:1px solid var(--line); }
+.tabs button.on { background:var(--blue); color:#fff; border-color:var(--blue); }
+.set-intro { color:var(--muted); margin:4px 0 6px; }
+.set-group { font-size:16px; margin:18px 0 6px; }
+.set-field { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px; }
+.set-field b { display:block; font-size:16px; color:var(--ink); }
+.set-field .help { color:var(--muted); font-size:13px; margin:2px 0 8px; }
+.set-field input, .set-field textarea { font:inherit; font-size:18px; width:100%; padding:12px; border:1px solid var(--line); border-radius:10px; background:transparent; color:var(--ink); margin:0; }
+.set-field textarea { resize:vertical; }
+.set-field.bad input, .set-field.bad textarea { border-color:#d92d20; }
+.moneybox { display:flex; align-items:center; gap:8px; font-size:18px; font-weight:700; }
+.set-err { color:#d92d20; font-size:14px; margin-top:6px; font-weight:600; }
+.set-err[hidden] { display:none; }
+.set-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:8px; color:var(--muted); font-size:13px; min-height:36px; }
+.set-meta button[hidden] { display:none; }
+.set-status { margin:8px 0; font-weight:600; }
+.set-status.ok { color:var(--green); }
+.set-status.bad { color:#d92d20; }
+.savebar { position:sticky; bottom:0; display:flex; gap:8px; flex-wrap:wrap; background:var(--bg); border-top:1px solid var(--line); padding:10px 0 calc(10px + env(safe-area-inset-bottom)); margin-top:8px; }
+.savebar button, .savebar .btn { flex:1; font-size:17px; padding:14px; }
 .ga-card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:8px 10px; margin:6px 0 10px; }
 .ga-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px; }
 .ga-head b { font-size:14px; }
@@ -467,6 +503,11 @@ dialog li { margin-bottom:8px; }
 <main>
   <div id="ptr">Pull down to refresh…</div>
 
+  <div class="tabs" role="tablist">
+    <button type="button" class="on" data-view="enq" role="tab">Enquiries</button>
+    <button type="button" data-view="set" role="tab">Site settings</button>
+  </div>
+
   <div id="view-enq">
   <div class="summary">
     <div class="tile"><b id="t-count">–</b><span>Enquiries</span></div>
@@ -500,6 +541,16 @@ dialog li { margin-bottom:8px; }
   </details>
 
   <div id="list"></div>
+  </div>
+
+  <div id="view-set" hidden>
+    <p class="set-intro">Change prices, your phone number and some wording. Tap Save and the live website updates straight away.</p>
+    <div id="set-status" class="set-status" role="status"></div>
+    <div id="set-form"></div>
+    <div class="savebar">
+      <button type="button" id="set-save">Save changes</button>
+      <a class="btn ghost" href="/" target="_blank" rel="noopener" style="text-align:center">View live site</a>
+    </div>
   </div>
 </main>
 
@@ -634,6 +685,109 @@ async function loadIntent() {
     body.textContent = 'Visitor intent is not available yet. Pull down to try again.';
   }
 }
+
+// Tabs: Enquiries and Site settings
+let curView = 'enq';
+let setLoaded = false;
+function showView(v) {
+  curView = v;
+  $('#view-enq').hidden = v !== 'enq';
+  $('#view-set').hidden = v !== 'set';
+  for (const b of document.querySelectorAll('.tabs button')) b.classList.toggle('on', b.dataset.view === v);
+  try { history.replaceState(null, '', v === 'set' ? '#settings' : location.pathname); } catch (err) { /* ignore */ }
+  if (v === 'set' && !setLoaded) loadSettings();
+}
+for (const b of document.querySelectorAll('.tabs button')) b.addEventListener('click', () => showView(b.dataset.view));
+
+// Site settings tab: prices, phone and wording Dan can change himself
+let setFields = [];
+const setInputs = {};
+function setStatus(msg, kind) { const s = $('#set-status'); s.textContent = msg || ''; s.className = 'set-status' + (kind ? ' ' + kind : ''); }
+function setChanged() {
+  const out = {};
+  for (const f of setFields) if (setInputs[f.key] && setInputs[f.key].value.trim() !== f.value) out[f.key] = setInputs[f.key].value;
+  return out;
+}
+function shownValue(f, v) { return f.type === 'price' ? '$' + Number(v).toLocaleString('en-AU') : v || 'none'; }
+function renderSettings(errors) {
+  const host = $('#set-form');
+  host.replaceChildren();
+  let group = '';
+  for (const f of setFields) {
+    if (f.group !== group) { group = f.group; host.append(el('h2', { class: 'set-group' }, group)); }
+    const input = f.type === 'longtext'
+      ? el('textarea', { id: 'set-' + f.key, rows: '3', maxlength: String(f.max) })
+      : el('input', { id: 'set-' + f.key, type: f.type === 'phone' ? 'tel' : 'text', inputmode: f.type === 'price' ? 'numeric' : f.type === 'phone' ? 'tel' : 'text', maxlength: String(f.max || 40), autocomplete: 'off' });
+    input.value = f.value;
+    setInputs[f.key] = input;
+    const err = el('div', { class: 'set-err', hidden: '' });
+    const reset = el('button', { type: 'button', class: 'ghost sm' }, 'Reset to original');
+    const note = el('span', {}, '');
+    const box = el('div', { class: 'set-field' },
+      el('label', { for: 'set-' + f.key }, el('b', {}, f.label)),
+      el('div', { class: 'help' }, f.help),
+      f.type === 'price' ? el('div', { class: 'moneybox' }, '$', input) : input,
+      err,
+      el('div', { class: 'set-meta' }, note, reset)
+    );
+    const sync = () => {
+      const isOriginal = input.value.trim() === f.def;
+      reset.hidden = isOriginal;
+      note.textContent = isOriginal ? 'Original' : 'Original: ' + shownValue(f, f.def);
+      box.classList.remove('bad');
+      err.hidden = true;
+    };
+    input.addEventListener('input', () => { sync(); setStatus(''); });
+    reset.addEventListener('click', () => { input.value = f.def; sync(); setStatus('Reset. Tap Save changes to put it live.'); });
+    sync();
+    if (errors && errors[f.key]) { err.textContent = errors[f.key]; err.hidden = false; box.classList.add('bad'); }
+    host.append(box);
+  }
+}
+async function loadSettings() {
+  const host = $('#set-form');
+  try {
+    const res = await fetch('/dashboard/api/settings', { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    if (data.needsSetup) {
+      host.replaceChildren(el('div', { class: 'empty' }, 'Site settings are not switched on yet. Brad needs to finish one setup step.'));
+      $('#set-save').disabled = true;
+      return;
+    }
+    setFields = data.fields;
+    setLoaded = true;
+    $('#set-save').disabled = false;
+    renderSettings();
+  } catch (err) {
+    host.replaceChildren(el('div', { class: 'empty' }, 'Could not load settings. Pull down to try again.'));
+  }
+}
+$('#set-save').addEventListener('click', async () => {
+  const values = setChanged();
+  if (!Object.keys(values).length) return setStatus('Nothing has changed.');
+  const btn = $('#set-save');
+  btn.disabled = true;
+  setStatus('Saving…');
+  try {
+    const res = await fetch('/dashboard/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ values }) });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      setFields = data.fields;
+      renderSettings();
+      setStatus('Saved. The live website is updated.', 'ok');
+    } else if (data.errors) {
+      renderSettings(data.errors);
+      for (const f of setFields) if (values[f.key] !== undefined) setInputs[f.key].value = values[f.key];
+      setStatus('Please fix the red fields. Nothing was saved.', 'bad');
+    } else {
+      setStatus(data.error || 'Could not save. Please try again.', 'bad');
+    }
+  } catch (err) {
+    setStatus('Could not save. Check your connection and try again.', 'bad');
+  }
+  btn.disabled = false;
+});
 
 async function load() {
   syncActive();
@@ -830,11 +984,15 @@ window.addEventListener('touchend', async (e) => {
   if (startY === null) return;
   const dy = e.changedTouches[0].clientY - startY;
   startY = null;
-  if (dy > 80) { $('#ptr').textContent = 'Refreshing…'; await load(); }
+  if (dy > 80) {
+    $('#ptr').textContent = 'Refreshing…';
+    if (curView === 'set') { if (!Object.keys(setChanged()).length) await loadSettings(); } else await load();
+  }
   $('#ptr').classList.remove('on');
   $('#ptr').textContent = 'Pull down to refresh…';
 }, { passive: true });
 
+if (location.hash === '#settings') showView('set');
 load();
 `;
 

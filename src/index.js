@@ -9,6 +9,7 @@ import { getCSS } from './styles.js';
 import { layout, plainText } from './layout.js';
 import { handleDashboard, saveEnquiry, notifyNewEnquiry, enquiryRef } from './dashboard.js';
 import { handleTrack, readVisitorId } from './intent.js';
+import { withSiteSettings } from './settings.js';
 
 const SITE = 'https://tradelicencesolutions.com.au';
 const PHONE_DISPLAY = '0412 767 129';
@@ -57,7 +58,8 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').repl
 export default {
   // Wraps every response: remembers Google Ad click details for the enquiry form (first-party cookie)
   async fetch(request, env, ctx) {
-    const res = await routeRequest(request, env, ctx);
+    // Dan's saved prices, phone, headline and notice (Site settings tab) are swapped into HTML and text pages here
+    const res = await withSiteSettings(request, env, await routeRequest(request, env, ctx));
     const adCookie = adCookieFor(request);
     if (!adCookie) return res;
     const out = new Response(res.body, res);
@@ -201,7 +203,7 @@ function renderPage(page, path, env, status) {
 
 function textResponse(body, type) {
   return new Response(body, {
-    headers: { 'Content-Type': type, 'Cache-Control': 'public, max-age=3600' },
+    headers: { 'Content-Type': type, 'Cache-Control': 'public, max-age=300' },
   });
 }
 
